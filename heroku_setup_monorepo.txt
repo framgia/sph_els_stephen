@@ -1,7 +1,7 @@
 [info][title]... heroku_setup_monorepo ...[/title]
 
 assuming the repository has different projects to be deployed
-and that the projects are skeleton projects
+and that the projects are skeleton projects, if not,
 do take note of the configurations you have made such as environment variables and set them up properly
 
 i.e.
@@ -43,9 +43,9 @@ prerequisites:
     for the react project
     [code]heroku buildpacks:add heroku/nodejs -r heroku-fe[/code]
     for the laravel project
-    [code]heroku buildpacks:add heroku/php -r heroku-fe[/code]
+    [code]heroku buildpacks:add heroku/php -r heroku-be[/code]
 
-    - note that we are adding the reference for the remote names the -r flag
+    - note that we are adding the reference for the remote names with the -r flag
 
 [hr]
 4) continuation on buildpacks configuration,
