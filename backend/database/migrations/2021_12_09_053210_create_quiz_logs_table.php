@@ -13,6 +13,10 @@ class CreateQuizLogsTable extends Migration {
     public function up() {
         Schema::create('quiz_logs', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('quiz_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+
             $table->timestamps();
         });
     }
