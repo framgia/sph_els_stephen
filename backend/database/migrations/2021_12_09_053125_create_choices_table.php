@@ -14,7 +14,7 @@ class CreateChoicesTable extends Migration {
         Schema::create('choices', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('quiz_items_id')->constrained();
+            $table->foreignId('quiz_item_id')->constrained();
             $table->string('choice');
             $table->boolean('is_correct');
 
