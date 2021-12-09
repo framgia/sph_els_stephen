@@ -4,17 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQuizzesTable extends Migration
-{
+class CreateQuizzesTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
+
+            $table->string('title')->unique();
+            $table->text('description');
+
             $table->timestamps();
         });
     }
@@ -24,8 +26,7 @@ class CreateQuizzesTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('quizzes');
     }
 }
