@@ -4,17 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChoicesTable extends Migration
-{
+class CreateChoicesTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('choices', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('quiz_items_id')->constrained();
+            $table->string('choice');
+            $table->boolean('is_correct');
+
             $table->timestamps();
         });
     }
@@ -24,8 +27,7 @@ class CreateChoicesTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('choices');
     }
 }

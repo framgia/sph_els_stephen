@@ -9,6 +9,6 @@ class Quiz extends Model {
     use HasFactory;
 
     public function quizItems() {
-        return $this->hasMany(QuizItems::class);
+        return $this->hasMany(QuizItem::class);
     }
 }
