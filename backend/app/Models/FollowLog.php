@@ -11,4 +11,12 @@ class FollowLog extends Model {
     public function log() {
         return $this->morphOne(ActivityLog::class, 'loggable');
     }
+
+    public function follower() {
+        return $this->belongsTo(User::class, 'from_id');
+    }
+
+    public function following() {
+        return $this->belongsTo(User::class, 'to_id');
+    }
 }

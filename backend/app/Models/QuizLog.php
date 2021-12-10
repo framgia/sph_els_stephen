@@ -8,6 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class QuizLog extends Model {
     use HasFactory;
 
+    public function quiz() {
+        return $this->belongsTo(Quiz::class);
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
     public function log() {
         return $this->morphOne(ActivityLog::class, 'loggable');
     }
