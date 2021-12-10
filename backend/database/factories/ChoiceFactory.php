@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Quiz;
+use App\Models\QuizItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class QuizItemFactory extends Factory {
+class ChoiceFactory extends Factory {
     /**
      * Define the model's default state.
      *
@@ -13,8 +13,9 @@ class QuizItemFactory extends Factory {
      */
     public function definition() {
         return [
-            'quiz_id' => Quiz::all()->random(),
-            'question' => $this->faker->word()
+            'quiz_item_id' => QuizItem::all()->random(),
+            'choice' => $this->faker->word(),
+            'is_correct' => false
         ];
     }
 }
