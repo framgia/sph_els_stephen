@@ -2,43 +2,39 @@
 
 namespace App\Models;
 
+use App\Models\Quiz;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Nette\NotImplementedException;
 
-class User extends Authenticatable
-{
+class User extends Authenticatable {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function quiz_logs() {
+        return $this->hasMany(QuizLog::class);
+    }
+
+    public function quizzes() {
+        return $this->belongsToMany(Quiz::class, 'quiz_logs');
+    }
+
+    public function following() {
+        return $this->hasMany(FollowLog::class, 'to_id');
+    }
+
+    public function followers() {
+        return $this->hasMany(FollowLog::class, 'from_id');
+    }
 }
