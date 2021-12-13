@@ -13,6 +13,7 @@ const HeaderLinks = () => {
         callToActions={callsToAction}
       /> */}
 
+      <HeaderItem label="Admin Quiz" href="/admin/quizzes" />
       <HeaderItem label="Home" href="/" />
       <HeaderItem label="Users" href="/users" />
       <HeaderItem label="Quizzes" href="/quizzes" />
