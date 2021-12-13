@@ -10,6 +10,7 @@ import {
   SupportIcon,
   ViewGridIcon,
 } from '@heroicons/react/outline';
+import Header from './Header';
 
 export * from './Hamburger';
 export * from './HamburgerMenu';
@@ -22,7 +23,7 @@ export * from './HeaderItem';
 export * from './HeaderLinks';
 export * from './types';
 
-export default './Header';
+export default Header;
 
 export const solutions = [
   {

@@ -1,13 +1,31 @@
-import React from 'react';
 import '../index.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import Header from './Header/Header';
+import Header from './Header';
+
+function Home() {
+  return <h1 className="text-3xl font-bold underline">Home!</h1>;
+}
+function Users() {
+  return <h1 className="text-3xl font-bold underline">Users!</h1>;
+}
+function Quizzes() {
+  return <h1 className="text-3xl font-bold underline">Quizzes!</h1>;
+}
 
 function App() {
   return (
     <div className="App">
-      <Header />
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      <BrowserRouter>
+        <div>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/quizzes" element={<Quizzes />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
     </div>
   );
 }

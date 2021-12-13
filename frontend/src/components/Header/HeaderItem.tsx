@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface HeaderItemProps {
   label: string;
   href?: string;

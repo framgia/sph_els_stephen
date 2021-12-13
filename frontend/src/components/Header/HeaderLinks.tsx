@@ -1,25 +1,23 @@
-import React, { Fragment } from 'react';
-import { Popover, Transition } from '@headlessui/react';
+import { Popover } from '@headlessui/react';
 
-import HamburgerMenu from './HamburgerMenu';
 import HeaderItem from './HeaderItem';
 import HeaderDropDown from './HeaderDropDown';
-import HeaderAuth from './HeaderAuth';
 import { callsToAction, solutions, recentPosts } from '.';
 
 const HeaderLinks = () => {
   return (
     <Popover.Group as="nav" className="hidden md:flex space-x-10">
-      <HeaderDropDown
+      {/* <HeaderDropDown
         label="Quizzes"
         dropDownItems={solutions}
         callToActions={callsToAction}
-      />
+      /> */}
 
-      <HeaderItem label="Users" />
-      <HeaderItem label="Docs" />
+      <HeaderItem label="Home" href="/" />
+      <HeaderItem label="Users" href="/users" />
+      <HeaderItem label="Quizzes" href="/quizzes" />
 
-      <HeaderDropDown label="Quizzes" dropDownItems={solutions}>
+      {/* <HeaderDropDown label="Quizzes" dropDownItems={solutions}>
         <div>
           <h3 className="text-sm tracking-wide font-medium text-gray-500 uppercase">
             Recent Posts
@@ -37,7 +35,7 @@ const HeaderLinks = () => {
             ))}
           </ul>
         </div>
-      </HeaderDropDown>
+      </HeaderDropDown> */}
     </Popover.Group>
   );
 };
