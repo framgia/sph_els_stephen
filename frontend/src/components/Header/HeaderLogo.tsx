@@ -1,5 +1,3 @@
-import React from 'react';
-
 const HeaderLogo = () => {
   return (
     <div className="flex justify-start lg:w-0 lg:flex-1">
