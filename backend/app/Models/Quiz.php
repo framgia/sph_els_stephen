@@ -9,6 +9,13 @@ use Nette\NotImplementedException;
 class Quiz extends Model {
     use HasFactory;
 
+    public $jsonKeyMap = [
+        'id' => 'id',
+
+        'title' => 'title',
+        'description' => 'description',
+    ];
+
     public function users() {
         throw new NotImplementedException();
     }

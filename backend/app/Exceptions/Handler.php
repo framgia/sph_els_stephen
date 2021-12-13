@@ -2,40 +2,42 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
-class Handler extends ExceptionHandler
-{
-    /**
-     * A list of the exception types that are not reported.
-     *
-     * @var string[]
-     */
-    protected $dontReport = [
-        //
-    ];
+class Handler extends ExceptionHandler {
+    protected $dontReport = [];
 
-    /**
-     * A list of the inputs that are never flashed for validation exceptions.
-     *
-     * @var string[]
-     */
     protected $dontFlash = [
         'current_password',
         'password',
         'password_confirmation',
     ];
 
-    /**
-     * Register the exception handling callbacks for the application.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->reportable(function (Throwable $e) {
-            //
+    public function register() {
+        // $this->reportable(function (Throwable $e) {
+        // });
+
+        $this->renderable(function (Exception $e, $request) {
+            dd($e);
+            if (request()->wantsJson() || !$this->isFrontEnd()) {
+                if ($e instanceof ValidationException) {
+                    $errors = $e->validator->errors()->getMessages();
+                    return response()->json([
+                        "error" => ["message" => $errors, "code" => 422],
+                    ], 422);
+                }
+                dd($e);
+            } else {
+                dd($e);
+                return response()->json(["error" => $e->getMessage()], 500);
+            }
         });
+    }
+
+    public function isFrontEnd() {
+        return request()->acceptsHtml() && collect(request()->route()->middleware())->contains('web');
     }
 }
