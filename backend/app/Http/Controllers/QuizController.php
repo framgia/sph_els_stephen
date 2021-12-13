@@ -45,7 +45,7 @@ class QuizController extends Controller {
 
         return request()->validate([
             'title' => [!$quiz->exists ? 'required' : '', Rule::unique('quizzes')->ignore($quiz)],
-            'description' => [!$quiz->exists ? 'required' : '']
+            'description' => [!$quiz->exists ? 'required' : '', 'max:255']
         ]);
     }
 }
