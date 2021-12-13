@@ -29,9 +29,7 @@ class Handler extends ExceptionHandler {
                         "error" => ["message" => $errors, "code" => 422],
                     ], 422);
                 }
-                dd($e);
             } else {
-                dd($e);
                 return response()->json(["error" => $e->getMessage()], 500);
             }
         });
