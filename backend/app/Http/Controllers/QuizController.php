@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Quiz;
-use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Resources\QuizResource;
 
