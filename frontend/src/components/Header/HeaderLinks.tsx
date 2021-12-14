@@ -14,6 +14,7 @@ const HeaderLinks = () => {
       /> */}
 
       <HeaderItem label="Admin Quiz" href="/admin/quizzes" />
+      <HeaderItem label="Admin Quiz Create" href="/admin/quizzes/create" />
       <HeaderItem label="Home" href="/" />
       <HeaderItem label="Users" href="/users" />
       <HeaderItem label="Quizzes" href="/quizzes" />

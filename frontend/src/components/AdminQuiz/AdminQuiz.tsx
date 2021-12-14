@@ -10,7 +10,7 @@ interface AdminQuizProps {
 
 const AdminQuiz = ({ records }: AdminQuizProps): JSX.Element => {
   return (
-    <div>
+    <div className="container mx-auto px-24 py-8">
       <h1>Admin quiz</h1>
       <Table
         headers={<AdminQuizHeader />}

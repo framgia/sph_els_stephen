@@ -2,6 +2,7 @@ import '../index.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Header from './Header';
 import AdminQuiz from './AdminQuiz/AdminQuiz';
+import AdminQuizForm from './AdminQuiz/AdminQuizForm';
 
 function Home() {
   return <h1 className="text-3xl font-bold underline">Home!</h1>;
@@ -42,6 +43,10 @@ function App() {
             <Route
               path="/admin/quizzes"
               element={<AdminQuiz records={records} />}
+            />
+            <Route
+              path="/admin/quizzes/create"
+              element={<AdminQuizForm title="Create Quiz" />}
             />
             <Route path="/users" element={<Users />} />
             <Route path="/quizzes" element={<Quizzes />} />
