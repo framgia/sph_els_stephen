@@ -3,10 +3,7 @@ import FormLabel from './FormLabel';
 
 interface FormInputProps {
   id: string;
-<<<<<<< Updated upstream
-=======
   name?: string;
->>>>>>> Stashed changes
   placeholder?: string;
   value?: any;
 }
