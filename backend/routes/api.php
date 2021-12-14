@@ -24,3 +24,5 @@ use App\Http\Controllers\QuizItemController;
 Route::apiResource('quizzes', QuizController::class);
 Route::apiResource('quiz_items', QuizItemController::class);
 Route::apiResource('users', UserController::class);
+Route::post('login', [UserController::class, 'login']);
+Route::post('logout', [UserController::class, 'logout']);

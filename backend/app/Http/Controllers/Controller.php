@@ -13,4 +13,12 @@ class Controller extends BaseController {
     public function errorResponse($message = "Unexpected exception.", $code = 500) {
         return response()->json(['error' => ["message" => $message], 'code' => $code], $code);
     }
+
+    public function toArray($data, $jsonKeyMap) {
+        $jsonArr = [];
+        foreach ($jsonKeyMap as $k => $v) {
+            $jsonArr[$v] = $data->$k;
+        }
+        return $jsonArr;
+    }
 }
