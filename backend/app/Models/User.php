@@ -13,6 +13,15 @@ use Nette\NotImplementedException;
 class User extends Authenticatable {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public $jsonKeyMap = [
+        'id' => 'id',
+
+        'name' => 'name',
+        'email' => 'email',
+        'avatar' => 'avatar',
+        'is_admin' => 'is_admin',
+    ];
+
     protected $hidden = [
         'password',
         'remember_token',
@@ -21,6 +30,10 @@ class User extends Authenticatable {
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function setPasswordAttribute($password) {
+        $this->attributes['password'] = bcrypt($password);
+    }
 
     public function quiz_logs() {
         return $this->hasMany(QuizLog::class);
