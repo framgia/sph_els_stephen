@@ -3,6 +3,10 @@ import FormLabel from './FormLabel';
 
 interface FormInputProps {
   id: string;
+<<<<<<< Updated upstream
+=======
+  name?: string;
+>>>>>>> Stashed changes
   placeholder?: string;
   value?: any;
 }
@@ -15,6 +19,7 @@ interface FormInputProps {
 
 export const FormInput = ({
   id,
+  name,
   placeholder,
   value,
 }: FormInputProps): JSX.Element => {
@@ -27,9 +32,9 @@ export const FormInput = ({
           </span>
           <input
             type="text"
-            name={id}
+            name={name ? name : id}
             id={id}
-            className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-slate-700"
+            className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
             placeholder={placeholder}
             value={value}
           />

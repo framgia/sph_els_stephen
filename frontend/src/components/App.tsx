@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Header from './Header';
 import AdminQuiz from './AdminQuiz/AdminQuiz';
 import AdminQuizForm from './AdminQuiz/AdminQuizForm';
+import AdminQuizItemForm from './AdminQuizItem/AdminQuizItemForm';
 
 function Home() {
   return <h1 className="text-3xl font-bold underline">Home!</h1>;
@@ -47,6 +48,10 @@ function App() {
             <Route
               path="/admin/quizzes/create"
               element={<AdminQuizForm title="Create Quiz" />}
+            />
+            <Route
+              path="/admin/quizzes/:id/quiz_items/create"
+              element={<AdminQuizItemForm title="Create Quiz Item" />}
             />
             <Route path="/users" element={<Users />} />
             <Route path="/quizzes" element={<Quizzes />} />
