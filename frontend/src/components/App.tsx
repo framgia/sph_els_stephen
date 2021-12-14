@@ -4,6 +4,7 @@ import Header from './Header';
 import AdminQuiz from './AdminQuiz/AdminQuiz';
 import AdminQuizForm from './AdminQuiz/AdminQuizForm';
 import AdminQuizItemForm from './AdminQuizItem/AdminQuizItemForm';
+import AdminQuizEditForm from './AdminQuiz/AdminQuizEditForm';
 
 function Home() {
   return <h1 className="text-3xl font-bold underline">Home!</h1>;
@@ -52,6 +53,10 @@ function App() {
             <Route
               path="/admin/quizzes/:id/quiz_items/create"
               element={<AdminQuizItemForm title="Create Quiz Item" />}
+            />
+            <Route
+              path="/admin/quizzes/:id/edit"
+              element={<AdminQuizEditForm title="Edit Quiz" />}
             />
             <Route path="/users" element={<Users />} />
             <Route path="/quizzes" element={<Quizzes />} />
