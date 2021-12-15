@@ -20,8 +20,7 @@ const HeaderLinks = () => {
         href="/admin/quizzes/1/quiz_items/create"
       />
       <HeaderItem label="Admin Quiz Edit" href="/admin/quizzes/1/edit" />
-      <HeaderItem label="Users" href="/users" />
-      <HeaderItem label="Quizzes" href="/quizzes" />
+      <HeaderItem label="Admin User List" href="/admin/users" />
 
       {/* <HeaderDropDown label="Quizzes" dropDownItems={solutions}>
         <div>

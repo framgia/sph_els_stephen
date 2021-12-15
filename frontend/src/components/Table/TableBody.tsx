@@ -4,7 +4,7 @@ interface TableBodyProps {
   children: React.ReactNode;
 }
 
-const TableBody = ({ children }: TableBodyProps): JSX.Element => {
+export const TableBody = ({ children }: TableBodyProps): JSX.Element => {
   return (
     <tbody className="bg-white divide-y divide-gray-200">{children}</tbody>
   );

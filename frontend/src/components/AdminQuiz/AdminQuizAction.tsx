@@ -5,7 +5,9 @@ interface AdminQuizActionProps {
   record: Quiz;
 }
 
-const AdminQuizAction = ({ record }: AdminQuizActionProps): JSX.Element => {
+export const AdminQuizAction = ({
+  record,
+}: AdminQuizActionProps): JSX.Element => {
   return (
     <td>
       <a

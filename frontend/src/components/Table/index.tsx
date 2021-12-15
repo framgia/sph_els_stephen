@@ -7,6 +7,8 @@ export * from './TableHeaderColumnEmpty';
 export * from './TableBody';
 export * from './TableBodyRow';
 export * from './TableBodyRowData';
+export * from './TableBodyRowAvatar';
+export * from './TableBodyRowStatus';
 
 export const people = [
   {

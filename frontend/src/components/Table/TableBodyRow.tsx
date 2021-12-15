@@ -5,7 +5,10 @@ interface TableBodyRowProps {
   children: React.ReactNode;
 }
 
-const TableBodyRow = ({ key, children }: TableBodyRowProps): JSX.Element => {
+export const TableBodyRow = ({
+  key,
+  children,
+}: TableBodyRowProps): JSX.Element => {
   return <tr key={key}>{children}</tr>;
 };
 

@@ -4,7 +4,7 @@ interface TableHeaderColumnProps {
   label: string;
 }
 
-const TableHeaderColumn = ({ label }: TableHeaderColumnProps) => {
+export const TableHeaderColumn = ({ label }: TableHeaderColumnProps) => {
   return (
     <th
       scope="col"

@@ -1,16 +1,13 @@
 import React from 'react';
-import TableBody from '../Table/TableBody';
-import TableBodyRow from '../Table/TableBodyRow';
-import TableBodyRowData from '../Table/TableBodyRowData';
-import AdminQuizAction from './AdminQuizAction';
-
 import { Quiz } from './types';
+import { Quiz, AdminQuizAction } from '.';
+import { TableBodyRow, TableBodyRowData, TableBody } from '../Table';
 
 interface AdminQuizBodyProps {
   records: Quiz[];
 }
 
-const AdminQuizBody = ({ records }: AdminQuizBodyProps): JSX.Element => {
+export const AdminQuizBody = ({ records }: AdminQuizBodyProps): JSX.Element => {
   function renderList() {
     return records.map((record) => {
       return (
@@ -23,7 +20,7 @@ const AdminQuizBody = ({ records }: AdminQuizBodyProps): JSX.Element => {
     });
   }
 
-  return <TableBody>{renderList()}</TableBody>;
+  return <>{renderList()}</>;
 };
 
 export default AdminQuizBody;

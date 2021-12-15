@@ -8,7 +8,7 @@ interface AdminQuizProps {
   records: Quiz[];
 }
 
-const AdminQuiz = ({ records }: AdminQuizProps): JSX.Element => {
+export const AdminQuiz = ({ records }: AdminQuizProps): JSX.Element => {
   return (
     <div className="container mx-auto px-24 py-8">
       <h1>Admin quiz</h1>
