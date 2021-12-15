@@ -1,5 +1,4 @@
 import React from 'react';
-import { Quiz } from './types';
 import { Quiz, AdminQuizAction } from '.';
 import { TableBodyRow, TableBodyRowData, TableBody } from '../Table';
 
