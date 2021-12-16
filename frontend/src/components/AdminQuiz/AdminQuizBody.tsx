@@ -7,19 +7,19 @@ interface AdminQuizBodyProps {
 }
 
 export const AdminQuizBody = ({ records }: AdminQuizBodyProps): JSX.Element => {
-  function renderList() {
-    return records.map((record) => {
-      return (
-        <TableBodyRow key={record.title}>
-          <TableBodyRowData>{record.title}</TableBodyRowData>
-          <TableBodyRowData>{record.description}</TableBodyRowData>
-          <AdminQuizAction record={record} />
-        </TableBodyRow>
-      );
-    });
-  }
-
-  return <>{renderList()}</>;
+  return (
+    <>
+      {records.map((record) => {
+        return (
+          <TableBodyRow key={record.title}>
+            <TableBodyRowData>{record.title}</TableBodyRowData>
+            <TableBodyRowData>{record.description}</TableBodyRowData>
+            <AdminQuizAction record={record} />
+          </TableBodyRow>
+        );
+      })}
+    </>
+  );
 };
 
 export default AdminQuizBody;
