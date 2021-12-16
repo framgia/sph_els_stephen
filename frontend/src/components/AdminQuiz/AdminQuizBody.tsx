@@ -3,18 +3,18 @@ import { Quiz, AdminQuizAction } from '.';
 import { TableBodyRow, TableBodyRowData, TableBody } from '../Table';
 
 interface AdminQuizBodyProps {
-  records: Quiz[];
+  quizzes?: Quiz[];
 }
 
-export const AdminQuizBody = ({ records }: AdminQuizBodyProps): JSX.Element => {
+export const AdminQuizBody = ({ quizzes }: AdminQuizBodyProps): JSX.Element => {
   return (
     <>
-      {records.map((record) => {
+      {quizzes?.map((quiz) => {
         return (
-          <TableBodyRow key={record.title}>
-            <TableBodyRowData>{record.title}</TableBodyRowData>
-            <TableBodyRowData>{record.description}</TableBodyRowData>
-            <AdminQuizAction record={record} />
+          <TableBodyRow key={quiz.title}>
+            <TableBodyRowData>{quiz.title}</TableBodyRowData>
+            <TableBodyRowData>{quiz.description}</TableBodyRowData>
+            <AdminQuizAction quiz={quiz} />
           </TableBodyRow>
         );
       })}
