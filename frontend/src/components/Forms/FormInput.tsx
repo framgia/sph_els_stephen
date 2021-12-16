@@ -6,12 +6,7 @@ interface FormInputProps {
   name?: string;
   placeholder?: string;
   value?: any;
-}
-
-{
-  /* <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-  <span className="text-gray-500 sm:text-sm">$</span>
-</div> */
+  onValueChange?: Function;
 }
 
 export const FormInput = ({
@@ -19,6 +14,7 @@ export const FormInput = ({
   name,
   placeholder,
   value,
+  onValueChange = () => {},
 }: FormInputProps): JSX.Element => {
   return (
     <div className="grid grid-cols-3 gap-6">
@@ -34,6 +30,7 @@ export const FormInput = ({
             className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
             placeholder={placeholder}
             value={value}
+            onChange={(e) => onValueChange(e)}
           />
         </div>
       </div>

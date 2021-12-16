@@ -1,8 +1,4 @@
 import React from 'react';
-import FormButton from './FormButton';
-import FormTextArea from './FormTextArea';
-import FormInput from './FormInput';
-import FormLabel from './FormLabel';
 
 interface FormProps {
   action: string;

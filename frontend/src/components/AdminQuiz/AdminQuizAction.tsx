@@ -2,28 +2,28 @@ import React from 'react';
 import { Quiz } from './types';
 
 interface AdminQuizActionProps {
-  record: Quiz;
+  quiz: Quiz;
 }
 
 export const AdminQuizAction = ({
-  record,
+  quiz,
 }: AdminQuizActionProps): JSX.Element => {
   return (
     <td>
       <a
-        href={`quizzes/${record.id}/quiz_items/create`}
+        href={`quizzes/${quiz.id}/quiz_items/create`}
         className="text-indigo-600 hover:text-indigo-900 px-2 py-4"
       >
         Add Word
       </a>
       <a
-        href={`quizzes/${record.id}/edit`}
+        href={`quizzes/${quiz.id}/edit`}
         className="text-indigo-600 hover:text-indigo-900 px-2 py-4"
       >
         Edit
       </a>
       <a
-        href={`quizzes/${record.id}/delete`}
+        href={`quizzes/${quiz.id}/delete`}
         className="text-indigo-600 hover:text-indigo-900 px-2 py-4"
       >
         Delete
