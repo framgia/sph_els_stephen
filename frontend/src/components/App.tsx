@@ -1,19 +1,12 @@
 import '../index.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Header from './Header';
-import AdminQuiz from './AdminQuiz/AdminQuiz';
-import AdminQuizForm from './AdminQuiz/AdminQuizForm';
+import AdminQuiz, { AdminQuizForm, AdminQuizEditForm } from './AdminQuiz';
 import AdminQuizItemForm from './AdminQuizItem/AdminQuizItemForm';
-import AdminQuizEditForm from './AdminQuiz/AdminQuizEditForm';
+import AdminUser, { SampleUsers } from './AdminUser';
 
 function Home() {
   return <h1 className="text-3xl font-bold underline">Home!</h1>;
-}
-function Users() {
-  return <h1 className="text-3xl font-bold underline">Users!</h1>;
-}
-function Quizzes() {
-  return <h1 className="text-3xl font-bold underline">Quizzes!</h1>;
 }
 
 const records = [
@@ -58,8 +51,10 @@ function App() {
               path="/admin/quizzes/:id/edit"
               element={<AdminQuizEditForm title="Edit Quiz" />}
             />
-            <Route path="/users" element={<Users />} />
-            <Route path="/quizzes" element={<Quizzes />} />
+            <Route
+              path="/admin/users"
+              element={<AdminUser title="Users List" users={SampleUsers} />}
+            />
           </Routes>
         </div>
       </BrowserRouter>

@@ -4,7 +4,9 @@ interface TableHeaderColumnEmptyProps {
   label: string;
 }
 
-const TableHeaderColumnEmpty = ({ label }: TableHeaderColumnEmptyProps) => {
+export const TableHeaderColumnEmpty = ({
+  label,
+}: TableHeaderColumnEmptyProps) => {
   return (
     <th scope="col" className="relative px-6 py-3">
       <span className="sr-only">{label}</span>

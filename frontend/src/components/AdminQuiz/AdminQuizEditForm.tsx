@@ -6,7 +6,7 @@ interface AdminQuizEditFormProps {
   children?: React.ReactNode;
 }
 
-const AdminQuizEditForm = ({
+export const AdminQuizEditForm = ({
   children,
   title,
 }: AdminQuizEditFormProps): JSX.Element => {
