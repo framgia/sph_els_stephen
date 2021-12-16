@@ -1,5 +1,4 @@
 import { Action, ActionTypes, QuizData, QuizzesData } from '../actions';
-import { Quiz } from '../components/AdminQuiz';
 
 export const quizzesDataReducer = (
   state: QuizzesData = { data: [], links: {}, meta: {} },
