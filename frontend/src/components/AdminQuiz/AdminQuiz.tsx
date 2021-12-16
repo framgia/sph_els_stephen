@@ -1,8 +1,6 @@
 import React from 'react';
+import { Quiz, AdminQuizHeader, AdminQuizBody } from '.';
 import Table from '../Table';
-import AdminQuizHeader from './AdminQuizHeader';
-import AdminQuizBody from './AdminQuizBody';
-import { Quiz } from './types';
 
 interface AdminQuizProps {
   records: Quiz[];
