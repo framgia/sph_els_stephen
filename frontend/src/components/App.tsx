@@ -4,6 +4,7 @@ import Header from './Header';
 import AdminQuiz, { AdminQuizForm, AdminQuizEditForm } from './AdminQuiz';
 import AdminQuizItemForm from './AdminQuizItem/AdminQuizItemForm';
 import AdminUser, { SampleUsers } from './AdminUser';
+import { UserSignIn, UserSignUp } from './UserAuth';
 
 function Home() {
   return <h1 className="text-3xl font-bold underline">Home!</h1>;
@@ -55,6 +56,9 @@ function App() {
               path="/admin/users"
               element={<AdminUser title="Users List" users={SampleUsers} />}
             />
+
+            <Route path="/signin" element={<UserSignIn />} />
+            <Route path="/signup" element={<UserSignUp />} />
           </Routes>
         </div>
       </BrowserRouter>
