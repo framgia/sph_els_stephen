@@ -21,8 +21,8 @@ function App() {
             <Route path="/admin/quizzes" element={<AdminQuiz />} />
             <Route path="/admin/quizzes/create" element={<AdminQuizForm />} />
             <Route
-              path="/admin/quizzes/:id/quiz_items/create"
-              element={<AdminQuizItemForm title="Create Quiz Item" />}
+              path="/admin/quizzes/:quiz_id/quiz_items/create"
+              element={<AdminQuizItemForm />}
             />
             <Route
               path="/admin/quizzes/:id/edit"
