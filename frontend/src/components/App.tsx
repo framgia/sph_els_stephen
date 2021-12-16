@@ -28,10 +28,7 @@ function App() {
               path="/admin/quizzes/:id/edit"
               element={<AdminQuizEditForm />}
             />
-            <Route
-              path="/admin/users"
-              element={<AdminUser title="Users List" users={SampleUsers} />}
-            />
+            <Route path="/admin/users" element={<AdminUser />} />
             <Route path="/signin" element={<UserSignIn />} />
             <Route path="/signup" element={<UserSignUp />} />
           </Routes>
