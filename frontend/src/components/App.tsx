@@ -13,7 +13,8 @@ import AdminUser, { SampleUsers } from './AdminUser';
 import { UserSignIn, UserSignUp } from './UserAuth';
 import UserProfile from './UserProfile/UserProfile';
 import UserQuizzes from './UserQuizzes/UserQuizzes';
-import { useCookies } from 'react-cookie';
+import AuthRoute from './AuthRoute';
+import GuestRoute from './GuestRoute';
 
 function Home() {
   return <h1 className="text-3xl font-bold underline">Home!</h1>;
@@ -44,38 +45,22 @@ function App() {
             {/*#region Auth*/}
             <Route
               path="/signin"
-              element={
-                <RequireGuest>
-                  <UserSignIn />
-                </RequireGuest>
-              }
+              element={<GuestRoute element={<UserSignIn />} />}
             />
             <Route
               path="/signup"
-              element={
-                <RequireGuest>
-                  <UserSignUp />
-                </RequireGuest>
-              }
+              element={<GuestRoute element={<UserSignUp />} />}
             />
             {/*#endregion*/}
 
             {/*#region User*/}
             <Route
               path="/profile"
-              element={
-                <RequireAuth>
-                  <UserProfile />
-                </RequireAuth>
-              }
+              element={<AuthRoute element={<UserProfile />} />}
             />
             <Route
               path="/quizzes"
-              element={
-                <RequireAuth>
-                  <UserQuizzes />
-                </RequireAuth>
-              }
+              element={<AuthRoute element={<UserQuizzes />} />}
             />
             {/*#endregion*/}
           </Routes>
@@ -86,25 +71,3 @@ function App() {
 }
 
 export default App;
-
-function RequireAuth({ children }: { children: JSX.Element }) {
-  const [cookies, setCookies] = useCookies();
-  let location = useLocation();
-
-  if (!cookies.user) {
-    return <Navigate to="/signin" state={{ from: location }} replace />;
-  }
-
-  return children;
-}
-
-function RequireGuest({ children }: { children: JSX.Element }) {
-  const [cookies, setCookies] = useCookies();
-  let location = useLocation();
-
-  if (cookies.user) {
-    return <Navigate to="/" state={{ from: location }} replace />;
-  }
-
-  return children;
-}
