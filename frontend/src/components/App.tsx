@@ -27,9 +27,7 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
-            {
-              // #region Admin
-            }
+            {/* #region Admin */}
             <Route path="/admin/quizzes" element={<AdminQuiz />} />
             <Route path="/admin/quizzes/create" element={<AdminQuizForm />} />
             <Route
@@ -41,13 +39,9 @@ function App() {
               element={<AdminQuizEditForm />}
             />
             <Route path="/admin/users" element={<AdminUser />} />
-            {
-              //#endregion
-            }
+            {/*#endregion*/}
 
-            {
-              //#region Auth
-            }
+            {/*#region Auth*/}
             <Route
               path="/signin"
               element={
@@ -64,13 +58,9 @@ function App() {
                 </RequireGuest>
               }
             />
-            {
-              //#endregion
-            }
+            {/*#endregion*/}
 
-            {
-              //#region User
-            }
+            {/*#region User*/}
             <Route
               path="/profile"
               element={
@@ -87,9 +77,7 @@ function App() {
                 </RequireAuth>
               }
             />
-            {
-              //#endregion
-            }
+            {/*#endregion*/}
           </Routes>
         </div>
       </BrowserRouter>
