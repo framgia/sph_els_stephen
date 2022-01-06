@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { Quiz } from '../AdminQuiz';
 import QuizCard from './QuizCard';
+
+import { QuizzesData, fetchQuizzes } from '../../actions';
+import { StoreState } from '../../reducers';
 
 export const SampleQuizzes: Quiz[] = [
   {
@@ -27,29 +31,40 @@ export const SampleQuizzes: Quiz[] = [
   },
 ];
 
-interface Props {}
+interface Props {
+  quizzesData: QuizzesData;
+  fetchQuizzes: Function;
+}
 
-const UserQuizzes = (props: Props) => {
+const UserQuizzes = ({ quizzesData, fetchQuizzes }: Props) => {
+  useEffect(() => {
+    fetchQuizzes();
+    return () => {};
+  }, []);
+
   return (
     <div className="container mx-auto px-24 py-8">
       <h1 className="font-semibold text-2xl my-4">Quizzes</h1>
 
       <Grid container spacing={5}>
-        <Grid item>
-          <QuizCard quiz={SampleQuizzes[0]} />
-        </Grid>
-        <Grid item>
-          <QuizCard quiz={SampleQuizzes[1]} />
-        </Grid>
-        <Grid item>
-          <QuizCard quiz={SampleQuizzes[2]} />
-        </Grid>
-        <Grid item>
-          <QuizCard quiz={SampleQuizzes[3]} />
-        </Grid>
+        <>
+          {quizzesData.data?.map((quiz) => {
+            return (
+              <Grid item>
+                <QuizCard quiz={quiz} />
+              </Grid>
+            );
+          })}
+        </>
       </Grid>
     </div>
   );
 };
 
-export default UserQuizzes;
+const mapStateToProps = ({
+  quizzesData,
+}: StoreState): { quizzesData: QuizzesData } => {
+  return { quizzesData };
+};
+
+export default connect(mapStateToProps, { fetchQuizzes })(UserQuizzes);
