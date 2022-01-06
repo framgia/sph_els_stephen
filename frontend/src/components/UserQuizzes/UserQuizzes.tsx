@@ -8,29 +8,6 @@ import QuizCard from './QuizCard';
 import { QuizzesData, fetchQuizzes } from '../../actions';
 import { StoreState } from '../../reducers';
 
-export const SampleQuizzes: Quiz[] = [
-  {
-    id: 1,
-    title: 'lorem',
-    description: 'ipsum',
-  },
-  {
-    id: 2,
-    title: 'dolor',
-    description: 'est',
-  },
-  {
-    id: 3,
-    title: 'kingkong',
-    description: 'godzilla',
-  },
-  {
-    id: 3,
-    title: 'hot',
-    description: 'dog',
-  },
-];
-
 interface Props {
   quizzesData: QuizzesData;
   fetchQuizzes: Function;
