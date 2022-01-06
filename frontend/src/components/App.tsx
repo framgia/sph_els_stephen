@@ -6,6 +6,7 @@ import AdminQuizItemForm from './AdminQuizItem/AdminQuizItemForm';
 import AdminUser, { SampleUsers } from './AdminUser';
 import { UserSignIn, UserSignUp } from './UserAuth';
 import UserProfile from './UserProfile/UserProfile';
+import UserQuizzes from './UserQuizzes/UserQuizzes';
 
 function Home() {
   return <h1 className="text-3xl font-bold underline">Home!</h1>;
@@ -34,6 +35,7 @@ function App() {
             <Route path="/signin" element={<UserSignIn />} />
             <Route path="/signup" element={<UserSignUp />} />
             <Route path="/profile" element={<UserProfile />} />
+            <Route path="/quizzes" element={<UserQuizzes />} />
           </Routes>
         </div>
       </BrowserRouter>

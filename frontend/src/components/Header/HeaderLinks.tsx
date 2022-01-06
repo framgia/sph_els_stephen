@@ -16,6 +16,7 @@ const HeaderLinks = () => {
       <HeaderItem label="Admin Quiz" href="/admin/quizzes" />
       <HeaderItem label="Admin User List" href="/admin/users" />
       <HeaderItem label="User Profile" href="/profile" />
+      <HeaderItem label="Quizzes" href="/quizzes" />
 
       {/* <HeaderDropDown label="Quizzes" dropDownItems={solutions}>
         <div>
