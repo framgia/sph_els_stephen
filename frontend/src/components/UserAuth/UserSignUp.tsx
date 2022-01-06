@@ -109,8 +109,8 @@ export const UserSignUp = () => {
               label="Full Name"
               register={{ ...register('name', formValidation.name) }}
               rounded="t-md rounded-b-md"
+              errormsg={errors.name?.message}
             />
-            <div>{errors.password?.message}</div>
           </div>
 
           <div className="rounded-md shadow-sm -space-y-px">
@@ -119,15 +119,15 @@ export const UserSignUp = () => {
               register={{ ...register('email', formValidation.email) }}
               type="email"
               rounded="t-md"
+              errormsg={errors.email?.message}
             />
-            <div>{errors.password?.message}</div>
             <UserAuthField
               label="Password"
               register={{ ...register('password', formValidation.password) }}
               type="password"
               rounded="none"
+              errormsg={errors.password?.message}
             />
-            <div>{errors.password?.message}</div>
             <UserAuthField
               label="Password Confirmation"
               register={{
@@ -138,8 +138,8 @@ export const UserSignUp = () => {
               }}
               type="password"
               rounded="b-md"
+              errormsg={errors.password_confirmation?.message}
             />
-            <div>{errors.password?.message}</div>
           </div>
 
           <div>{isError ? 'Invalid Input' : ''}</div>

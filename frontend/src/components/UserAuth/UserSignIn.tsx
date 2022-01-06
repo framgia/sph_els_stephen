@@ -86,16 +86,16 @@ export const UserSignIn = () => {
               register={{ ...register('email', formValidation.email) }}
               type="email"
               rounded="t-md"
+              errormsg={errors.email?.message}
             />
-            <div>{errors.email?.message}</div>
             <UserAuthField
               label="Password"
               register={{ ...register('password', formValidation.password) }}
               autocomplete="current-password"
               type="password"
               rounded="b-md"
+              errormsg={errors.password?.message}
             />
-            <div>{errors.password?.message}</div>
           </div>
 
           <UserAuthLoginExtra />

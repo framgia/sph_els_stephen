@@ -6,6 +6,7 @@ interface UserAuthFieldProps {
   type?: string;
   rounded?: string;
   autocomplete?: string;
+  errormsg?: string;
 }
 
 export const UserAuthField = ({
@@ -14,6 +15,7 @@ export const UserAuthField = ({
   type = 'text',
   rounded = 't-md',
   autocomplete,
+  errormsg = '',
 }: UserAuthFieldProps) => {
   return (
     <div>
@@ -28,6 +30,7 @@ export const UserAuthField = ({
         className={`appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-${rounded} focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
         placeholder={label}
       />
+      <span className="text-red-500 italic">{errormsg}</span>
     </div>
   );
 };
