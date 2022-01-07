@@ -22,7 +22,7 @@ class Handler extends ExceptionHandler {
 
         $this->renderable(function (Exception $e, $request) {
             // dd($e);
-            if (request()->wantsJson() || !$this->isFrontEnd()) {
+            if (request()->wantsJson()) {
                 if ($e instanceof ValidationException) {
                     $errors = $e->validator->errors()->getMessages();
                     return response()->json([
@@ -35,7 +35,7 @@ class Handler extends ExceptionHandler {
         });
     }
 
-    public function isFrontEnd() {
-        return request()->acceptsHtml() && collect(request()->route()->middleware())->contains('web');
-    }
+    // public function isFrontEnd() {
+    //     return request()->acceptsHtml() && collect(request()->route()->middleware())->contains('web');
+    // }
 }

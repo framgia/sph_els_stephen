@@ -59,11 +59,17 @@ class UserController extends Controller {
     public function update(Request $request, $id) {
         $u = User::findOrFail($id);
         $attrs = $this->validateUser($request, $u);
+
+        if ($attrs['avatar'] ?? false) {
+            $attrs['avatar'] = $request->file('avatar')->store('avatars');
+        }
+
         $u->fill($attrs);
 
         if ($u->isClean()) {
             return $this->errorResponse("No changes detected");
         }
+
         $u->save();
         return new UserResource($u);
     }
