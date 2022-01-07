@@ -15,6 +15,7 @@ import UserProfile from './UserProfile/UserProfile';
 import UserQuizzes from './UserQuizzes/UserQuizzes';
 import AuthRoute from './AuthRoute';
 import GuestRoute from './GuestRoute';
+import UserProfileEdit from './UserProfile/UserProfileEdit';
 
 function Home() {
   return <h1 className="text-3xl font-bold underline">Home!</h1>;
@@ -28,7 +29,9 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
-            {/* #region Admin */}
+            {
+              // #region Admin
+            }
             <Route path="/admin/quizzes" element={<AdminQuiz />} />
             <Route path="/admin/quizzes/create" element={<AdminQuizForm />} />
             <Route
@@ -40,9 +43,13 @@ function App() {
               element={<AdminQuizEditForm />}
             />
             <Route path="/admin/users" element={<AdminUser />} />
-            {/*#endregion*/}
+            {
+              // #endregion
+            }
 
-            {/*#region Auth*/}
+            {
+              // #region Auth
+            }
             <Route
               path="/signin"
               element={<GuestRoute element={<UserSignIn />} />}
@@ -51,18 +58,28 @@ function App() {
               path="/signup"
               element={<GuestRoute element={<UserSignUp />} />}
             />
-            {/*#endregion*/}
+            {
+              // #endregion
+            }
 
-            {/*#region User*/}
+            {
+              // #region User
+            }
             <Route
               path="/profile"
               element={<AuthRoute element={<UserProfile />} />}
             />
             <Route
+              path="/account/profile/edit"
+              element={<AuthRoute element={<UserProfileEdit />} /> }
+            />
+            <Route
               path="/quizzes"
               element={<AuthRoute element={<UserQuizzes />} />}
             />
-            {/*#endregion*/}
+            {
+              // #endregion
+            }
           </Routes>
         </div>
       </BrowserRouter>
