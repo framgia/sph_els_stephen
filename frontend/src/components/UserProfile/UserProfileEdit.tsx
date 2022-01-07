@@ -84,13 +84,11 @@ const UserProfileEdit = (props: Props): JSX.Element => {
       backend
         .put(`/api/users/${cookies.user.id}`, data)
         .then((response: AxiosResponse) => {
-          console.log(response);
           navigate('/');
         })
         .catch((err: AxiosError) => {
           setError(true);
           let errordata = err.response?.data;
-          console.log(errordata?.error?.message);
           setErrormsg(errordata?.error?.message);
         })
         .finally(() => {
