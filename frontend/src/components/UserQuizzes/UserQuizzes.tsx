@@ -24,15 +24,13 @@ const UserQuizzes = ({ quizzesData, fetchQuizzes }: Props) => {
       <h1 className="font-semibold text-2xl my-4">Quizzes</h1>
 
       <Grid container spacing={5}>
-        <>
-          {quizzesData.data?.map((quiz) => {
-            return (
-              <Grid item>
-                <QuizCard quiz={quiz} />
-              </Grid>
-            );
-          })}
-        </>
+        {quizzesData.data?.map((quiz) => {
+          return (
+            <Grid item>
+              <QuizCard quiz={quiz} />
+            </Grid>
+          );
+        })}
       </Grid>
     </div>
   );
