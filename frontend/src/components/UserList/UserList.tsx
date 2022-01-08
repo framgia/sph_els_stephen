@@ -1,55 +1,41 @@
-import { DataGrid } from '@mui/x-data-grid';
-import React from 'react';
+import { useEffect } from 'react';
 
-import { UserListColumns } from '.';
-import { randomEmail, randomName } from '@mui/x-data-grid-generator';
+import { UserListData } from '.';
 
-const SampleRows = [
-  {
-    id: 1,
-    avatar: null,
-    name: randomEmail(),
-    email: randomEmail(),
-  },
-  {
-    id: 2,
-    avatar: 'https://picsum.photos/200',
-    name: randomEmail(),
-    email: randomEmail(),
-  },
-  {
-    id: 3,
-    avatar: 'https://picsum.photos/200',
-    name: randomEmail(),
-    email: randomEmail(),
-  },
-  {
-    id: 4,
-    avatar: 'https://picsum.photos/200',
-    name: randomEmail(),
-    email: randomEmail(),
-  },
-  {
-    id: 5,
-    avatar: 'https://picsum.photos/200',
-    name: randomEmail(),
-    email: randomEmail(),
-  },
-];
+import { fetchUsers, followUser } from '../../actions';
+import { StoreState } from '../../reducers';
+import { connect } from 'react-redux';
+import { User } from '../AdminUser';
+import { GridRenderCellParams } from '@mui/x-data-grid';
 
-interface Props {}
+interface Props {
+  fetchUsers: Function;
+  followUser: Function;
+  usersWithFollows: User[];
+}
 
-export const UserList = (props: Props) => {
+export const UserList = ({
+  fetchUsers,
+  followUser,
+  usersWithFollows,
+}: Props): JSX.Element => {
+  useEffect(() => {
+    fetchUsers();
+    return () => {};
+  }, []);
+
+  const handleFollowClick = (e: any, params: GridRenderCellParams) => {
+    let rowId = params.id;
+    followUser(rowId);
+  };
+
   return (
     <div className="container mx-auto mt-20 h-screen">
       <div className="flex mx-auto h-4/6 w-1/2 ">
         <div className="flex-grow">
-          <DataGrid
-            rows={SampleRows}
-            columns={UserListColumns}
-            pagination
-            pageSize={10}
-            rowsPerPageOptions={[10, 25, 50]}
+          <UserListData
+            handleFollowClick={handleFollowClick}
+            usersWithFollows={usersWithFollows}
           />
         </div>
       </div>
@@ -57,4 +43,14 @@ export const UserList = (props: Props) => {
   );
 };
 
-export default UserList;
+const mapStateToProps = ({
+  usersData,
+}: StoreState): { usersWithFollows: User[] } => {
+  const users = usersData.data || [];
+  const usersWithFollows = users.map((user) => {
+    return { ...user };
+  });
+  return { usersWithFollows };
+};
+
+export default connect(mapStateToProps, { fetchUsers, followUser })(UserList);
