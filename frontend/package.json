@@ -9,6 +9,7 @@
     "@heroicons/react": "^1.0.5",
     "@mui/icons-material": "^5.2.5",
     "@mui/material": "^5.2.7",
+    "@mui/styles": "^5.2.3",
     "@mui/x-data-grid": "^5.2.2",
     "@mui/x-data-grid-generator": "^5.2.2",
     "@tailwindcss/forms": "^0.4.0",
