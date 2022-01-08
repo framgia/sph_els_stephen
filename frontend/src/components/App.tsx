@@ -16,6 +16,7 @@ import UserQuizzes from './UserQuizzes/UserQuizzes';
 import AuthRoute from './AuthRoute';
 import GuestRoute from './GuestRoute';
 import UserProfileEdit from './UserProfile/UserProfileEdit';
+import UserList from './UserList';
 
 function Home() {
   return <h1 className="text-3xl font-bold underline">Home!</h1>;
@@ -71,11 +72,15 @@ function App() {
             />
             <Route
               path="/account/profile/edit"
-              element={<AuthRoute element={<UserProfileEdit />} /> }
+              element={<AuthRoute element={<UserProfileEdit />} />}
             />
             <Route
               path="/quizzes"
               element={<AuthRoute element={<UserQuizzes />} />}
+            />
+            <Route
+              path="/users"
+              element={<AuthRoute element={<UserList />} />}
             />
             {
               // #endregion
