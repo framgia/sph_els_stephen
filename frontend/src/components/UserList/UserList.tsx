@@ -7,7 +7,7 @@ import { randomEmail, randomName } from '@mui/x-data-grid-generator';
 const SampleRows = [
   {
     id: 1,
-    avatar: 'https://picsum.photos/200',
+    avatar: null,
     name: randomEmail(),
     email: randomEmail(),
   },
@@ -41,8 +41,12 @@ interface Props {}
 
 export const UserList = (props: Props) => {
   return (
-    <div className="flex h-full">
-      <DataGrid rows={SampleRows} columns={UserListColumns} />
+    <div className="container mx-auto mt-20 h-screen">
+      <div className="flex h-4/6">
+        <div className="flex-grow">
+          <DataGrid rows={SampleRows} columns={UserListColumns} pagination />
+        </div>
+      </div>
     </div>
   );
 };
