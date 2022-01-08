@@ -41,7 +41,7 @@ interface Props {}
 
 export const UserList = (props: Props) => {
   return (
-    <div className="flex">
+    <div className="flex h-full">
       <DataGrid rows={SampleRows} columns={UserListColumns} />
     </div>
   );
