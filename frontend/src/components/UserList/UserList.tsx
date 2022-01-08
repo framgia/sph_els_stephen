@@ -42,9 +42,15 @@ interface Props {}
 export const UserList = (props: Props) => {
   return (
     <div className="container mx-auto mt-20 h-screen">
-      <div className="flex h-4/6">
+      <div className="flex mx-auto h-4/6 w-1/2 ">
         <div className="flex-grow">
-          <DataGrid rows={SampleRows} columns={UserListColumns} pagination />
+          <DataGrid
+            rows={SampleRows}
+            columns={UserListColumns}
+            pagination
+            pageSize={10}
+            rowsPerPageOptions={[10, 25, 50]}
+          />
         </div>
       </div>
     </div>
