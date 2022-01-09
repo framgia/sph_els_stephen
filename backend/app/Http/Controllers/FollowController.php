@@ -20,7 +20,7 @@ class FollowController extends Controller {
 
         $attrs = $this->validateFollow($request);
         $followlog = FollowLog::create($attrs);
-        return $this->getUserWithFollowss($id);
+        return $this->getUserWithFollows($id);
     }
 
     public function destroy(Request $request) {
