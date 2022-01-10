@@ -88,8 +88,8 @@ export const UserSignUp = () => {
       backend
         .post('/api/users/', data)
         .then((response: AxiosResponse) => {
-          setCookies('user', response.data.data);
-          setCookies('token', response.data.token);
+          setCookies('user', response.data.data, { path: '/' });
+          setCookies('token', response.data.token, { path: '/' });
           navigate('/signin');
         })
         .catch((err: AxiosError) => {

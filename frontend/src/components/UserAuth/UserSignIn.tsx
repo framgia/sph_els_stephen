@@ -62,8 +62,8 @@ export const UserSignIn = () => {
       backend
         .post('/api/login', data)
         .then((response: AxiosResponse) => {
-          setCookies('user', response.data.data);
-          setCookies('token', response.data.token);
+          setCookies('user', response.data.data, { path: '/' });
+          setCookies('token', response.data.token, { path: '/' });
           navigate('/');
         })
         .catch((err: AxiosError) => {
