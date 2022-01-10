@@ -24,6 +24,11 @@ export interface FollowUserAction {
   payload: number;
 }
 
+export interface FetchUserWithFollowsAction {
+  type: ActionTypes.fetchUserWithFollows;
+  payload: UserData;
+}
+
 export const fetchUsers = () => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
@@ -37,26 +42,22 @@ export const fetchUsers = () => {
   };
 };
 
-// export const fetchUserWithFollows = () => {
-//   return async (dispatch: Dispatch) => {
-//     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
-//       const response = await backend.get<UsersData>(
-//         '/api/follows/',
-//         {},
-//         {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         }
-//       );
+export const fetchUserWithFollows = (token: string) => {
+  return async (dispatch: Dispatch) => {
+    backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      const response = await backend.get<UserData>('/api/follows/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-//       dispatch<FetchUsersAction>({
-//         type: ActionTypes.fetchUsers,
-//         payload: response.data,
-//       });
-//     });
-//   };
-// };
+      dispatch<FetchUserWithFollowsAction>({
+        type: ActionTypes.fetchUserWithFollows,
+        payload: response.data,
+      });
+    });
+  };
+};
 
 export const followUser = (userId: number, token: string) => {
   return (dispatch: Dispatch) => {

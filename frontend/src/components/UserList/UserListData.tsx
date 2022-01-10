@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { User } from '../AdminUser';
 import { UserListFollowButton } from '.';
 
-import { Avatar, Chip } from '@mui/material';
+import { Avatar } from '@mui/material';
 import { DataGrid, GridColumns, GridRenderCellParams } from '@mui/x-data-grid';
 
 interface Props {

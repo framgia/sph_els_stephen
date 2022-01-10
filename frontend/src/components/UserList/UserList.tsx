@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { UserListData } from '.';
 
-import { fetchUsers, followUser } from '../../actions';
+import { fetchUsers, followUser, fetchUserWithFollows } from '../../actions';
 import { StoreState } from '../../reducers';
 import { connect } from 'react-redux';
 import { User } from '../AdminUser';
@@ -12,18 +12,21 @@ import { useCookies } from 'react-cookie';
 interface Props {
   fetchUsers: Function;
   followUser: Function;
+  fetchUserWithFollows: Function;
   usersWithFollows: User[];
 }
 
 export const UserList = ({
   fetchUsers,
   followUser,
+  fetchUserWithFollows,
   usersWithFollows,
 }: Props): JSX.Element => {
   const [cookies, setCookies] = useCookies();
 
   useEffect(() => {
     fetchUsers();
+    fetchUserWithFollows(cookies.token);
     return () => {};
   }, []);
 
@@ -47,13 +50,25 @@ export const UserList = ({
 };
 
 const mapStateToProps = ({
+  userData,
   usersData,
 }: StoreState): { usersWithFollows: User[] } => {
   const users = usersData.data || [];
+
+  let following = userData.data?.following || [];
+  let following_ids: number[] = following?.map((f) => f['to_id']);
+
   const usersWithFollows = users.map((user) => {
-    return { ...user };
+    return {
+      ...user,
+      is_following: following_ids.includes(user['id']) || user['is_following'],
+    };
   });
   return { usersWithFollows };
 };
 
-export default connect(mapStateToProps, { fetchUsers, followUser })(UserList);
+export default connect(mapStateToProps, {
+  fetchUserWithFollows,
+  fetchUsers,
+  followUser,
+})(UserList);

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { StoreState } from '../../reducers';
-import { followUser } from '../../actions';
 
-import { Chip } from '@mui/material';
+import { Chip, CircularProgress } from '@mui/material';
 import { GridRenderCellParams } from '@mui/x-data-grid';
 
 interface Props {
@@ -14,12 +13,22 @@ interface Props {
 export const _UserListFollowButton = ({ params, handleFollowClick }: Props) => {
   const [loading, setLoading] = useState(false);
 
-  return (
+  const _handleFollowClick = (e: any, params: GridRenderCellParams) => {
+    setLoading(true);
+    handleFollowClick(e, params);
+    setLoading(false);
+  };
+
+  return loading ? (
+    <CircularProgress
+      color={params.row.is_following ? 'secondary' : 'primary'}
+    />
+  ) : (
     <Chip
-      label={params.row.following ? 'Unfollow' : 'Follow'}
-      onClick={(e) => handleFollowClick(e, params)}
-      color={params.row.following ? 'primary' : 'info'}
-      variant={params.row.following ? 'filled' : 'outlined'}
+      label={params.row.is_following ? 'Unfollow' : 'Follow'}
+      onClick={(e) => _handleFollowClick(e, params)}
+      color={params.row.is_following ? 'primary' : 'info'}
+      variant={params.row.is_following ? 'filled' : 'outlined'}
     />
   );
 };

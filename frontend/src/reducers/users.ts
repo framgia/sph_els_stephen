@@ -1,4 +1,4 @@
-import { Action, ActionTypes, UsersData } from '../actions';
+import { Action, ActionTypes, UserData, UsersData } from '../actions';
 
 const followUserFunc = (state: UsersData, action: Action) => {
   let users = state.data || [];
@@ -12,6 +12,15 @@ const followUserFunc = (state: UsersData, action: Action) => {
       return u;
     }),
   };
+};
+
+export const userDataReducer = (state: UserData = {}, action: Action) => {
+  switch (action.type) {
+    case ActionTypes.fetchUserWithFollows:
+      return action.payload;
+    default:
+      return state;
+  }
 };
 
 export const usersDataReducer = (
