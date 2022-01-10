@@ -3,8 +3,10 @@ import {
   DeleteQuizAction,
   FetchQuizzesAction,
   FetchUsersAction,
+  FetchUserWithFollowsAction,
   FollowUserAction,
   GetQuizAction,
+  UnfollowUserAction,
   UpdateQuizAction,
 } from '.';
 import { AddQuizItemAction } from './quizItems';
@@ -17,6 +19,8 @@ export enum ActionTypes {
   deleteQuiz,
   fetchUsers,
   followUser,
+  unfollowUser,
+  fetchUserWithFollows,
   addQuizItem,
 }
 
@@ -28,4 +32,6 @@ export type Action =
   | DeleteQuizAction
   | FetchUsersAction
   | FollowUserAction
+  | UnfollowUserAction
+  | FetchUserWithFollowsAction
   | AddQuizItemAction;

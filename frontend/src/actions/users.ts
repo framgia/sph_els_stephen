@@ -24,6 +24,16 @@ export interface FollowUserAction {
   payload: number;
 }
 
+export interface UnfollowUserAction {
+  type: ActionTypes.unfollowUser;
+  payload: number;
+}
+
+export interface FetchUserWithFollowsAction {
+  type: ActionTypes.fetchUserWithFollows;
+  payload: UserData;
+}
+
 export const fetchUsers = () => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
@@ -37,12 +47,66 @@ export const fetchUsers = () => {
   };
 };
 
-// temporary function
-export const followUser = (userId: number) => {
+export const fetchUserWithFollows = (token: string) => {
+  return async (dispatch: Dispatch) => {
+    backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      const response = await backend.get<UserData>('/api/follows/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      dispatch<FetchUserWithFollowsAction>({
+        type: ActionTypes.fetchUserWithFollows,
+        payload: response.data,
+      });
+    });
+  };
+};
+
+export const followUser = (userId: number, token: string) => {
   return (dispatch: Dispatch) => {
-    dispatch<FollowUserAction>({
-      type: ActionTypes.followUser,
-      payload: userId,
+    backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      const response = await backend.post<UserData>(
+        '/api/follows/',
+        {
+          to_id: userId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      dispatch<FollowUserAction>({
+        type: ActionTypes.followUser,
+        payload: userId,
+      });
+    });
+  };
+};
+
+export const unfollowUser = (userId: number, token: string) => {
+  return (dispatch: Dispatch) => {
+    backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      const response = await backend.post<UserData>(
+        '/api/follows/',
+        {
+          _method: 'DELETE',
+          to_id: userId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      dispatch<UnfollowUserAction>({
+        type: ActionTypes.unfollowUser,
+        payload: userId,
+      });
     });
   };
 };

@@ -34,7 +34,7 @@ class FollowController extends Controller {
     }
 
     protected function getUserWithFollows($id) {
-        return response(User::where($id)->with('following', 'followers')->get());
+        return response(User::where('id', $id)->with(['following', 'followers'])->get());
     }
 
     protected function validateFollow(Request $request) {

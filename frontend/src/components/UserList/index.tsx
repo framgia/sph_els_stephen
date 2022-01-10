@@ -3,3 +3,4 @@ export default UserList;
 
 export * from './UserList';
 export * from './UserListData';
+export * from './UserListFollowButton';
