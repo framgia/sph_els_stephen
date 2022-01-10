@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Activities from './Activities';
 import Divider from '@mui/material/Divider';
 import Chip from '@mui/material/Chip';
@@ -6,9 +6,9 @@ import Chip from '@mui/material/Chip';
 import { SampleUsers, User } from '../AdminUser';
 import { useParams } from 'react-router';
 import { connect } from 'react-redux';
-import { fetchUserWithFollows } from '../../actions';
+import { fetchUserWithFollows, followUser, unfollowUser } from '../../actions';
 import { StoreState } from '../../reducers';
-import { Avatar } from '@mui/material';
+import { Avatar, CircularProgress } from '@mui/material';
 import { useCookies } from 'react-cookie';
 
 const sampleActs = [
@@ -34,6 +34,8 @@ interface Props {
   numFollowing: number;
   numFollowers: number;
   fetchUserWithFollows: Function;
+  followUser: Function;
+  unfollowUser: Function;
 }
 
 const _UserProfile = ({
@@ -41,10 +43,20 @@ const _UserProfile = ({
   numFollowing,
   numFollowers,
   fetchUserWithFollows,
+  followUser,
+  unfollowUser,
 }: Props) => {
   let { id } = useParams();
 
   const [cookies, setCookies] = useCookies();
+  const [loading, setLoading] = useState(false);
+
+  const handleFollowClick = (e: any) => {
+    setLoading(true);
+    followUser(user?.id, cookies.token, () => {
+      setLoading(false);
+    });
+  };
 
   useEffect(() => {
     fetchUserWithFollows(cookies.token, id);
@@ -77,7 +89,15 @@ const _UserProfile = ({
           </div>
 
           <div className="my-4 text-center">
-            <Chip label="Follow" color="primary" />
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              <Chip
+                onClick={(e) => handleFollowClick(e)}
+                label="Follow"
+                color="primary"
+              />
+            )}
           </div>
 
           <Divider />
@@ -100,8 +120,10 @@ const mapStateToProps = ({
   return { user, numFollowing, numFollowers };
 };
 
-export const UserProfile = connect(mapStateToProps, { fetchUserWithFollows })(
-  _UserProfile
-);
+export const UserProfile = connect(mapStateToProps, {
+  fetchUserWithFollows,
+  followUser,
+  unfollowUser,
+})(_UserProfile);
 
 export default UserProfile;

@@ -15,8 +15,9 @@ export const _UserListFollowButton = ({ params, handleFollowClick }: Props) => {
 
   const _handleFollowClick = (e: any, params: GridRenderCellParams) => {
     setLoading(true);
-    handleFollowClick(e, params);
-    setLoading(false);
+    handleFollowClick(e, params, () => {
+      setLoading(false);
+    });
   };
 
   return loading ? (
