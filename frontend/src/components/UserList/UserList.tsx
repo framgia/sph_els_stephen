@@ -69,8 +69,6 @@ const mapStateToProps = ({
   let following = userData.data?.following || [];
   let following_ids: number[] = following?.map((f) => f['to_id']);
 
-  console.log(following_ids);
-
   const usersWithFollows = users.map((user) => {
     if (typeof user['is_following'] === 'undefined') {
       return { ...user, is_following: following_ids.includes(user['id']) };
@@ -78,7 +76,6 @@ const mapStateToProps = ({
 
     return { ...user, is_following: user['is_following'] };
   });
-  console.log(usersWithFollows);
   return { usersWithFollows };
 };
 
