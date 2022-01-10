@@ -1,14 +1,5 @@
 import { Action, ActionTypes, UserData, UsersData } from '../actions';
 
-export const userDataReducer = (state: UserData = {}, action: Action) => {
-  switch (action.type) {
-    case ActionTypes.fetchUserWithFollows:
-      return action.payload;
-    default:
-      return state;
-  }
-};
-
 const followUserFunc = (state: UsersData, action: Action) => {
   let users = state.data || [];
   let to_follow = users.find((user) => user.id === action.payload);
@@ -21,6 +12,15 @@ const followUserFunc = (state: UsersData, action: Action) => {
       return user;
     }),
   };
+};
+
+export const userDataReducer = (state: UserData = {}, action: Action) => {
+  switch (action.type) {
+    case ActionTypes.fetchUserWithFollows:
+      return action.payload;
+    default:
+      return state;
+  }
 };
 
 export const usersDataReducer = (

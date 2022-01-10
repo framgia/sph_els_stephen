@@ -29,6 +29,6 @@ Route::post('login', [UserController::class, 'login']);
 Route::post('logout', [UserController::class, 'logout']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::apiResource('follows', FollowController::class)->only('index', 'store');
+    Route::apiResource('follows', FollowController::class)->only('index', 'store', 'show');
     Route::delete('follows', [FollowController::class, 'destroy']);
 });

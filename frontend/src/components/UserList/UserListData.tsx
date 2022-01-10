@@ -3,7 +3,13 @@ import { User } from '../AdminUser';
 import { UserListFollowButton } from '.';
 
 import { Avatar } from '@mui/material';
-import { DataGrid, GridColumns, GridRenderCellParams } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridColumns,
+  GridRenderCellParams,
+  GridRowParams,
+} from '@mui/x-data-grid';
+import { useNavigate } from 'react-router';
 
 interface Props {
   usersWithFollows: User[];
@@ -15,6 +21,7 @@ export const UserListData = ({
   handleFollowClick,
 }: Props) => {
   const [pageSize, setPageSize] = useState(10);
+  const navigate = useNavigate();
 
   const UserListColumns: GridColumns = [
     {
@@ -46,6 +53,10 @@ export const UserListData = ({
     },
   ];
 
+  const handleDoubleClick = (params: GridRowParams, e: any) => {
+    navigate(`/users/${params.id}`);
+  };
+
   return (
     <DataGrid
       rows={usersWithFollows}
@@ -54,6 +65,7 @@ export const UserListData = ({
       pageSize={pageSize}
       onPageSizeChange={(ps) => setPageSize(ps)}
       rowsPerPageOptions={[10, 25, 50]}
+      onRowDoubleClick={(params, e) => handleDoubleClick(params, e)}
     />
   );
 };
