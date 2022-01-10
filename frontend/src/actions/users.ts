@@ -24,6 +24,11 @@ export interface FollowUserAction {
   payload: number;
 }
 
+export interface UnfollowUserAction {
+  type: ActionTypes.unfollowUser;
+  payload: number;
+}
+
 export interface FetchUserWithFollowsAction {
   type: ActionTypes.fetchUserWithFollows;
   payload: UserData;
@@ -76,6 +81,30 @@ export const followUser = (userId: number, token: string) => {
 
       dispatch<FollowUserAction>({
         type: ActionTypes.followUser,
+        payload: userId,
+      });
+    });
+  };
+};
+
+export const unfollowUser = (userId: number, token: string) => {
+  return (dispatch: Dispatch) => {
+    backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      const response = await backend.post<UserData>(
+        '/api/follows/',
+        {
+          _method: 'DELETE',
+          to_id: userId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      dispatch<UnfollowUserAction>({
+        type: ActionTypes.unfollowUser,
         payload: userId,
       });
     });

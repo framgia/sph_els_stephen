@@ -32,6 +32,8 @@ export const usersDataReducer = (
       return action.payload;
     case ActionTypes.followUser:
       return followUserFunc(state, action);
+    case ActionTypes.unfollowUser:
+      return followUserFunc(state, action);
     default:
       return state;
   }

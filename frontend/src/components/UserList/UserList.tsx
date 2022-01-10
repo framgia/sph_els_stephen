@@ -2,7 +2,12 @@ import { useEffect } from 'react';
 
 import { UserListData } from '.';
 
-import { fetchUsers, followUser, fetchUserWithFollows } from '../../actions';
+import {
+  fetchUsers,
+  followUser,
+  unfollowUser,
+  fetchUserWithFollows,
+} from '../../actions';
 import { StoreState } from '../../reducers';
 import { connect } from 'react-redux';
 import { User } from '../AdminUser';
@@ -12,6 +17,7 @@ import { useCookies } from 'react-cookie';
 interface Props {
   fetchUsers: Function;
   followUser: Function;
+  unfollowUser: Function;
   fetchUserWithFollows: Function;
   usersWithFollows: User[];
 }
@@ -19,6 +25,7 @@ interface Props {
 export const UserList = ({
   fetchUsers,
   followUser,
+  unfollowUser,
   fetchUserWithFollows,
   usersWithFollows,
 }: Props): JSX.Element => {
@@ -32,7 +39,11 @@ export const UserList = ({
 
   const handleFollowClick = (e: any, params: GridRenderCellParams) => {
     let rowId = params.id;
-    followUser(rowId, cookies.token);
+    if (params.row.is_following) {
+      unfollowUser(rowId, cookies.token);
+    } else {
+      followUser(rowId, cookies.token);
+    }
   };
 
   return (
@@ -59,10 +70,11 @@ const mapStateToProps = ({
   let following_ids: number[] = following?.map((f) => f['to_id']);
 
   const usersWithFollows = users.map((user) => {
-    return {
-      ...user,
-      is_following: following_ids.includes(user['id']) || user['is_following'],
-    };
+    if (typeof user['is_following'] === 'undefined') {
+      return { ...user, is_following: following_ids.includes(user['id']) };
+    }
+
+    return { ...user, is_following: user['is_following'] };
   });
   return { usersWithFollows };
 };
@@ -71,4 +83,5 @@ export default connect(mapStateToProps, {
   fetchUserWithFollows,
   fetchUsers,
   followUser,
+  unfollowUser,
 })(UserList);
