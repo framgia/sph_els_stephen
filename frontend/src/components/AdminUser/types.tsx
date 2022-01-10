@@ -4,4 +4,5 @@ export interface User {
   email: string;
   is_admin: boolean;
   avatar: string;
+  following?: boolean;
 }
