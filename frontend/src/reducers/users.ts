@@ -5,11 +5,11 @@ const followUserFunc = (state: UsersData, action: Action) => {
   let to_follow = users.find((u) => u.id === action.payload);
 
   return {
-    data: users.map((u) => {
-      if (u.id == to_follow?.id) {
+    data: users.map((user) => {
+      if (user.id == to_follow?.id) {
         return { ...to_follow, following: !to_follow.following };
       }
-      return u;
+      return user;
     }),
   };
 };
