@@ -12,7 +12,7 @@ use Nette\NotImplementedException;
 
 class UserController extends Controller {
     public function index() {
-        return UserResource::collection(User::paginate(5));
+        return UserResource::collection(User::all());
     }
 
     public function store(Request $request) { // register

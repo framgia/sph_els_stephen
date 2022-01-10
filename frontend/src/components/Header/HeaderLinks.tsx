@@ -13,10 +13,11 @@ const HeaderLinks = () => {
         callToActions={callsToAction}
       /> */}
 
-      <HeaderItem label="Admin Quiz" href="/admin/quizzes" />
-      <HeaderItem label="Admin User List" href="/admin/users" />
-      <HeaderItem label="User Profile" href="/profile" />
+      {/* <HeaderItem label="Admin Quiz" href="/admin/quizzes" />
+      <HeaderItem label="Admin User List" href="/admin/users" /> */}
       <HeaderItem label="Quizzes" href="/quizzes" />
+      <HeaderItem label="Users" href="/users" />
+      <HeaderItem label="User Profile" href="/profile" />
 
       {/* <HeaderDropDown label="Quizzes" dropDownItems={solutions}>
         <div>

@@ -2,6 +2,7 @@ import { Dispatch } from 'redux';
 import { ActionTypes } from '.';
 import backend from '../api/backend';
 import { User } from '../components/AdminUser';
+import { StoreState } from '../reducers';
 
 export interface UsersData {
   data?: User[];
@@ -18,6 +19,11 @@ export interface FetchUsersAction {
   payload: UsersData;
 }
 
+export interface FollowUserAction {
+  type: ActionTypes.followUser;
+  payload: number;
+}
+
 export const fetchUsers = () => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
@@ -27,6 +33,16 @@ export const fetchUsers = () => {
         type: ActionTypes.fetchUsers,
         payload: response.data,
       });
+    });
+  };
+};
+
+// temporary function
+export const followUser = (userId: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch<FollowUserAction>({
+      type: ActionTypes.followUser,
+      payload: userId,
     });
   };
 };
