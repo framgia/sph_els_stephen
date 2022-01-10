@@ -7,15 +7,15 @@ use App\Models\FollowLog;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class FollowController extends Controller {
     public function index(Request $request) {
-        $id = $request->user()->id;
-        return $this->getUserWithFollows($id);
+        return $this->getUserWithFollows(Auth::id());
     }
 
     public function store(Request $request) {
-        $id = $request->user()->id;
+        $id = Auth::id();
         $request->merge(['from_id' => $id]);
 
         $attrs = $this->validateFollow($request);
@@ -24,7 +24,7 @@ class FollowController extends Controller {
     }
 
     public function destroy(Request $request) {
-        $id = $request->user()->id;
+        $id = Auth::id();
         $request->merge(['from_id' => $id]);
 
         $attrs = $this->validateUnfollow($request);
@@ -34,7 +34,7 @@ class FollowController extends Controller {
     }
 
     protected function getUserWithFollows($id) {
-        return response(User::where('id', $id)->with('following', 'followers')->get());
+        return response(User::where($id)->with('following', 'followers')->get());
     }
 
     protected function validateFollow(Request $request) {
