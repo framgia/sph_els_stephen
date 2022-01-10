@@ -7,6 +7,7 @@ import { StoreState } from '../../reducers';
 import { connect } from 'react-redux';
 import { User } from '../AdminUser';
 import { GridRenderCellParams } from '@mui/x-data-grid';
+import { useCookies } from 'react-cookie';
 
 interface Props {
   fetchUsers: Function;
@@ -19,6 +20,8 @@ export const UserList = ({
   followUser,
   usersWithFollows,
 }: Props): JSX.Element => {
+  const [cookies, setCookies] = useCookies();
+
   useEffect(() => {
     fetchUsers();
     return () => {};
@@ -26,7 +29,7 @@ export const UserList = ({
 
   const handleFollowClick = (e: any, params: GridRenderCellParams) => {
     let rowId = params.id;
-    followUser(rowId);
+    followUser(rowId, cookies.token);
   };
 
   return (
@@ -34,8 +37,8 @@ export const UserList = ({
       <div className="flex mx-auto h-4/6 w-1/2 ">
         <div className="flex-grow">
           <UserListData
-            handleFollowClick={handleFollowClick}
             usersWithFollows={usersWithFollows}
+            handleFollowClick={handleFollowClick}
           />
         </div>
       </div>

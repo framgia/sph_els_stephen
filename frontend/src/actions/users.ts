@@ -37,12 +37,46 @@ export const fetchUsers = () => {
   };
 };
 
-// temporary function
-export const followUser = (userId: number) => {
+// export const fetchUserWithFollows = () => {
+//   return async (dispatch: Dispatch) => {
+//     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+//       const response = await backend.get<UsersData>(
+//         '/api/follows/',
+//         {},
+//         {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//           },
+//         }
+//       );
+
+//       dispatch<FetchUsersAction>({
+//         type: ActionTypes.fetchUsers,
+//         payload: response.data,
+//       });
+//     });
+//   };
+// };
+
+export const followUser = (userId: number, token: string) => {
   return (dispatch: Dispatch) => {
-    dispatch<FollowUserAction>({
-      type: ActionTypes.followUser,
-      payload: userId,
+    backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      const response = await backend.post<UserData>(
+        '/api/follows/',
+        {
+          to_id: userId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      dispatch<FollowUserAction>({
+        type: ActionTypes.followUser,
+        payload: userId,
+      });
     });
   };
 };
