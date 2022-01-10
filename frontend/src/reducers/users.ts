@@ -1,4 +1,13 @@
-import { Action, ActionTypes, UsersData } from '../actions';
+import { Action, ActionTypes, UserData, UsersData } from '../actions';
+
+export const userDataReducer = (state: UserData = {}, action: Action) => {
+  switch (action.type) {
+    case ActionTypes.fetchUserWithFollows:
+      return action.payload;
+    default:
+      return state;
+  }
+};
 
 const followUserFunc = (state: UsersData, action: Action) => {
   let users = state.data || [];
@@ -7,7 +16,7 @@ const followUserFunc = (state: UsersData, action: Action) => {
   return {
     data: users.map((user) => {
       if (user.id == to_follow?.id) {
-        return { ...to_follow, following: !to_follow.following };
+        return { ...to_follow, is_following: !to_follow.is_following };
       }
       return user;
     }),
@@ -22,6 +31,8 @@ export const usersDataReducer = (
     case ActionTypes.fetchUsers:
       return action.payload;
     case ActionTypes.followUser:
+      return followUserFunc(state, action);
+    case ActionTypes.unfollowUser:
       return followUserFunc(state, action);
     default:
       return state;
