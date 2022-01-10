@@ -44,10 +44,10 @@ class User extends Authenticatable {
     }
 
     public function following() {
-        return $this->hasMany(FollowLog::class, 'to_id');
+        return $this->hasMany(FollowLog::class, 'from_id');
     }
 
     public function followers() {
-        return $this->hasMany(FollowLog::class, 'from_id');
+        return $this->hasMany(FollowLog::class, 'to_id');
     }
 }
