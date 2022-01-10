@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\FollowLogCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +12,10 @@ class FollowLog extends Model {
     public function log() {
         return $this->morphOne(ActivityLog::class, 'loggable');
     }
+
+    protected $dispatchesEvents = [
+        'created' => FollowLogCreated::class,
+    ];
 
     public function follower() {
         return $this->belongsTo(User::class, 'from_id');

@@ -35,6 +35,7 @@ class UserController extends Controller {
         }
 
         $user = User::where('email', $attrs['email'])->first();
+        $user->tokens()->delete();
         $token = $user->createToken('login')->plainTextToken;
         return response()->json([
             'data' => $this->toArray($user, $user->jsonKeyMap),
