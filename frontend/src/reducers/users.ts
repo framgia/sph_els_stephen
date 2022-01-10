@@ -2,7 +2,7 @@ import { Action, ActionTypes, UsersData } from '../actions';
 
 const followUserFunc = (state: UsersData, action: Action) => {
   let users = state.data || [];
-  let to_follow = users.find((u) => u.id === action.payload);
+  let to_follow = users.find((user) => user.id === action.payload);
 
   return {
     data: users.map((user) => {
