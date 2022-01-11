@@ -38,7 +38,6 @@ export const _UserQuizzes = ({
   }, []);
 
   const handleTakeQuiz = (e: any, id: number) => {
-    console.log(id);
     takeQuiz(id, cookies.token, () => {
       fetchQuizLogs(cookies.token);
     });
