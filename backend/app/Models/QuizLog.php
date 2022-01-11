@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use App\Events\QuizLogCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class QuizLog extends Model {
     use HasFactory;
+
+    protected $dispatchesEvents = [
+        'created' => QuizLogCreated::class,
+    ];
 
     public function quiz() {
         return $this->belongsTo(Quiz::class);

@@ -7,4 +7,5 @@ export interface User {
   is_following?: boolean;
   following?: [];
   followers?: [];
+  quiz_logs?: [];
 }
