@@ -64,19 +64,14 @@ const _UserProfile = ({
 
   const handleFollowClick = (e: any) => {
     setLoading(true);
-    if (isFollowing) {
-      unfollowUser(user?.id, cookies.token, () => {
-        setLoading(false);
-        setIsFollowing(false);
-        fetchUserWithFollows(cookies.token, id);
-      });
-    } else {
-      followUser(user?.id, cookies.token, () => {
-        setLoading(false);
-        setIsFollowing(true);
-        fetchUserWithFollows(cookies.token, id);
-      });
-    }
+    let callback = () => {
+      setLoading(false);
+      setIsFollowing(false);
+      fetchUserWithFollows(cookies.token, id);
+    };
+    isFollowing
+      ? unfollowUser(user?.id, cookies.token, callback)
+      : followUser(user?.id, cookies.token, callback);
   };
 
   useEffect(() => {
