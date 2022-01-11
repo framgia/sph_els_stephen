@@ -9,9 +9,10 @@ import { connect } from 'react-redux';
 
 interface Props {
   quiz: Quiz;
+  handleTakeQuiz: Function;
 }
 
-const _QuizCard = (props: Props) => {
+export const _QuizCard = (props: Props) => {
   return (
     <Card sx={{ minWidth: 500 }}>
       <CardContent>
@@ -20,7 +21,14 @@ const _QuizCard = (props: Props) => {
       </CardContent>
       <div className="flex justify-end">
         <CardActions>
-          <Button variant="contained">Start</Button>
+          <Button
+            variant="contained"
+            onClick={(e) => {
+              props.handleTakeQuiz(e, props.quiz.id);
+            }}
+          >
+            Start
+          </Button>
         </CardActions>
       </div>
     </Card>
@@ -31,6 +39,6 @@ const mapStateToProps = ({}: StoreState): {} => {
   return {};
 };
 
-const QuizCard = connect(mapStateToProps, {})(_QuizCard);
+export const QuizCard = connect(mapStateToProps, {})(_QuizCard);
 
 export default QuizCard;
