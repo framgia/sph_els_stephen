@@ -16,6 +16,19 @@ class Quiz extends Model {
         'description' => 'description',
     ];
 
+    public function scopeFilter($query, array $filters) {
+        $query->when(
+            $filters['search'] ?? false,
+            fn ($query, $search) =>
+            $query->where(
+                fn ($query) =>
+                $query
+                    ->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%')
+            )
+        );
+    }
+
     public function users() {
         throw new NotImplementedException();
     }
