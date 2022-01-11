@@ -22,7 +22,8 @@ export const _QuizCard = (props: Props) => {
       <div className="flex justify-end">
         <CardActions>
           <Button
-            variant="contained"
+            variant={props.quiz.is_taken ? 'outlined' : 'contained'}
+            disabled={props.quiz.is_taken ? true : false}
             onClick={(e) => {
               props.handleTakeQuiz(e, props.quiz.id);
             }}
