@@ -47,7 +47,11 @@ export const fetchUsers = () => {
   };
 };
 
-export const fetchUserWithFollows = (token: string, id?: number) => {
+export const fetchUserWithFollows = (
+  token: string,
+  id?: number,
+  callback: Function = () => {}
+) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
       const response = await backend.get<UserData>(`/api/follows/${id ?? ''}`, {
@@ -55,6 +59,8 @@ export const fetchUserWithFollows = (token: string, id?: number) => {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      callback();
 
       dispatch<FetchUserWithFollowsAction>({
         type: ActionTypes.fetchUserWithFollows,

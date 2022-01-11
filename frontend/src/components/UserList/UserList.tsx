@@ -48,6 +48,7 @@ export const UserList = ({
     } else {
       followUser(rowId, cookies.token, callback);
     }
+    fetchUserWithFollows(cookies.token);
   };
 
   return (

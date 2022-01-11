@@ -50,18 +50,44 @@ const _UserProfile = ({
 
   const [cookies, setCookies] = useCookies();
   const [loading, setLoading] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  const checkFollowing = () => {
+    let logged_in_user_id = cookies.user.id;
+
+    let followers = user?.followers || [];
+    let followers_id: number[] = followers?.map(
+      (follower) => follower['from_id']
+    );
+    setIsFollowing(followers_id.includes(logged_in_user_id));
+  };
 
   const handleFollowClick = (e: any) => {
     setLoading(true);
-    followUser(user?.id, cookies.token, () => {
-      setLoading(false);
-    });
+    if (isFollowing) {
+      unfollowUser(user?.id, cookies.token, () => {
+        setLoading(false);
+        setIsFollowing(false);
+        fetchUserWithFollows(cookies.token, id);
+      });
+    } else {
+      followUser(user?.id, cookies.token, () => {
+        setLoading(false);
+        setIsFollowing(true);
+        fetchUserWithFollows(cookies.token, id);
+      });
+    }
   };
 
   useEffect(() => {
     fetchUserWithFollows(cookies.token, id);
     return () => {};
   }, []);
+
+  useEffect(() => {
+    checkFollowing();
+    return () => {};
+  }, [user]);
 
   return (
     <div className="container mx-auto px-24 py-8">
@@ -94,8 +120,9 @@ const _UserProfile = ({
             ) : (
               <Chip
                 onClick={(e) => handleFollowClick(e)}
-                label="Follow"
-                color="primary"
+                label={isFollowing ? 'Unfollow' : 'Follow'}
+                variant={isFollowing ? 'filled' : 'outlined'}
+                color={isFollowing ? 'primary' : 'info'}
               />
             )}
           </div>
