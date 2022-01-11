@@ -33,8 +33,14 @@ class FollowController extends Controller {
         return $this->getUserWithFollows($id);
     }
 
+    public function show(Request $request, $id) {
+        return $this->getUserWithFollows($id);
+    }
+
     protected function getUserWithFollows($id) {
-        return response(User::where('id', $id)->with(['following', 'followers'])->get());
+        return response()->json([
+            'data' => User::where('id', $id)->with(['following', 'followers'])->first()
+        ]);
     }
 
     protected function validateFollow(Request $request) {

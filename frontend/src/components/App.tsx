@@ -67,7 +67,11 @@ function App() {
               // #region User
             }
             <Route
-              path="/profile"
+              path="/users"
+              element={<AuthRoute element={<UserList />} />}
+            />
+            <Route
+              path="/users/:id"
               element={<AuthRoute element={<UserProfile />} />}
             />
             <Route
