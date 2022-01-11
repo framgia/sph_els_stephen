@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuizItemController;
+use App\Http\Controllers\QuizLogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,4 +32,6 @@ Route::post('logout', [UserController::class, 'logout']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('follows', FollowController::class)->only('index', 'store', 'show');
     Route::delete('follows', [FollowController::class, 'destroy']);
+    Route::apiResource('quiz_logs', QuizLogController::class)->only('index', 'store', 'show');
+    Route::delete('quiz_logs', [QuizLogController::class, 'destroy']);
 });
