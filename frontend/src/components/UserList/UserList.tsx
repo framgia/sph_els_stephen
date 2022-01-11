@@ -48,11 +48,7 @@ export const UserList = ({
       token: cookies.token,
       callback: callback,
     };
-    if (params.row.is_following) {
-      unfollowUser(data);
-    } else {
-      followUser(data);
-    }
+    params.row.is_following ? unfollowUser(data) : followUser(data);
     fetchUserWithFollows(cookies.token);
   };
 
