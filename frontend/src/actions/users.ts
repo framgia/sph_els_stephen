@@ -47,7 +47,11 @@ export const fetchUsers = () => {
   };
 };
 
-export const fetchUserWithFollows = (token: string, id?: number | string) => {
+export const fetchUserWithFollows = (
+  token: string,
+  id?: number,
+  callback: Function = () => {}
+) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
       const response = await backend.get<UserData>(`/api/follows/${id ?? ''}`, {
@@ -55,6 +59,8 @@ export const fetchUserWithFollows = (token: string, id?: number | string) => {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      callback();
 
       dispatch<FetchUserWithFollowsAction>({
         type: ActionTypes.fetchUserWithFollows,
@@ -64,8 +70,12 @@ export const fetchUserWithFollows = (token: string, id?: number | string) => {
   };
 };
 
-export const followUser = (userId: number, token: string) => {
-  return (dispatch: Dispatch) => {
+export const followUser = (
+  userId: number,
+  token: string,
+  callback: Function = () => {}
+) => {
+  return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
       const response = await backend.post<UserData>(
         '/api/follows/',
@@ -79,6 +89,8 @@ export const followUser = (userId: number, token: string) => {
         }
       );
 
+      callback();
+
       dispatch<FollowUserAction>({
         type: ActionTypes.followUser,
         payload: userId,
@@ -87,8 +99,12 @@ export const followUser = (userId: number, token: string) => {
   };
 };
 
-export const unfollowUser = (userId: number, token: string) => {
-  return (dispatch: Dispatch) => {
+export const unfollowUser = (
+  userId: number,
+  token: string,
+  callback: Function = () => {}
+) => {
+  return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
       const response = await backend.post<UserData>(
         '/api/follows/',
@@ -102,6 +118,8 @@ export const unfollowUser = (userId: number, token: string) => {
           },
         }
       );
+
+      callback();
 
       dispatch<UnfollowUserAction>({
         type: ActionTypes.unfollowUser,
