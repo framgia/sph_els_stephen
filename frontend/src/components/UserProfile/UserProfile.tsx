@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Activities from './Activities';
 import Divider from '@mui/material/Divider';
 import Chip from '@mui/material/Chip';
@@ -6,9 +6,9 @@ import Chip from '@mui/material/Chip';
 import { SampleUsers, User } from '../AdminUser';
 import { useParams } from 'react-router';
 import { connect } from 'react-redux';
-import { fetchUserWithFollows } from '../../actions';
+import { fetchUserWithFollows, followUser, unfollowUser } from '../../actions';
 import { StoreState } from '../../reducers';
-import { Avatar } from '@mui/material';
+import { Avatar, CircularProgress } from '@mui/material';
 import { useCookies } from 'react-cookie';
 
 const sampleActs = [
@@ -34,6 +34,8 @@ interface Props {
   numFollowing: number;
   numFollowers: number;
   fetchUserWithFollows: Function;
+  followUser: Function;
+  unfollowUser: Function;
 }
 
 const _UserProfile = ({
@@ -41,15 +43,48 @@ const _UserProfile = ({
   numFollowing,
   numFollowers,
   fetchUserWithFollows,
+  followUser,
+  unfollowUser,
 }: Props) => {
   let { id } = useParams();
 
   const [cookies, setCookies] = useCookies();
+  const [loading, setLoading] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  const checkFollowing = () => {
+    let logged_in_user_id = cookies.user.id;
+
+    let followers = user?.followers || [];
+    let followers_id: number[] = followers?.map(
+      (follower) => follower['from_id']
+    );
+    setIsFollowing(followers_id.includes(logged_in_user_id));
+  };
+
+  const handleFollowClick = (e: any) => {
+    setLoading(true);
+    let data = {
+      user_id: user?.id,
+      token: cookies.token,
+      callback: () => {
+        setLoading(false);
+        setIsFollowing(false);
+        fetchUserWithFollows(cookies.token, id);
+      },
+    };
+    isFollowing ? unfollowUser(data) : followUser(data);
+  };
 
   useEffect(() => {
     fetchUserWithFollows(cookies.token, id);
     return () => {};
   }, []);
+
+  useEffect(() => {
+    checkFollowing();
+    return () => {};
+  }, [user]);
 
   return (
     <div className="container mx-auto px-24 py-8">
@@ -77,7 +112,16 @@ const _UserProfile = ({
           </div>
 
           <div className="my-4 text-center">
-            <Chip label="Follow" color="primary" />
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              <Chip
+                onClick={(e) => handleFollowClick(e)}
+                label={isFollowing ? 'Unfollow' : 'Follow'}
+                variant={isFollowing ? 'filled' : 'outlined'}
+                color={isFollowing ? 'primary' : 'info'}
+              />
+            )}
           </div>
 
           <Divider />
@@ -100,8 +144,10 @@ const mapStateToProps = ({
   return { user, numFollowing, numFollowers };
 };
 
-export const UserProfile = connect(mapStateToProps, { fetchUserWithFollows })(
-  _UserProfile
-);
+export const UserProfile = connect(mapStateToProps, {
+  fetchUserWithFollows,
+  followUser,
+  unfollowUser,
+})(_UserProfile);
 
 export default UserProfile;

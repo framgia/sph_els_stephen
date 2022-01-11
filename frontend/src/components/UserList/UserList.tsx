@@ -37,13 +37,19 @@ export const UserList = ({
     return () => {};
   }, []);
 
-  const handleFollowClick = (e: any, params: GridRenderCellParams) => {
+  const handleFollowClick = (
+    e: any,
+    params: GridRenderCellParams,
+    callback: Function = () => {}
+  ) => {
     let rowId = params.id;
-    if (params.row.is_following) {
-      unfollowUser(rowId, cookies.token);
-    } else {
-      followUser(rowId, cookies.token);
-    }
+    let data = {
+      user_id: rowId,
+      token: cookies.token,
+      callback: callback,
+    };
+    params.row.is_following ? unfollowUser(data) : followUser(data);
+    fetchUserWithFollows(cookies.token);
   };
 
   return (
