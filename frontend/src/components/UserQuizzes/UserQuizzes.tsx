@@ -1,21 +1,31 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import { Quiz } from '../AdminQuiz';
-import QuizCard from './QuizCard';
 
-import { QuizzesData, fetchQuizzes } from '../../actions';
+import { QuizzesData, fetchQuizzes, fetchQuizLogs } from '../../actions';
 import { StoreState } from '../../reducers';
+import { User } from '../AdminUser';
+import { useCookies } from 'react-cookie';
+import QuizCard from './QuizCard';
 
 interface Props {
   quizzesData: QuizzesData;
   fetchQuizzes: Function;
+  user?: User;
+  fetchQuizLogs: Function;
 }
 
-const UserQuizzes = ({ quizzesData, fetchQuizzes }: Props) => {
+export const _UserQuizzes = ({
+  quizzesData,
+  fetchQuizzes,
+  user,
+  fetchQuizLogs,
+}: Props) => {
+  const [cookies, setCookies] = useCookies();
+
   useEffect(() => {
     fetchQuizzes();
+    fetchQuizLogs(cookies.token);
     return () => {};
   }, []);
 
@@ -26,7 +36,7 @@ const UserQuizzes = ({ quizzesData, fetchQuizzes }: Props) => {
       <Grid container spacing={5}>
         {quizzesData.data?.map((quiz) => {
           return (
-            <Grid item>
+            <Grid key={quiz.id} item>
               <QuizCard quiz={quiz} />
             </Grid>
           );
@@ -38,8 +48,15 @@ const UserQuizzes = ({ quizzesData, fetchQuizzes }: Props) => {
 
 const mapStateToProps = ({
   quizzesData,
-}: StoreState): { quizzesData: QuizzesData } => {
-  return { quizzesData };
+  userData,
+}: StoreState): { quizzesData: QuizzesData; user?: User } => {
+  let user = userData.data;
+  console.log(user);
+  return { quizzesData, user };
 };
 
-export default connect(mapStateToProps, { fetchQuizzes })(UserQuizzes);
+const UserQuizzes = connect(mapStateToProps, { fetchQuizzes, fetchQuizLogs })(
+  _UserQuizzes
+);
+
+export default UserQuizzes;

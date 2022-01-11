@@ -14,10 +14,18 @@ const followUserFunc = (state: UsersData, action: Action) => {
   };
 };
 
+const takeQuizFunc = (state: UserData, action: Action) => {
+  return state;
+};
+
 export const userDataReducer = (state: UserData = {}, action: Action) => {
   switch (action.type) {
     case ActionTypes.fetchUserWithFollows:
       return action.payload;
+    case ActionTypes.fetchQuizLogs:
+      return action.payload;
+    case ActionTypes.takeQuiz:
+      return takeQuizFunc(state, action);
     default:
       return state;
   }
