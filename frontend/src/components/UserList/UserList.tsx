@@ -43,10 +43,15 @@ export const UserList = ({
     callback: Function = () => {}
   ) => {
     let rowId = params.id;
+    let data = {
+      user_id: rowId,
+      token: cookies.token,
+      callback: callback,
+    };
     if (params.row.is_following) {
-      unfollowUser(rowId, cookies.token, callback);
+      unfollowUser(data);
     } else {
-      followUser(rowId, cookies.token, callback);
+      followUser(data);
     }
     fetchUserWithFollows(cookies.token);
   };

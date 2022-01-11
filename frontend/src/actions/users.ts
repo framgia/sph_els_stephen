@@ -70,17 +70,20 @@ export const fetchUserWithFollows = (
   };
 };
 
-export const followUser = (
-  userId: number,
-  token: string,
-  callback: Function = () => {}
-) => {
+export const followUser = (data: {
+  user_id: number;
+  token: string;
+  callback: Function;
+}) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      let user_id, token, callback;
+      ({ user_id, token, callback } = data);
+
       const response = await backend.post<UserData>(
         '/api/follows/',
         {
-          to_id: userId,
+          to_id: user_id,
         },
         {
           headers: {
@@ -93,24 +96,27 @@ export const followUser = (
 
       dispatch<FollowUserAction>({
         type: ActionTypes.followUser,
-        payload: userId,
+        payload: user_id,
       });
     });
   };
 };
 
-export const unfollowUser = (
-  userId: number,
-  token: string,
-  callback: Function = () => {}
-) => {
+export const unfollowUser = (data: {
+  user_id: number;
+  token: string;
+  callback: Function;
+}) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      let user_id, token, callback;
+      ({ user_id, token, callback } = data);
+
       const response = await backend.post<UserData>(
         '/api/follows/',
         {
           _method: 'DELETE',
-          to_id: userId,
+          to_id: user_id,
         },
         {
           headers: {
@@ -123,7 +129,7 @@ export const unfollowUser = (
 
       dispatch<UnfollowUserAction>({
         type: ActionTypes.unfollowUser,
-        payload: userId,
+        payload: user_id,
       });
     });
   };
