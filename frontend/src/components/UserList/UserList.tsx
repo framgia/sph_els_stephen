@@ -76,8 +76,8 @@ const mapStateToProps = ({
   let following = userData.data?.following || [];
   let following_ids: number[] = following?.map((f) => f['to_id']);
 
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap#for_adding_and_removing_items_during_a_map
   const usersWithFollows = users.flatMap((user) => {
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap#for_adding_and_removing_items_during_a_map
     if (logged_in_user?.id === user.id) return [];
 
     if (typeof user['is_following'] === 'undefined') {
