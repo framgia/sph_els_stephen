@@ -8,7 +8,10 @@ use App\Http\Resources\QuizResource;
 
 class QuizController extends Controller {
     public function index() {
-        return QuizResource::collection(Quiz::paginate(5));
+        return QuizResource::collection(
+            Quiz::filter(request(['search']))
+                ->paginate(5)
+        );
     }
 
     public function store() {
