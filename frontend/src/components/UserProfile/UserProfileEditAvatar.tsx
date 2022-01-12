@@ -28,7 +28,7 @@ export const UserProfileEditAvatar = (props: Props) => {
 
   useEffect(() => {
     if (cookies.user?.avatar) {
-      setSrc(`${cookies.user?.avatar}`);
+      setSrc(cookies.user?.avatar);
     }
     return () => {};
   }, []);
@@ -53,7 +53,7 @@ export const UserProfileEditAvatar = (props: Props) => {
           setSuccess(true);
           setMsg('Avatar Changed');
           let data = response.data?.data;
-          setSrc(`${data.avatar}`);
+          setSrc(data.avatar);
           setCookies('user', data, { path: '/' });
         })
         .catch((err: AxiosError) => {
