@@ -19,7 +19,7 @@ class UserFactory extends Factory {
             'password' => 'password',
             'remember_token' => Str::random(10),
 
-            'avatar' => $this->faker->imageUrl(),
+            'avatar' => env("BACKEND_APP_URL") . "/storage/avatars/default.jpg",
             'is_admin' => $this->faker->randomElement([true, false]),
         ];
     }

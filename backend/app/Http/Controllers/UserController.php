@@ -69,7 +69,7 @@ class UserController extends Controller {
         $attrs = $this->validateUser($request, $u);
 
         if ($attrs['avatar'] ?? false) {
-            $attrs['avatar'] = $request->file('avatar')->store('avatars');
+            $attrs['avatar'] = env('BACKEND_APP_URL') . '/storage/' . $request->file('avatar')->store('avatars');
         }
 
         $u->fill($attrs);
