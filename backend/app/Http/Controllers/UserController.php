@@ -61,7 +61,7 @@ class UserController extends Controller {
         $u = User::findOrFail($id);
         $attrs = $this->validateUser($request, $u);
 
-        if ($attrs['avatar']) {
+        if ($attrs['avatar'] ?? false) {
             $attrs['avatar'] = $request->file('avatar')->store('avatars');
         }
 
