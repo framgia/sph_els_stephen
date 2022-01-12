@@ -20,6 +20,7 @@ class UserController extends Controller {
 
         $user = User::create($attrs);
         $token = $user->createToken('login')->plainTextToken;
+
         return response()->json([
             'data' => $this->toArray($user, $user->jsonKeyMap),
             'token' => $token
@@ -41,6 +42,7 @@ class UserController extends Controller {
         $user = User::where('email', $attrs['email'])->first();
         $user->tokens()->delete();
         $token = $user->createToken('login')->plainTextToken;
+
         return response()->json([
             'data' => $this->toArray($user, $user->jsonKeyMap),
             'token' => $token
@@ -76,6 +78,7 @@ class UserController extends Controller {
         }
 
         $u->save();
+
         return new UserResource($u);
     }
 
