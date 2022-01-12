@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class QuizLogController extends Controller {
     public function index() {
@@ -34,6 +35,11 @@ class QuizLogController extends Controller {
     }
 
     protected function validateQuizLog(Request $request) {
+        $checkUnique = QuizLog::where('quiz_id', $request->quiz_id)->where('user_id', $request->user_id)->first();
+        if ($checkUnique) {
+            throw ValidationException::withMessages(["User already took the quiz"]);
+        }
+
         return $this->validate($request, [
             'quiz_id' => ['required', Rule::exists('quizzes', 'id')],
             'user_id' => ['required', Rule::exists('users', 'id')]
