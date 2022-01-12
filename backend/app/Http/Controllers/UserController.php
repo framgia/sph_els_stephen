@@ -52,6 +52,7 @@ class UserController extends Controller {
     public function logout(Request $request) {
         $user = User::findOrFail(Auth::id());
         $user->tokens()->delete();
+
         return response()->json([
             'data' => [
                 'message' => 'Logged out successfully.'
@@ -85,6 +86,7 @@ class UserController extends Controller {
     public function destroy($id) {
         $u = User::findOrFail($id);
         $u->delete();
+
         return response()->json(
             ['data' => ["message" => "User '{$u->name}' deleted successfully."], "code" => 200],
             200
