@@ -19,7 +19,11 @@ class UserController extends Controller {
         $attrs = $this->validateUser($request);
 
         $user = User::create($attrs);
-        return new UserResource($user);
+        $token = $user->createToken('login')->plainTextToken;
+        return response()->json([
+            'data' => $this->toArray($user, $user->jsonKeyMap),
+            'token' => $token
+        ], 200);
     }
 
     public function login(Request $request) {
