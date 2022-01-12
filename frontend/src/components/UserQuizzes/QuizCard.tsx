@@ -23,7 +23,7 @@ export const _QuizCard = (props: Props) => {
         <CardActions>
           <Button
             variant={props.quiz.is_taken ? 'outlined' : 'contained'}
-            disabled={props.quiz.is_taken ? true : false}
+            disabled={props.quiz.is_taken}
             onClick={(e) => {
               props.handleTakeQuiz(e, props.quiz.id);
             }}
