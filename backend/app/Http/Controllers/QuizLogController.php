@@ -19,14 +19,12 @@ class QuizLogController extends Controller {
 
         $attrs = $this->validateQuizLog($request);
         $quizlog = QuizLog::create($attrs);
+
         return $this->getUserWithQuizLogs($id);
     }
 
     public function show($id) {
         return $this->getUserWithQuizLogs($id);
-    }
-
-    public function destroy($id) {
     }
 
     protected function getUserWithQuizLogs($id) {
