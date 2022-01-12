@@ -27,9 +27,9 @@ Route::apiResource('quizzes', QuizController::class);
 Route::apiResource('quiz_items', QuizItemController::class);
 Route::apiResource('users', UserController::class);
 Route::post('login', [UserController::class, 'login']);
-Route::post('logout', [UserController::class, 'logout']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('logout', [UserController::class, 'logout']);
     Route::apiResource('follows', FollowController::class)->only('index', 'store', 'show');
     Route::delete('follows', [FollowController::class, 'destroy']);
     Route::apiResource('quiz_logs', QuizLogController::class)->only('index', 'store', 'show');

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { DropDownItem } from '.';
 
 interface HeaderDropDownItemProps {
@@ -6,9 +7,9 @@ interface HeaderDropDownItemProps {
 
 const HeaderDropDownItem = ({ item }: HeaderDropDownItemProps) => {
   return (
-    <a
+    <Link
       key={item.name}
-      href={item.href}
+      to={item.href}
       className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
     >
       <item.icon
@@ -19,7 +20,7 @@ const HeaderDropDownItem = ({ item }: HeaderDropDownItemProps) => {
         <p className="text-base font-medium text-gray-900">{item.name}</p>
         <p className="mt-1 text-sm text-gray-500">{item.description}</p>
       </div>
-    </a>
+    </Link>
   );
 };
 

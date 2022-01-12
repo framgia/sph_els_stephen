@@ -50,13 +50,14 @@ class UserController extends Controller {
     }
 
     public function logout(Request $request) {
-        throw new NotImplementedException();
-        // auth()->user()->tokens()->delete();
-        // return response()->json([
-        //     'data' => [
-        //         'message' => 'Logged out successfully.'
-        //     ]
-        // ], 200);
+        $user = User::findOrFail(Auth::id());
+        $user->tokens()->delete();
+
+        return response()->json([
+            'data' => [
+                'message' => 'Logged out successfully.'
+            ]
+        ], 200);
     }
 
     public function show($id) {
@@ -85,6 +86,7 @@ class UserController extends Controller {
     public function destroy($id) {
         $u = User::findOrFail($id);
         $u->delete();
+
         return response()->json(
             ['data' => ["message" => "User '{$u->name}' deleted successfully."], "code" => 200],
             200
