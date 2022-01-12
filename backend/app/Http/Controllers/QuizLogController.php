@@ -39,6 +39,7 @@ class QuizLogController extends Controller {
             ['quiz_id', $request->quiz_id],
             ['user_id', $request->user_id]
         ])->first();
+
         if ($checkUnique) {
             throw ValidationException::withMessages(["User already took the quiz"]);
         }
