@@ -43,12 +43,20 @@ export const UserList = ({
     callback: Function = () => {}
   ) => {
     let rowId = params.id;
+<<<<<<< Updated upstream
     let data = {
       user_id: rowId,
       token: cookies.token,
       callback: callback,
     };
     params.row.is_following ? unfollowUser(data) : followUser(data);
+=======
+    if (params.row.is_following) {
+      unfollowUser(rowId, cookies.token, callback);
+    } else {
+      followUser(rowId, cookies.token, callback);
+    }
+>>>>>>> Stashed changes
     fetchUserWithFollows(cookies.token);
   };
 
