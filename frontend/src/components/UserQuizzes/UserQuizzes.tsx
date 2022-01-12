@@ -33,7 +33,6 @@ export const _UserQuizzes = ({
   useEffect(() => {
     fetchQuizLogs(cookies.token);
     fetchQuizzes();
-    fetchQuizLogs(cookies.token);
     return () => {};
   }, []);
 
