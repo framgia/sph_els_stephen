@@ -20,10 +20,7 @@ class QuizLogController extends Controller {
 
         $attrs = $this->validateQuizLog($request);
         $quizlog = QuizLog::create($attrs);
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
         return $this->getUserWithQuizLogs($id);
     }
 
@@ -31,12 +28,6 @@ class QuizLogController extends Controller {
         return $this->getUserWithQuizLogs($id);
     }
 
-<<<<<<< Updated upstream
-=======
-    public function destroy($id) {
-    }
-
->>>>>>> Stashed changes
     protected function getUserWithQuizLogs($id) {
         return response()->json([
             "data" => User::where('id', $id)->with('quiz_logs')->first()
@@ -44,15 +35,11 @@ class QuizLogController extends Controller {
     }
 
     protected function validateQuizLog(Request $request) {
-<<<<<<< Updated upstream
         $checkUnique = QuizLog::where([
             ['quiz_id', $request->quiz_id],
             ['user_id', $request->user_id]
         ])->first();
 
-=======
-        $checkUnique = QuizLog::where('quiz_id', $request->quiz_id)->where('user_id', $request->user_id)->first();
->>>>>>> Stashed changes
         if ($checkUnique) {
             throw ValidationException::withMessages(["User already took the quiz"]);
         }
