@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import { Quiz } from '../components/AdminQuiz';
-import { Action, ActionTypes } from '.';
+import { Action, ActionTypes, UserData } from '.';
 import backend from '../api/backend';
 
 export interface QuizzesData {
@@ -35,6 +35,16 @@ export interface UpdateQuizAction {
 
 export interface DeleteQuizAction {
   type: ActionTypes.deleteQuiz;
+  payload: number;
+}
+
+export interface FetchQuizLogsAction {
+  type: ActionTypes.fetchQuizLogs;
+  payload: UserData;
+}
+
+export interface TakeQuizAction {
+  type: ActionTypes.takeQuiz;
   payload: number;
 }
 
@@ -93,9 +103,50 @@ export const updateQuiz = (quizId: string | undefined, quiz: Quiz) => {
   };
 };
 
-// export const deleteTodo = (id: number): DeleteTodoAction => {
-//   return {
-//     type: ActionTypes.deleteTodo,
-//     payload: id
-//   };
-// };
+export const fetchQuizLogs = (token: string, callback: Function = () => {}) => {
+  return async (dispatch: Dispatch) => {
+    backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      const response = await backend.get<UserData>(`/api/quiz_logs/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      callback();
+
+      dispatch<FetchQuizLogsAction>({
+        type: ActionTypes.fetchQuizLogs,
+        payload: response.data,
+      });
+    });
+  };
+};
+
+export const takeQuiz = (
+  quiz_id: number,
+  token: string,
+  callback: Function = () => {}
+) => {
+  return async (dispatch: Dispatch) => {
+    backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      const response = await backend.post<UserData>(
+        `/api/quiz_logs/`,
+        {
+          quiz_id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      callback();
+
+      dispatch<TakeQuizAction>({
+        type: ActionTypes.takeQuiz,
+        payload: quiz_id,
+      });
+    });
+  };
+};

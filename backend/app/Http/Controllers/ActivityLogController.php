@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ActivityLogsController extends Controller
-{
+class ActivityLogController extends Controller {
     //
 }
