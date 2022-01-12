@@ -16,7 +16,9 @@ interface Props {}
 export const UserProfileEditAvatar = (props: Props) => {
   const [cookies, setCookies] = useCookies();
 
-  const [src, setSrc] = useState('https://picsum.photos/200');
+  const backend_url = process.env.REACT_APP_BACKEND_URL;
+
+  const [src, setSrc] = useState(`${backend_url}/storage/avatars/default.jpg`);
 
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -26,7 +28,7 @@ export const UserProfileEditAvatar = (props: Props) => {
 
   useEffect(() => {
     if (cookies.user?.avatar) {
-      setSrc(`http://localhost:8000/storage/${cookies.user?.avatar}`);
+      setSrc(`${cookies.user?.avatar}`);
     }
     return () => {};
   }, []);
@@ -51,7 +53,7 @@ export const UserProfileEditAvatar = (props: Props) => {
           setSuccess(true);
           setMsg('Avatar Changed');
           let data = response.data?.data;
-          setSrc(`http://localhost:8000/storage/${data.avatar}`);
+          setSrc(`${data.avatar}`);
           setCookies('user', data, { path: '/' });
         })
         .catch((err: AxiosError) => {
