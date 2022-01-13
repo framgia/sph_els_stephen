@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { User, AdminUserHeader, AdminUserBody } from '.';
+import { AdminUserHeader, AdminUserBody } from '.';
 import { UsersData, fetchUsers } from '../../actions';
 import { StoreState } from '../../reducers';
 import Table from '../Table';
@@ -16,8 +16,7 @@ export const AdminUser = ({
 }: AdminUserProps): JSX.Element => {
   useEffect(() => {
     fetchUsers();
-    return () => {};
-  }, []);
+  }, [fetchUsers]);
 
   return (
     <div className="container mx-auto px-24 py-8">

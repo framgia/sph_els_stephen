@@ -29,13 +29,13 @@ export const UserList = ({
   fetchUserWithFollows,
   usersWithFollows,
 }: Props): JSX.Element => {
-  const [cookies, setCookies] = useCookies();
+  const [cookies] = useCookies();
 
   useEffect(() => {
     fetchUserWithFollows(cookies.token);
     fetchUsers();
     return () => {};
-  }, []);
+  }, [fetchUsers, fetchUserWithFollows, cookies]);
 
   const handleFollowClick = (
     e: any,

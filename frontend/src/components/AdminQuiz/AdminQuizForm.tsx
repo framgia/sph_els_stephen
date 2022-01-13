@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Form, { FormButton, FormInput, FormLabel, FormTextArea } from '../Forms';
 import { connect } from 'react-redux';
-import { useForm } from 'react-hook-form';
 
 import { StoreState } from '../../reducers';
 import { QuizData, addQuiz } from '../../actions';
@@ -13,11 +12,13 @@ interface AdminQuizFormProps {
   addQuiz: Function;
 }
 
+// eslint-disable-next-line -- will implement this later
 type FormValues = {
   title: string;
   description: string;
 };
 
+// eslint-disable-next-line -- will implement this later
 const FormValidation = {
   title: {
     required: {

@@ -25,8 +25,7 @@ export const _AdminQuizEditForm = ({
 
   useEffect(() => {
     getQuiz(id);
-    return () => {};
-  }, []);
+  }, [getQuiz, id]);
 
   useEffect(() => {
     setTitle(quizData?.data?.title || '');
@@ -46,7 +45,6 @@ export const _AdminQuizEditForm = ({
     event.preventDefault();
 
     updateQuiz(id, { title: _title, description: _description });
-    console.log(id, 'submit');
   }
 
   return (

@@ -1,12 +1,10 @@
-import { LockClosedIcon } from '@heroicons/react/outline';
 import { CircularProgress, Stack } from '@mui/material';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import React, { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { UserAuthButton, UserAuthField, UserAuthForm, UserAuthHeader } from '.';
-import backend from '../../api/backend';
 import { userSignUp } from '../../actions';
 import { connect } from 'react-redux';
 import { StoreState } from '../../reducers';
@@ -82,8 +80,8 @@ export const _UserSignUp = ({ userSignUp }: Props) => {
 
   const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
-  const [cookies, setCookies] = useCookies();
   const [loading, setLoading] = useState(false);
+  const [_, setCookies] = useCookies(); // eslint-disable-line -- need to destructure this way
 
   const onSubmit = (data: FormInput) => {
     setIsError(false);

@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const _UserSignOut = ({ userSignOut }: Props) => {
-  const [cookies, setCookies, removeCookies] = useCookies();
+  const [cookies, _, removeCookies] = useCookies(); // eslint-disable-line -- need to destructure this way
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -47,6 +47,5 @@ const mapStateToProps = ({}: StoreState): {} => {
 export const UserSignOut = connect(mapStateToProps, { userSignOut })(
   _UserSignOut
 );
-
 
 export default UserSignOut;

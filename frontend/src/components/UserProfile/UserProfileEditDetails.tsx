@@ -2,7 +2,6 @@ import { AxiosResponse, AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
 
 import {
   Box,
@@ -57,7 +56,6 @@ export const _UserProfileEditDetails = ({
     formState: { errors },
   } = useForm<ProfileEditInput>();
 
-  const navigate = useNavigate();
   const [cookies, setCookies] = useCookies();
 
   const [name, setName] = useState('');
@@ -75,7 +73,7 @@ export const _UserProfileEditDetails = ({
     setName(_name);
     setEmail(_email);
     return () => {};
-  }, []);
+  }, [cookies]);
 
   const onSubmit = (data: ProfileEditInput) => {
     setLoading(true);

@@ -1,5 +1,4 @@
 import React from 'react';
-import FormLabel from './FormLabel';
 
 interface FormInputProps {
   id: string;

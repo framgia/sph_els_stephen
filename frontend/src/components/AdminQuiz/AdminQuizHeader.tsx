@@ -1,8 +1,4 @@
-import {
-  TableHeader,
-  TableHeaderColumn,
-  TableHeaderColumnEmpty,
-} from '../Table';
+import { TableHeaderColumn, TableHeaderColumnEmpty } from '../Table';
 
 export const AdminQuizHeader = () => {
   return (

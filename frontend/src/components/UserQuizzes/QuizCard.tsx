@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { Quiz } from '../AdminQuiz';
-import { StoreState } from '../../reducers';
 import { connect } from 'react-redux';
 
 interface Props {
@@ -36,7 +35,7 @@ export const _QuizCard = (props: Props) => {
   );
 };
 
-const mapStateToProps = ({}: StoreState): {} => {
+const mapStateToProps = (): {} => {
   return {};
 };
 

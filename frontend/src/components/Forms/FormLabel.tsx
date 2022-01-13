@@ -1,4 +1,3 @@
-import { strictEqual } from 'assert';
 import React from 'react';
 
 interface FormLabelProps {

@@ -5,7 +5,6 @@ import {
   TableBodyRowData,
   TableBodyRowAvatar,
   TableBodyRowStatus,
-  TableBody,
 } from '../Table';
 import { AdminUserAction } from './AdminUserAction';
 

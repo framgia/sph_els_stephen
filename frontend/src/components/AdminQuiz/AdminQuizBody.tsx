@@ -1,6 +1,6 @@
 import React from 'react';
 import { Quiz, AdminQuizAction } from '.';
-import { TableBodyRow, TableBodyRowData, TableBody } from '../Table';
+import { TableBodyRow, TableBodyRowData } from '../Table';
 
 interface AdminQuizBodyProps {
   quizzes?: Quiz[];

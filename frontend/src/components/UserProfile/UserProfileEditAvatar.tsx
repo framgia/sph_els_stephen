@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { PhotoCamera } from '@mui/icons-material';
-import { Alert, Box, Button, CircularProgress, Stack } from '@mui/material';
+import { Alert, Button, CircularProgress, Stack } from '@mui/material';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
@@ -34,7 +34,7 @@ export const _UserProfileEditAvatar = ({ userUpdateProfileAvatar }: Props) => {
       setSrc(cookies.user?.avatar);
     }
     return () => {};
-  }, []);
+  }, [cookies]);
 
   const handleFileChange = (e: any) => {
     let formdata = new FormData();
@@ -75,7 +75,7 @@ export const _UserProfileEditAvatar = ({ userUpdateProfileAvatar }: Props) => {
         src={src}
         width={200}
         height={200}
-        alt="Profile Image"
+        alt="user avatar"
       />
       <div className="mx-auto mt-5">
         <Stack>

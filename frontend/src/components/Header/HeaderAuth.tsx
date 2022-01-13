@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 import HeaderDropDown from './HeaderDropDown';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import { SvgIcon } from '@mui/material';
 
 const HeaderAuth = () => {
-  const [cookies, setCookies] = useCookies();
+  const [cookies] = useCookies();
 
   const createDropDownIcon = (Icon: any) => (props: any) => <Icon {...props} />;
 

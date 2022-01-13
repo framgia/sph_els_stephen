@@ -62,8 +62,8 @@ export const _UserSignIn = ({ userSignIn }: Props) => {
 
   const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
-  const [cookies, setCookies] = useCookies();
   const [loading, setLoading] = useState(false);
+  const [_, setCookies] = useCookies(); // eslint-disable-line -- need to destructure this way
 
   const onSubmit = (data: FormInput) => {
     setIsError(false);
