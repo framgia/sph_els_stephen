@@ -43,6 +43,7 @@ const Activities = ({ activities = [] }: Props) => {
             if (!act.log) return;
             const [doer, action, recipient] = JSON.parse(act?.log?.message);
             const date = new Date(act.created_at);
+            const defaultAvatar = `${process.env.REACT_APP_BACKEND_URL}/storage/avatars/default.jpg`;
             return (
               <ListItem alignItems="flex-start" key={act.id}>
                 <ListItemAvatar>
@@ -52,9 +53,8 @@ const Activities = ({ activities = [] }: Props) => {
                     }
                     src={
                       act.following
-                        ? act.following?.avatar ?? act.following?.avatar
-                        : act.follower?.avatar ??
-                          `${process.env.REACT_APP_BACKEND_URL}/storage/avatars/default.jpg`
+                        ? act.following?.avatar ?? defaultAvatar
+                        : act.follower?.avatar ?? defaultAvatar
                     }
                   />
                 </ListItemAvatar>
