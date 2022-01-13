@@ -50,10 +50,14 @@ export interface UserUpdateProfileAction {
   payload: UserData;
 }
 
-export const fetchUsers = () => {
+export const fetchUsers = (data: { callback: Function }) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      let { callback } = data;
+
       const response = await backend.get<UsersData>('/api/users/');
+
+      if (callback) callback();
 
       dispatch<FetchUsersAction>({
         type: ActionTypes.fetchUsers,
@@ -63,20 +67,22 @@ export const fetchUsers = () => {
   };
 };
 
-export const fetchUserWithFollows = (
-  token: string,
-  id?: number,
-  callback: Function = () => {}
-) => {
+export const fetchUserWithFollows = (data: {
+  token: string;
+  id?: number;
+  callback: Function;
+}) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      let { token, id, callback } = data;
+
       const response = await backend.get<UserData>(`/api/follows/${id ?? ''}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      callback();
+      if (callback) callback();
 
       dispatch<FetchUserWithFollowsAction>({
         type: ActionTypes.fetchUserWithFollows,

@@ -8,7 +8,7 @@ import { User } from '../AdminUser';
 import { useCookies } from 'react-cookie';
 import QuizCard from './QuizCard';
 import { Quiz } from '../AdminQuiz';
-import { InputAdornment, TextField } from '@mui/material';
+import { CircularProgress, InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
 
@@ -29,21 +29,38 @@ export const _UserQuizzes = ({
 }: Props) => {
   const [cookies] = useCookies();
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchQuizLogs(cookies.token);
-    fetchQuizzes();
+    setLoading(true);
+    fetchQuizLogs({
+      token: cookies.token,
+      callback: () => {
+        fetchQuizzes({
+          callback: () => {
+            setLoading(false);
+          },
+        });
+      },
+    });
   }, [cookies, fetchQuizzes, fetchQuizLogs]);
 
   useEffect(() => {
     const { cancel } = axios.CancelToken.source();
     const timeoutId = setTimeout(() => {
-      fetchQuizzes(search);
+      setLoading(true);
+      fetchQuizzes({
+        search,
+        callback: () => {
+          setLoading(false);
+        },
+      });
     }, 500);
 
     return () => {
       cancel('Search term changed');
       clearTimeout(timeoutId);
+      setLoading(false);
     };
   }, [search, fetchQuizzes]);
 
@@ -72,6 +89,8 @@ export const _UserQuizzes = ({
           }}
         />
       </div>
+
+      {loading && <CircularProgress />}
 
       <Grid container spacing={5}>
         {quizzes?.map((quiz) => {
