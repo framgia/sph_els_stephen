@@ -8,7 +8,7 @@ import { useParams } from 'react-router';
 import { connect } from 'react-redux';
 import { fetchUserWithFollows, followUser, unfollowUser } from '../../actions';
 import { StoreState } from '../../reducers';
-import { Avatar, CircularProgress } from '@mui/material';
+import { Avatar, CircularProgress, Skeleton, Stack } from '@mui/material';
 import { useCookies } from 'react-cookie';
 
 const sampleActs = [
@@ -49,25 +49,35 @@ const _UserProfile = ({
   let { id } = useParams();
 
   const [cookies] = useCookies();
-  const [loading, setLoading] = useState(false);
+  const [loadingFollow, setLoadingFollow] = useState(false);
+  const [loadingUserData, setLoadingUserData] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
 
   const handleFollowClick = (e: any) => {
-    setLoading(true);
+    setLoadingFollow(true);
     let data = {
       user_id: user?.id,
       token: cookies.token,
       callback: () => {
-        setLoading(false);
+        setLoadingFollow(false);
         setIsFollowing(false);
-        fetchUserWithFollows(cookies.token, id);
+        fetchUserWithFollows({ token: cookies.token, id: id });
       },
     };
     isFollowing ? unfollowUser(data) : followUser(data);
   };
 
   useEffect(() => {
-    fetchUserWithFollows(cookies.token, id);
+    setLoadingUserData(true);
+    setLoadingFollow(true);
+    fetchUserWithFollows({
+      token: cookies.token,
+      id: id,
+      callback: () => {
+        setLoadingUserData(false);
+        setLoadingFollow(false);
+      },
+    });
   }, [cookies, fetchUserWithFollows, id]);
 
   useEffect(() => {
@@ -88,20 +98,30 @@ const _UserProfile = ({
     <div className="container mx-auto px-24 py-8">
       <div className="grid grid-cols-6">
         <div className="col-span-2 mr-4 px-10">
-          {user?.avatar ? (
-            <img
-              className="mx-auto mt-4"
-              src={user?.avatar}
-              width={200}
-              height={200}
-              alt="user avatar"
-            />
+          {loadingUserData ? (
+            <Stack alignItems="center" className="mb-5">
+              <Skeleton variant="rectangular" width={200} height={200} />
+              <Skeleton variant="text" width={150} height={50} />
+            </Stack>
           ) : (
-            <Avatar alt={user?.name}>{user?.name[0]}</Avatar>
+            <>
+              {' '}
+              {user?.avatar ? (
+                <img
+                  className="mx-auto mt-4"
+                  src={user?.avatar}
+                  width={200}
+                  height={200}
+                  alt="user avatar"
+                />
+              ) : (
+                <Avatar alt={user?.name}>{user?.name[0]}</Avatar>
+              )}
+              <div className="my-4 mx-auto text-center font-semibold text-xl">
+                {user?.name}
+              </div>
+            </>
           )}
-          <div className="my-4 mx-auto text-center font-semibold text-xl">
-            {user?.name}
-          </div>
           <Divider />
 
           <div className="grid grid-cols-2 text-center my-4">
@@ -110,7 +130,7 @@ const _UserProfile = ({
           </div>
 
           <div className="my-4 text-center">
-            {loading ? (
+            {loadingFollow ? (
               <CircularProgress />
             ) : (
               <Chip

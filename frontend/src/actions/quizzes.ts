@@ -48,12 +48,16 @@ export interface TakeQuizAction {
   payload: number;
 }
 
-export const fetchQuizzes = (search: string = '') => {
+export const fetchQuizzes = (data: { search: string; callback: Function }) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      let { search, callback } = data;
+
       const response = await backend.get<QuizzesData>(
         search !== '' ? `/api/quizzes?search=${search ?? ''}` : `/api/quizzes/`
       );
+
+      if (callback) callback();
 
       dispatch<FetchQuizzesAction>({
         type: ActionTypes.fetchQuizzes,
@@ -105,9 +109,11 @@ export const updateQuiz = (quizId: string | undefined, quiz: Quiz) => {
   };
 };
 
-export const fetchQuizLogs = (token: string, callback: Function = () => {}) => {
+export const fetchQuizLogs = (data: { token: string; callback: Function }) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      let { token, callback } = data;
+
       const response = await backend.get<UserData>(`/api/quiz_logs/`, {
         headers: {
           Authorization: `Bearer ${token}`,
