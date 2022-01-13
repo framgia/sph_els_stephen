@@ -25,7 +25,7 @@ const Activities = ({ activities = [] }: Props) => {
         borderColor: 'primary.main',
       }}
     >
-      {activities?.length === 0
+      {activities?.length === 0 || !activities
         ? Array.from(Array(10).keys()).map((tempKey) => {
             return (
               <ListItem alignItems="flex-start" key={tempKey}>
