@@ -22,6 +22,8 @@ export const userDataReducer = (state: UserData = {}, action: Action) => {
   switch (action.type) {
     case ActionTypes.fetchUserWithFollows:
       return action.payload;
+    case ActionTypes.fetchUserWithLogs:
+      return action.payload;
     case ActionTypes.fetchQuizLogs:
       return action.payload;
     case ActionTypes.takeQuiz:

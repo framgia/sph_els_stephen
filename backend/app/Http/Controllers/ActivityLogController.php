@@ -19,7 +19,9 @@ class ActivityLogController extends Controller {
             "data" => User::where('id', $id)->with([
                 'quiz_logs.log',
                 'following.log',
-                'followers.log'
+                'following.following',
+                'followers.log',
+                'followers.follower'
             ])->first()
         ]);
     }

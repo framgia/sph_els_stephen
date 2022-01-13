@@ -1,48 +1,40 @@
 import React, { useEffect, useState } from 'react';
+import { getActivities, sortActivities } from './activitiesHelper';
 import Activities from './Activities';
 import Divider from '@mui/material/Divider';
 import Chip from '@mui/material/Chip';
 
-import { SampleUsers, User } from '../AdminUser';
+import { User } from '../AdminUser';
 import { useParams } from 'react-router';
 import { connect } from 'react-redux';
-import { fetchUserWithFollows, followUser, unfollowUser } from '../../actions';
+import {
+  fetchUserWithFollows,
+  fetchUserWithLogs,
+  followUser,
+  unfollowUser,
+} from '../../actions';
 import { StoreState } from '../../reducers';
 import { Avatar, CircularProgress, Skeleton, Stack } from '@mui/material';
 import { useCookies } from 'react-cookie';
-
-const sampleActs = [
-  {
-    id: 1,
-    message: '["john", "follows", "kobe"]',
-    user: SampleUsers[0],
-  },
-  {
-    id: 2,
-    message: '["mike", "follows", "oscar"]',
-    user: SampleUsers[1],
-  },
-  {
-    id: 3,
-    message: '["john", "answers", "quiz101"]',
-    user: SampleUsers[2],
-  },
-];
-
+import { Activity } from '.';
 interface Props {
   user?: User;
   numFollowing: number;
   numFollowers: number;
   fetchUserWithFollows: Function;
+  fetchUserWithLogs: Function;
+  activities: Activity[] | null;
   followUser: Function;
   unfollowUser: Function;
 }
 
-const _UserProfile = ({
+export const _UserProfile = ({
   user,
   numFollowing,
   numFollowers,
   fetchUserWithFollows,
+  fetchUserWithLogs,
+  activities,
   followUser,
   unfollowUser,
 }: Props) => {
@@ -78,7 +70,8 @@ const _UserProfile = ({
         setLoadingFollow(false);
       },
     });
-  }, [cookies, fetchUserWithFollows, id]);
+    fetchUserWithLogs({ id: id, token: cookies.token });
+  }, [cookies, fetchUserWithFollows, fetchUserWithLogs, id]);
 
   useEffect(() => {
     const checkFollowing = () => {
@@ -146,7 +139,7 @@ const _UserProfile = ({
           <div className="my-4 text-center">Latest Activity</div>
         </div>
         <div className="col-span-4">
-          <Activities activities={sampleActs} />
+          <Activities activities={activities} />
         </div>
       </div>
     </div>
@@ -155,17 +148,28 @@ const _UserProfile = ({
 
 const mapStateToProps = ({
   userData,
-}: StoreState): { user?: User; numFollowing: number; numFollowers: number } => {
+}: StoreState): {
+  user?: User;
+  numFollowing: number;
+  numFollowers: number;
+  activities: Activity[] | null;
+} => {
   let user = userData.data;
   let numFollowing = user?.following?.length || 0;
   let numFollowers = user?.followers?.length || 0;
-  return { user, numFollowing, numFollowers };
+
+  let activities = getActivities(user);
+  sortActivities(activities);
+
+  return { user, numFollowing, numFollowers, activities };
 };
 
 export const UserProfile = connect(mapStateToProps, {
   fetchUserWithFollows,
   followUser,
   unfollowUser,
+  fetchUserWithLogs,
+  getActivities,
 })(_UserProfile);
 
 export default UserProfile;

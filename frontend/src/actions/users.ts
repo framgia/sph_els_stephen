@@ -1,6 +1,6 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { Dispatch } from 'redux';
-import { ActionTypes } from '.';
+import { ActionTypes, FetchQuizLogsAction } from '.';
 import backend from '../api/backend';
 import { User } from '../components/AdminUser';
 
@@ -32,6 +32,11 @@ export interface UnfollowUserAction {
 
 export interface FetchUserWithFollowsAction {
   type: ActionTypes.fetchUserWithFollows;
+  payload: UserData;
+}
+
+export interface FetchUserWithLogsAction {
+  type: ActionTypes.fetchUserWithLogs;
   payload: UserData;
 }
 
@@ -88,6 +93,41 @@ export const fetchUserWithFollows = (data: {
         type: ActionTypes.fetchUserWithFollows,
         payload: response.data,
       });
+    });
+  };
+};
+
+export const fetchUserWithLogs = (data: {
+  id: number;
+  token: string;
+  callback: Function;
+  errorCallback: Function;
+  finallyCallback: Function;
+}) => {
+  return async (dispatch: Dispatch) => {
+    backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      let { id, token, callback, errorCallback, finallyCallback } = data;
+
+      await backend
+        .get<UserData>(`/api/activity_logs/${id ?? ''}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          if (callback) callback(response);
+
+          dispatch<FetchUserWithLogsAction>({
+            type: ActionTypes.fetchUserWithLogs,
+            payload: response.data,
+          });
+        })
+        .catch((err) => {
+          if (errorCallback) errorCallback(err);
+        })
+        .finally(() => {
+          if (finallyCallback) finallyCallback();
+        });
     });
   };
 };
