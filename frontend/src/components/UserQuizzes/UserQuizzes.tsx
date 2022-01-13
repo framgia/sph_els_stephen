@@ -27,17 +27,16 @@ export const _UserQuizzes = ({
   takeQuiz,
   fetchQuizLogs,
 }: Props) => {
-  const [cookies, setCookies] = useCookies();
+  const [cookies] = useCookies();
   const [search, setSearch] = useState('');
 
   useEffect(() => {
     fetchQuizLogs(cookies.token);
     fetchQuizzes();
-    return () => {};
-  }, []);
+  }, [cookies, fetchQuizzes, fetchQuizLogs]);
 
   useEffect(() => {
-    const { cancel, token } = axios.CancelToken.source();
+    const { cancel } = axios.CancelToken.source();
     const timeoutId = setTimeout(() => {
       fetchQuizzes(search);
     }, 500);
@@ -46,7 +45,7 @@ export const _UserQuizzes = ({
       cancel('Search term changed');
       clearTimeout(timeoutId);
     };
-  }, [search]);
+  }, [search, fetchQuizzes]);
 
   const handleTakeQuiz = (e: any, id: number) => {
     takeQuiz(id, cookies.token, () => {

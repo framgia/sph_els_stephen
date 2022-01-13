@@ -48,19 +48,9 @@ const _UserProfile = ({
 }: Props) => {
   let { id } = useParams();
 
-  const [cookies, setCookies] = useCookies();
+  const [cookies] = useCookies();
   const [loading, setLoading] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
-
-  const checkFollowing = () => {
-    let logged_in_user_id = cookies.user.id;
-
-    let followers = user?.followers || [];
-    let followers_id: number[] = followers?.map(
-      (follower) => follower['from_id']
-    );
-    setIsFollowing(followers_id.includes(logged_in_user_id));
-  };
 
   const handleFollowClick = (e: any) => {
     setLoading(true);
@@ -78,13 +68,21 @@ const _UserProfile = ({
 
   useEffect(() => {
     fetchUserWithFollows(cookies.token, id);
-    return () => {};
-  }, []);
+  }, [cookies, fetchUserWithFollows, id]);
 
   useEffect(() => {
+    const checkFollowing = () => {
+      let logged_in_user_id = cookies.user.id;
+
+      let followers = user?.followers || [];
+      let followers_id: number[] = followers?.map(
+        (follower) => follower['from_id']
+      );
+      setIsFollowing(followers_id.includes(logged_in_user_id));
+    };
+
     checkFollowing();
-    return () => {};
-  }, [user]);
+  }, [user, cookies]);
 
   return (
     <div className="container mx-auto px-24 py-8">
@@ -96,7 +94,7 @@ const _UserProfile = ({
               src={user?.avatar}
               width={200}
               height={200}
-              alt="Profile Image"
+              alt="user avatar"
             />
           ) : (
             <Avatar alt={user?.name}>{user?.name[0]}</Avatar>

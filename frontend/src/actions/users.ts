@@ -1,5 +1,4 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { useCookies } from 'react-cookie';
 import { Dispatch } from 'redux';
 import { ActionTypes } from '.';
 import backend from '../api/backend';
@@ -96,7 +95,7 @@ export const followUser = (data: {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
       let { user_id, token, callback } = data;
 
-      const response = await backend.post<UserData>(
+      await backend.post<UserData>(
         '/api/follows/',
         {
           to_id: user_id,
@@ -127,7 +126,7 @@ export const unfollowUser = (data: {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
       let { user_id, token, callback } = data;
 
-      const response = await backend.post<UserData>(
+      await backend.post<UserData>(
         '/api/follows/',
         {
           _method: 'DELETE',

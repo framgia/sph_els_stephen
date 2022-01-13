@@ -10,11 +10,9 @@ import {
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
-import { AxiosResponse, AxiosError } from 'axios';
-import backend from '../../api/backend';
+import { AxiosResponse } from 'axios';
 import { CircularProgress, Stack } from '@mui/material';
 import { connect } from 'react-redux';
-import { StoreState } from '../../reducers';
 import { userSignIn } from '../../actions';
 
 interface FormInput {
@@ -62,8 +60,8 @@ export const _UserSignIn = ({ userSignIn }: Props) => {
 
   const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
-  const [cookies, setCookies] = useCookies();
   const [loading, setLoading] = useState(false);
+  const [_, setCookies] = useCookies(); // eslint-disable-line -- need to destructure this way
 
   const onSubmit = (data: FormInput) => {
     setIsError(false);
@@ -126,7 +124,7 @@ export const _UserSignIn = ({ userSignIn }: Props) => {
   );
 };
 
-const mapStateToProps = ({}: StoreState): {} => {
+const mapStateToProps = (): {} => {
   return {};
 };
 

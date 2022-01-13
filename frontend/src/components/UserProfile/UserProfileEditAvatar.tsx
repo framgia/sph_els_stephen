@@ -1,12 +1,11 @@
 import styled from '@emotion/styled';
 import { PhotoCamera } from '@mui/icons-material';
-import { Alert, Box, Button, CircularProgress, Stack } from '@mui/material';
+import { Alert, Button, CircularProgress, Stack } from '@mui/material';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { connect } from 'react-redux';
 import { userUpdateProfileAvatar } from '../../actions';
-import { StoreState } from '../../reducers';
 
 const Input = styled('input')({
   display: 'none',
@@ -34,7 +33,7 @@ export const _UserProfileEditAvatar = ({ userUpdateProfileAvatar }: Props) => {
       setSrc(cookies.user?.avatar);
     }
     return () => {};
-  }, []);
+  }, [cookies]);
 
   const handleFileChange = (e: any) => {
     let formdata = new FormData();
@@ -75,7 +74,7 @@ export const _UserProfileEditAvatar = ({ userUpdateProfileAvatar }: Props) => {
         src={src}
         width={200}
         height={200}
-        alt="Profile Image"
+        alt="user avatar"
       />
       <div className="mx-auto mt-5">
         <Stack>
@@ -106,7 +105,7 @@ export const _UserProfileEditAvatar = ({ userUpdateProfileAvatar }: Props) => {
   );
 };
 
-const mapStateToProps = ({}: StoreState): {} => {
+const mapStateToProps = (): {} => {
   return {};
 };
 

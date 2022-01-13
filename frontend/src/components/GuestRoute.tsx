@@ -1,8 +1,8 @@
 import { useCookies } from 'react-cookie';
-import { Navigate, Route, RouteProps, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 export function RequireGuest({ children }: { children: JSX.Element }) {
-  const [cookies, setCookies] = useCookies();
+  const [cookies] = useCookies();
   let location = useLocation();
 
   if (cookies.user) {

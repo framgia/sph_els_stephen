@@ -1,4 +1,4 @@
-import { people, TableHeader, TableBody } from '.';
+import { TableHeader, TableBody } from '.';
 
 interface TableProps {
   headers: React.ReactNode;

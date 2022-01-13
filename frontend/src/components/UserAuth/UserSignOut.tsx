@@ -4,14 +4,13 @@ import { useCookies } from 'react-cookie';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { userSignOut } from '../../actions';
-import { StoreState } from '../../reducers';
 
 interface Props {
   userSignOut: Function;
 }
 
 export const _UserSignOut = ({ userSignOut }: Props) => {
-  const [cookies, setCookies, removeCookies] = useCookies();
+  const [cookies, _, removeCookies] = useCookies(); // eslint-disable-line -- need to destructure this way
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -28,7 +27,7 @@ export const _UserSignOut = ({ userSignOut }: Props) => {
     };
 
     userSignOut(signOutData);
-  }, []);
+  }, [cookies, userSignOut, navigate, removeCookies]);
 
   return (
     <Backdrop
@@ -40,13 +39,12 @@ export const _UserSignOut = ({ userSignOut }: Props) => {
   );
 };
 
-const mapStateToProps = ({}: StoreState): {} => {
+const mapStateToProps = (): {} => {
   return {};
 };
 
 export const UserSignOut = connect(mapStateToProps, { userSignOut })(
   _UserSignOut
 );
-
 
 export default UserSignOut;

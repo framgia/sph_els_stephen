@@ -1,12 +1,10 @@
 import { Popover } from '@headlessui/react';
 
 import HeaderItem from './HeaderItem';
-import HeaderDropDown from './HeaderDropDown';
-import { callsToAction, solutions, recentPosts } from '.';
 import { useCookies } from 'react-cookie';
 
 const HeaderLinks = () => {
-  const [cookies, setCookies] = useCookies();
+  const [cookies] = useCookies();
 
   return (
     <Popover.Group as="nav" className="hidden md:flex space-x-10">

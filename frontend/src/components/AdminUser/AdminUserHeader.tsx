@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  TableHeader,
-  TableHeaderColumnEmpty,
-  TableHeaderColumn,
-} from '../Table';
+import { TableHeaderColumnEmpty, TableHeaderColumn } from '../Table';
 
 export const AdminUserHeader = () => {
   return (

@@ -6,7 +6,7 @@ const followUserFunc = (state: UsersData, action: Action) => {
 
   return {
     data: users.map((user) => {
-      if (user.id == to_follow?.id) {
+      if (user.id === to_follow?.id) {
         return { ...to_follow, is_following: !to_follow.is_following };
       }
       return user;

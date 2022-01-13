@@ -1,4 +1,3 @@
-import { LockClosedIcon } from '@heroicons/react/solid';
 import React, { FormEventHandler } from 'react';
 
 interface UserAuthFormProps {

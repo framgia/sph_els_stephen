@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface Props {}
 
@@ -21,12 +22,12 @@ export const UserAuthLoginExtra = (props: Props): JSX.Element => {
       </div>
 
       <div className="text-sm">
-        <a
-          href="#"
+        <Link
+          to="#"
           className="font-medium text-indigo-600 hover:text-indigo-500"
         >
           Forgot your password?
-        </a>
+        </Link>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import { Quiz } from '../components/AdminQuiz';
-import { Action, ActionTypes, UserData } from '.';
+import { ActionTypes, UserData } from '.';
 import backend from '../api/backend';
 
 export interface QuizzesData {
@@ -131,7 +131,7 @@ export const takeQuiz = (
 ) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
-      const response = await backend.post<UserData>(
+      await backend.post<UserData>(
         `/api/quiz_logs/`,
         {
           quiz_id,

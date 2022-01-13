@@ -1,8 +1,6 @@
 import { Dispatch } from 'redux';
-import { Quiz } from '../components/AdminQuiz';
-import { Action, ActionTypes } from '.';
+import { ActionTypes } from '.';
 import backend from '../api/backend';
-import { User } from '../components/AdminUser';
 
 export interface QuizItem {
   quiz_id?: number;

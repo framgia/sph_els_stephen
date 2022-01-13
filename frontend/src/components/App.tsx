@@ -1,16 +1,9 @@
 import '../index.css';
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Header from './Header';
 import AdminQuiz, { AdminQuizForm, AdminQuizEditForm } from './AdminQuiz';
 import AdminQuizItemForm from './AdminQuizItem/AdminQuizItemForm';
-import AdminUser, { SampleUsers } from './AdminUser';
+import AdminUser from './AdminUser';
 import { UserSignIn, UserSignOut, UserSignUp } from './UserAuth';
 import UserProfile from './UserProfile/UserProfile';
 import UserQuizzes from './UserQuizzes/UserQuizzes';
