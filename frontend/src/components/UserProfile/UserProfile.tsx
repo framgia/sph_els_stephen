@@ -17,6 +17,8 @@ import { StoreState } from '../../reducers';
 import { Avatar, CircularProgress, Skeleton, Stack } from '@mui/material';
 import { useCookies } from 'react-cookie';
 import { Activity } from '.';
+import TimeAgo from 'react-timeago';
+
 interface Props {
   user?: User;
   numFollowing: number;

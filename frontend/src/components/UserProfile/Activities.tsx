@@ -10,6 +10,8 @@ import { Skeleton, Stack } from '@mui/material';
 import { Activity } from '.';
 import { Link } from 'react-router-dom';
 
+import TimeAgo from 'react-timeago';
+
 interface Props {
   activities: Activity[] | null;
 }
@@ -40,6 +42,7 @@ const Activities = ({ activities = [] }: Props) => {
         : activities?.map((act) => {
             if (!act.log) return;
             const [doer, action, recipient] = JSON.parse(act?.log?.message);
+            const date = new Date(act.created_at);
             return (
               <ListItem alignItems="flex-start" key={act.id}>
                 <ListItemAvatar>
@@ -62,19 +65,7 @@ const Activities = ({ activities = [] }: Props) => {
                   )}
                 </ListItemAvatar>
                 <ListItemText
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        sx={{ display: 'inline' }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        Ali Connors
-                      </Typography>
-                      {' — x time ago…'}
-                    </React.Fragment>
-                  }
+                  secondary={<TimeAgo className="ml-2" date={date} />}
                 >
                   <Link
                     className="mr-1"
