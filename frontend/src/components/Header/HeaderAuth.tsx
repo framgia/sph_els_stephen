@@ -41,13 +41,15 @@ const HeaderAuth = () => {
       </Link>
     </div>
   ) : (
-    <HeaderDropDown label={cookies.user?.name} dropDownItems={userOptions}>
-      <div>
-        <h3 className="text-sm tracking-wide font-medium text-gray-500 uppercase">
-          Welcome Back!
-        </h3>
-      </div>
-    </HeaderDropDown>
+    <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+      <HeaderDropDown label={cookies.user?.name} dropDownItems={userOptions}>
+        <div>
+          <h3 className="text-sm tracking-wide font-medium text-gray-500 uppercase">
+            Welcome Back!
+          </h3>
+        </div>
+      </HeaderDropDown>
+    </div>
   );
 };
 

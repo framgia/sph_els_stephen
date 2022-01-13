@@ -31,8 +31,8 @@ export const _UserQuizzes = ({
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    fetchQuizzes();
     fetchQuizLogs(cookies.token);
+    fetchQuizzes();
     return () => {};
   }, []);
 

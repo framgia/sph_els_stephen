@@ -12,6 +12,10 @@ import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { AxiosResponse, AxiosError } from 'axios';
 import backend from '../../api/backend';
+import { CircularProgress, Stack } from '@mui/material';
+import { connect } from 'react-redux';
+import { StoreState } from '../../reducers';
+import { userSignIn } from '../../actions';
 
 interface FormInput {
   email: string;
@@ -45,7 +49,11 @@ const formValidation = {
   },
 };
 
-export const UserSignIn = () => {
+interface Props {
+  userSignIn: Function;
+}
+
+export const _UserSignIn = ({ userSignIn }: Props) => {
   const {
     register,
     handleSubmit,
@@ -55,22 +63,26 @@ export const UserSignIn = () => {
   const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
   const [cookies, setCookies] = useCookies();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = (data: FormInput) => {
     setIsError(false);
-    backend.get('/sanctum/csrf-cookie').then((csrf_response) => {
-      backend
-        .post('/api/login', data)
-        .then((response: AxiosResponse) => {
-          setCookies('user', response.data.data, { path: '/' });
-          setCookies('token', response.data.token, { path: '/' });
-          navigate('/');
-        })
-        .catch((err: AxiosError) => {
-          console.error(err);
-          setIsError(true);
-        });
-    });
+    setLoading(true);
+    let signInData = {
+      email: data.email,
+      password: data.password,
+      callback: (response: AxiosResponse) => {
+        setCookies('user', response.data.data, { path: '/' });
+        setCookies('token', response.data.token, { path: '/' });
+        setLoading(false);
+        navigate('/');
+      },
+      errorCallback: () => {
+        setIsError(true);
+      },
+    };
+
+    userSignIn(signInData);
   };
 
   return (
@@ -101,11 +113,23 @@ export const UserSignIn = () => {
           <UserAuthLoginExtra />
 
           <div>{isError ? 'Invalid Input' : ''}</div>
-          <UserAuthButton label="Sign In" />
+          {loading ? (
+            <Stack alignItems="center">
+              <CircularProgress />
+            </Stack>
+          ) : (
+            <UserAuthButton label="Sign In" />
+          )}
         </UserAuthForm>
       </div>
     </div>
   );
 };
+
+const mapStateToProps = ({}: StoreState): {} => {
+  return {};
+};
+
+export const UserSignIn = connect(mapStateToProps, { userSignIn })(_UserSignIn);
 
 export default UserSignIn;

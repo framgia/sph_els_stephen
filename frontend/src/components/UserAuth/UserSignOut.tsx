@@ -1,34 +1,33 @@
 import { Backdrop, CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
-import backend from '../../api/backend';
+import { userSignOut } from '../../actions';
+import { StoreState } from '../../reducers';
 
-interface Props {}
+interface Props {
+  userSignOut: Function;
+}
 
-export const UserSignOut = (props: Props) => {
+export const _UserSignOut = ({ userSignOut }: Props) => {
   const [cookies, setCookies, removeCookies] = useCookies();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setOpen(true);
-    backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
-      const response = await backend.post<any>(
-        '/api/logout/',
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${cookies.token}`,
-          },
-        }
-      );
+    let signOutData = {
+      token: cookies.token,
+      callback: () => {
+        removeCookies('user', { path: '/' });
+        removeCookies('token', { path: '/' });
+        setOpen(false);
+        navigate('/');
+      },
+    };
 
-      removeCookies('user', { path: '/' });
-      removeCookies('token', { path: '/' });
-      setOpen(false);
-      navigate('/');
-    });
+    userSignOut(signOutData);
   }, []);
 
   return (
@@ -40,5 +39,14 @@ export const UserSignOut = (props: Props) => {
     </Backdrop>
   );
 };
+
+const mapStateToProps = ({}: StoreState): {} => {
+  return {};
+};
+
+export const UserSignOut = connect(mapStateToProps, { userSignOut })(
+  _UserSignOut
+);
+
 
 export default UserSignOut;

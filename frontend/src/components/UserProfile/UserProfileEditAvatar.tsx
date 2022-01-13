@@ -4,16 +4,19 @@ import { Alert, Box, Button, CircularProgress, Stack } from '@mui/material';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { useForm } from 'react-hook-form';
-import backend from '../../api/backend';
+import { connect } from 'react-redux';
+import { userUpdateProfileAvatar } from '../../actions';
+import { StoreState } from '../../reducers';
 
 const Input = styled('input')({
   display: 'none',
 });
 
-interface Props {}
+interface Props {
+  userUpdateProfileAvatar: Function;
+}
 
-export const UserProfileEditAvatar = (props: Props) => {
+export const _UserProfileEditAvatar = ({ userUpdateProfileAvatar }: Props) => {
   const [cookies, setCookies] = useCookies();
 
   const backend_url = process.env.REACT_APP_BACKEND_URL;
@@ -42,29 +45,27 @@ export const UserProfileEditAvatar = (props: Props) => {
     setLoading(true);
     setError(false);
     setSuccess(false);
-    backend.get('/sanctum/csrf-cookie').then((csrf_response) => {
-      backend
-        .post(`/api/users/${cookies.user.id}`, formdata, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then((response: AxiosResponse) => {
-          setSuccess(true);
-          setMsg('Avatar Changed');
-          let data = response.data?.data;
-          setSrc(data.avatar);
-          setCookies('user', data, { path: '/' });
-        })
-        .catch((err: AxiosError) => {
-          setError(true);
-          let errordata = err.response?.data;
-          setMsg(errordata?.error?.message);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    });
+    let avatarData = {
+      user_id: cookies.user.id,
+      formdata: formdata,
+      callback: (response: AxiosResponse) => {
+        setSuccess(true);
+        setMsg('Avatar Changed');
+        let data = response.data?.data;
+        setSrc(data.avatar);
+        setCookies('user', data, { path: '/' });
+      },
+      errorCallback: (err: AxiosError) => {
+        setError(true);
+        let errordata = err.response?.data;
+        setMsg(errordata?.error?.message);
+      },
+      finallyCallback: () => {
+        setLoading(false);
+      },
+    };
+
+    userUpdateProfileAvatar(avatarData);
   };
 
   return (
@@ -104,5 +105,13 @@ export const UserProfileEditAvatar = (props: Props) => {
     </div>
   );
 };
+
+const mapStateToProps = ({}: StoreState): {} => {
+  return {};
+};
+
+export const UserProfileEditAvatar = connect(mapStateToProps, {
+  userUpdateProfileAvatar,
+})(_UserProfileEditAvatar);
 
 export default UserProfileEditAvatar;

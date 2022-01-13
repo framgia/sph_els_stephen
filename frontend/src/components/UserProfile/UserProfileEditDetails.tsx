@@ -1,10 +1,8 @@
-import styled from '@emotion/styled';
 import { AxiosResponse, AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-import backend from '../../api/backend';
 
 import {
   Box,
@@ -14,6 +12,9 @@ import {
   CircularProgress,
   Button,
 } from '@mui/material';
+import { connect } from 'react-redux';
+import { userUpdateProfileDetails } from '../../actions';
+import { StoreState } from '../../reducers';
 
 export interface ProfileEditInput {
   name: string;
@@ -43,9 +44,13 @@ const formValidation = {
   },
 };
 
-interface Props {}
+interface Props {
+  userUpdateProfileDetails: Function;
+}
 
-export const UserProfileEditDetails = (props: Props) => {
+export const _UserProfileEditDetails = ({
+  userUpdateProfileDetails,
+}: Props) => {
   const {
     register,
     handleSubmit,
@@ -76,24 +81,27 @@ export const UserProfileEditDetails = (props: Props) => {
     setLoading(true);
     setError(false);
     setSuccess(false);
-    backend.get('/sanctum/csrf-cookie').then((csrf_response) => {
-      backend
-        .put(`/api/users/${cookies.user.id}`, data)
-        .then((response: AxiosResponse) => {
-          setSuccess(true);
-          setMsg('Profile Updated Successfully');
-          let data = response.data?.data;
-          setCookies('user', data, { path: '/' });
-        })
-        .catch((err: AxiosError) => {
-          setError(true);
-          let errordata = err.response?.data;
-          setMsg(errordata?.error?.message);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    });
+    let profileData = {
+      user_id: cookies.user.id,
+      name: data.name,
+      email: data.email,
+      callback: (response: AxiosResponse) => {
+        setSuccess(true);
+        setMsg('Profile Updated Successfully');
+        let data = response.data?.data;
+        setCookies('user', data, { path: '/' });
+      },
+      errorCallback: (err: AxiosError) => {
+        setError(true);
+        let errordata = err.response?.data;
+        setMsg(errordata?.error?.message);
+      },
+      finallyCallback: () => {
+        setLoading(false);
+      },
+    };
+
+    userUpdateProfileDetails(profileData);
   };
 
   return (
@@ -144,5 +152,13 @@ export const UserProfileEditDetails = (props: Props) => {
     </Box>
   );
 };
+
+const mapStateToProps = ({}: StoreState): {} => {
+  return {};
+};
+
+export const UserProfileEditDetails = connect(mapStateToProps, {
+  userUpdateProfileDetails,
+})(_UserProfileEditDetails);
 
 export default UserProfileEditDetails;

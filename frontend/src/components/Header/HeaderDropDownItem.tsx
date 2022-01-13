@@ -8,7 +8,6 @@ interface HeaderDropDownItemProps {
 const HeaderDropDownItem = ({ item }: HeaderDropDownItemProps) => {
   return (
     <Link
-      key={item.name}
       to={item.href}
       className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
     >

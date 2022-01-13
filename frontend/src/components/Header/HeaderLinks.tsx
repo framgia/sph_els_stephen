@@ -3,8 +3,11 @@ import { Popover } from '@headlessui/react';
 import HeaderItem from './HeaderItem';
 import HeaderDropDown from './HeaderDropDown';
 import { callsToAction, solutions, recentPosts } from '.';
+import { useCookies } from 'react-cookie';
 
 const HeaderLinks = () => {
+  const [cookies, setCookies] = useCookies();
+
   return (
     <Popover.Group as="nav" className="hidden md:flex space-x-10">
       {/* <HeaderDropDown
@@ -13,8 +16,12 @@ const HeaderLinks = () => {
         callToActions={callsToAction}
       /> */}
 
-      <HeaderItem label="Quizzes" href="/quizzes" />
-      <HeaderItem label="Users" href="/users" />
+      {cookies.user && (
+        <>
+          <HeaderItem label="Quizzes" href="/quizzes" />
+          <HeaderItem label="Users" href="/users" />
+        </>
+      )}
 
       {/* <HeaderDropDown label="Quizzes" dropDownItems={solutions}>
         <div>

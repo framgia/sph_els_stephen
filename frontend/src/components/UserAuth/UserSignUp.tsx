@@ -1,17 +1,15 @@
 import { LockClosedIcon } from '@heroicons/react/outline';
+import { CircularProgress, Stack } from '@mui/material';
 import { AxiosError, AxiosResponse } from 'axios';
 import React, { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-import {
-  UserAuthButton,
-  UserAuthField,
-  UserAuthForm,
-  UserAuthHeader,
-  UserAuthLoginExtra,
-} from '.';
+import { UserAuthButton, UserAuthField, UserAuthForm, UserAuthHeader } from '.';
 import backend from '../../api/backend';
+import { userSignUp } from '../../actions';
+import { connect } from 'react-redux';
+import { StoreState } from '../../reducers';
 
 interface FormInput {
   name: string;
@@ -71,7 +69,11 @@ const formValidation = {
   },
 };
 
-export const UserSignUp = () => {
+interface Props {
+  userSignUp: Function;
+}
+
+export const _UserSignUp = ({ userSignUp }: Props) => {
   const {
     register,
     handleSubmit,
@@ -81,21 +83,28 @@ export const UserSignUp = () => {
   const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
   const [cookies, setCookies] = useCookies();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = (data: FormInput) => {
     setIsError(false);
-    backend.get('/sanctum/csrf-cookie').then((csrf_response) => {
-      backend
-        .post('/api/users/', data)
-        .then((response: AxiosResponse) => {
-          setCookies('user', response.data.data, { path: '/' });
-          setCookies('token', response.data.token, { path: '/' });
-          navigate('/signin');
-        })
-        .catch((err: AxiosError) => {
-          setIsError(true);
-        });
-    });
+    setLoading(true);
+    let signUpData = {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      password_confirmation: data.password_confirmation,
+      callback: (response: AxiosResponse) => {
+        setCookies('user', response.data.data, { path: '/' });
+        setCookies('token', response.data.token, { path: '/' });
+        setLoading(false);
+        navigate('/');
+      },
+      errorCallback: () => {
+        setIsError(true);
+      },
+    };
+
+    userSignUp(signUpData);
   };
 
   return (
@@ -143,11 +152,23 @@ export const UserSignUp = () => {
           </div>
 
           <div>{isError ? 'Invalid Input' : ''}</div>
-          <UserAuthButton label="Register" />
+          {loading ? (
+            <Stack alignItems="center">
+              <CircularProgress />
+            </Stack>
+          ) : (
+            <UserAuthButton label="Register" />
+          )}
         </UserAuthForm>
       </div>
     </div>
   );
 };
+
+const mapStateToProps = ({}: StoreState): {} => {
+  return {};
+};
+
+export const UserSignUp = connect(mapStateToProps, { userSignUp })(_UserSignUp);
 
 export default UserSignUp;

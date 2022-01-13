@@ -32,8 +32,8 @@ export const UserList = ({
   const [cookies, setCookies] = useCookies();
 
   useEffect(() => {
-    fetchUsers();
     fetchUserWithFollows(cookies.token);
+    fetchUsers();
     return () => {};
   }, []);
 
