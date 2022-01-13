@@ -1,5 +1,4 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { useCookies } from 'react-cookie';
 import { Dispatch } from 'redux';
 import { ActionTypes } from '.';
 import backend from '../api/backend';

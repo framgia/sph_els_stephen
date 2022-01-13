@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { connect } from 'react-redux';
 import { userUpdateProfileAvatar } from '../../actions';
-import { StoreState } from '../../reducers';
 
 const Input = styled('input')({
   display: 'none',
@@ -106,7 +105,7 @@ export const _UserProfileEditAvatar = ({ userUpdateProfileAvatar }: Props) => {
   );
 };
 
-const mapStateToProps = ({}: StoreState): {} => {
+const mapStateToProps = (): {} => {
   return {};
 };
 

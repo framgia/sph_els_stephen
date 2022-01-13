@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import { connect } from 'react-redux';
 import { userUpdateProfileDetails } from '../../actions';
-import { StoreState } from '../../reducers';
 
 export interface ProfileEditInput {
   name: string;
@@ -151,7 +150,7 @@ export const _UserProfileEditDetails = ({
   );
 };
 
-const mapStateToProps = ({}: StoreState): {} => {
+const mapStateToProps = (): {} => {
   return {};
 };
 

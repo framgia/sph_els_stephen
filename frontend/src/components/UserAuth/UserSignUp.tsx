@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router';
 import { UserAuthButton, UserAuthField, UserAuthForm, UserAuthHeader } from '.';
 import { userSignUp } from '../../actions';
 import { connect } from 'react-redux';
-import { StoreState } from '../../reducers';
 
 interface FormInput {
   name: string;
@@ -163,7 +162,7 @@ export const _UserSignUp = ({ userSignUp }: Props) => {
   );
 };
 
-const mapStateToProps = ({}: StoreState): {} => {
+const mapStateToProps = (): {} => {
   return {};
 };
 
