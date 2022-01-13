@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\FollowController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,4 +34,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('follows', FollowController::class)->only('index', 'store', 'show');
     Route::delete('follows', [FollowController::class, 'destroy']);
     Route::apiResource('quiz_logs', QuizLogController::class)->only('index', 'store', 'show');
+    Route::apiResource('activity_logs', ActivityLogController::class)->only('index', 'show');
 });
