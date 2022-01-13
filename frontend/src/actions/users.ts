@@ -1,6 +1,6 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { Dispatch } from 'redux';
-import { ActionTypes, FetchQuizLogsAction } from '.';
+import { ActionTypes } from '.';
 import backend from '../api/backend';
 import { User } from '../components/AdminUser';
 

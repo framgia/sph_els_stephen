@@ -4,7 +4,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
 
 import { Skeleton, Stack } from '@mui/material';
 import { Activity } from '.';
@@ -40,29 +39,24 @@ const Activities = ({ activities = [] }: Props) => {
             );
           })
         : activities?.map((act) => {
+            // eslint-disable-next-line
             if (!act.log) return;
             const [doer, action, recipient] = JSON.parse(act?.log?.message);
             const date = new Date(act.created_at);
             return (
               <ListItem alignItems="flex-start" key={act.id}>
                 <ListItemAvatar>
-                  {act.following ? (
-                    <Avatar
-                      alt={act.following?.name}
-                      src={
-                        act.following?.avatar ??
-                        `${process.env.REACT_APP_BACKEND_URL}/storage/avatars/default.jpg`
-                      }
-                    />
-                  ) : (
-                    <Avatar
-                      alt={act.follower?.name}
-                      src={
-                        act.follower?.avatar ??
-                        `${process.env.REACT_APP_BACKEND_URL}/storage/avatars/default.jpg`
-                      }
-                    />
-                  )}
+                  <Avatar
+                    alt={
+                      act.following ? act.following?.name : act.follower?.name
+                    }
+                    src={
+                      act.following
+                        ? act.following?.avatar ?? act.following?.avatar
+                        : act.follower?.avatar ??
+                          `${process.env.REACT_APP_BACKEND_URL}/storage/avatars/default.jpg`
+                    }
+                  />
                 </ListItemAvatar>
                 <ListItemText
                   secondary={<TimeAgo className="ml-2" date={date} />}
