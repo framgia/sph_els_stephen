@@ -19,7 +19,7 @@ class HandleQuizLogCreated {
         ActivityLog::create([
             'loggable_type' => 'App\Models\QuizLog',
             'loggable_id' => $quiz_log->id,
-            'message' => "[${user_name}, started, ${quiz_title}]"
+            'message' => "[\"${user_name}\", \"started\", \"${quiz_title}\"]"
         ]);
     }
 }

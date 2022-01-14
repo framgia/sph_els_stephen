@@ -19,7 +19,7 @@ class HandleFollowLogCreated {
         ActivityLog::create([
             'loggable_type' => 'App\Models\FollowLog',
             'loggable_id' => $followlog->id,
-            'message' => "[${follower_name}, follows, ${following_name}]"
+            'message' => "[\"${follower_name}\", \"follows\", \"${following_name}\"]"
         ]);
     }
 }
