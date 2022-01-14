@@ -11,6 +11,7 @@ import AuthRoute from './AuthRoute';
 import GuestRoute from './GuestRoute';
 import UserProfileEdit from './UserProfile/UserProfileEdit';
 import UserList from './UserList';
+import UserDashboard from './UserDashboard';
 
 function Home() {
   return <h1 className="text-3xl font-bold underline">Home!</h1>;
@@ -64,6 +65,10 @@ function App() {
             {
               // #region User
             }
+            <Route
+              path="/dashboard"
+              element={<AuthRoute element={<UserDashboard />} />}
+            />
             <Route
               path="/users"
               element={<AuthRoute element={<UserList />} />}

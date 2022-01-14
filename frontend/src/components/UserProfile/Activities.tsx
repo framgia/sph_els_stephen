@@ -15,7 +15,7 @@ interface Props {
   activities: Activity[] | null;
 }
 
-const Activities = ({ activities = [] }: Props) => {
+export const Activities = ({ activities = [] }: Props) => {
   return (
     <List
       sx={{

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import HeaderDropDown from './HeaderDropDown';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 const HeaderAuth = () => {
   const [cookies] = useCookies();
@@ -10,6 +11,12 @@ const HeaderAuth = () => {
   const createDropDownIcon = (Icon: any) => (props: any) => <Icon {...props} />;
 
   const userOptions = [
+    {
+      name: 'Dashboard',
+      description: 'View your Dashboard',
+      href: '/dashboard',
+      icon: createDropDownIcon(DashboardIcon),
+    },
     {
       name: 'Account',
       description: 'View and Edit Account',
