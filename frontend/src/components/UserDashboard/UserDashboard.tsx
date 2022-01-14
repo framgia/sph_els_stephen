@@ -50,7 +50,6 @@ export const _UserDashboard = ({
             </Stack>
           ) : (
             <>
-              {' '}
               {user?.avatar ? (
                 <img
                   className="mx-auto mt-4"
