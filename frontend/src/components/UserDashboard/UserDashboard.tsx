@@ -69,23 +69,17 @@ export const _UserDashboard = ({
           )}
           <Divider />
 
-          {/* <div className="grid grid-cols-2 text-center my-4">
-            <div>{numFollowers} followers</div>
-            <div>{numFollowing} following</div>
-          </div> */}
-
-          {/* <div className="my-4 text-center">
-            {loadingFollow ? (
-              <CircularProgress />
-            ) : (
-              <Chip
-                onClick={(e) => handleFollowClick(e)}
-                label={isFollowing ? 'Unfollow' : 'Follow'}
-                variant={isFollowing ? 'filled' : 'outlined'}
-                color={isFollowing ? 'primary' : 'info'}
-              />
-            )}
-          </div> */}
+          {loadingUserData ? (
+            <Stack direction="row" spacing={2}>
+              <Skeleton variant="text" width={150} height={50} />
+              <Skeleton variant="text" width={150} height={50} />
+            </Stack>
+          ) : (
+            <div className="grid grid-cols-2 text-center my-4">
+              <div>Learned 20 words</div>
+              <div>Learned 5 lessons</div>
+            </div>
+          )}
 
           <Divider />
         </div>
@@ -104,7 +98,6 @@ const mapStateToProps = ({
 
   let activities = getActivities(user);
   sortActivities(activities);
-  console.log(activities);
   return { user, activities };
 };
 
