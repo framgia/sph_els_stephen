@@ -25,7 +25,9 @@ export interface Activity {
   follower?: User;
 }
 
-export const getActivities = (user: User | undefined): Activity[] | null => {
+export const getActivities = (
+  user: User | undefined | null
+): Activity[] | null => {
   if (user) {
     let following = user?.following || [];
     let followers = user?.followers || [];
