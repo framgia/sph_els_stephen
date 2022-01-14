@@ -14,8 +14,8 @@ import axios from 'axios';
 
 interface Props {
   quizzes: Quiz[];
+  user: User | null;
   fetchQuizzes: Function;
-  user?: User;
   takeQuiz: Function;
   fetchQuizLogs: Function;
 }
@@ -108,8 +108,8 @@ export const _UserQuizzes = ({
 const mapStateToProps = ({
   quizzesData,
   userData,
-}: StoreState): { quizzes: Quiz[]; user?: User } => {
-  let user = userData.data;
+}: StoreState): { quizzes: Quiz[]; user: User | null } => {
+  let user = userData.data || null;
   let quizzes = quizzesData.data || [];
 
   let quiz_logs = user?.quiz_logs || [];

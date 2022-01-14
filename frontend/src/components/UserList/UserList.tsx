@@ -7,6 +7,8 @@ import {
   followUser,
   unfollowUser,
   fetchUserWithFollows,
+  userDataCleanup,
+  usersDataCleanup,
 } from '../../actions';
 import { StoreState } from '../../reducers';
 import { connect } from 'react-redux';
@@ -16,11 +18,13 @@ import { useCookies } from 'react-cookie';
 import { CircularProgress, Stack } from '@mui/material';
 
 interface Props {
+  usersWithFollows: User[];
   fetchUsers: Function;
   followUser: Function;
   unfollowUser: Function;
   fetchUserWithFollows: Function;
-  usersWithFollows: User[];
+  userDataCleanup: Function;
+  usersDataCleanup: Function;
 }
 
 export const UserList = ({
@@ -29,6 +33,8 @@ export const UserList = ({
   unfollowUser,
   fetchUserWithFollows,
   usersWithFollows,
+  userDataCleanup,
+  usersDataCleanup,
 }: Props): JSX.Element => {
   const [cookies] = useCookies();
   const [loading, setLoading] = useState(false);
@@ -45,7 +51,17 @@ export const UserList = ({
         });
       },
     });
-  }, [fetchUsers, fetchUserWithFollows, cookies]);
+    return () => {
+      userDataCleanup();
+      usersDataCleanup();
+    };
+  }, [
+    fetchUsers,
+    fetchUserWithFollows,
+    userDataCleanup,
+    usersDataCleanup,
+    cookies,
+  ]);
 
   const handleFollowClick = (
     e: any,
@@ -109,4 +125,6 @@ export default connect(mapStateToProps, {
   fetchUsers,
   followUser,
   unfollowUser,
+  userDataCleanup,
+  usersDataCleanup,
 })(UserList);

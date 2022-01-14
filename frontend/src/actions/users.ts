@@ -11,9 +11,11 @@ export interface UsersData {
 }
 
 export interface UserData {
-  data?: User;
+  data?: User | null;
   token?: string;
 }
+
+// #region interfaces
 
 export interface FetchUsersAction {
   type: ActionTypes.fetchUsers;
@@ -54,6 +56,22 @@ export interface UserUpdateProfileAction {
   type: ActionTypes.userUpdateProfile;
   payload: UserData;
 }
+
+export interface CleanUpUserDataAction {
+  type: ActionTypes.cleanUpUserData;
+  payload: UserData;
+}
+
+export interface CleanUpUsersDataAction {
+  type: ActionTypes.cleanUpUsersData;
+  payload: UsersData;
+}
+
+// #endregion interfaces
+
+// #region functions
+
+// #region fetch users
 
 export const fetchUsers = (data: { callback: Function }) => {
   return async (dispatch: Dispatch) => {
@@ -132,6 +150,10 @@ export const fetchUserWithLogs = (data: {
   };
 };
 
+// #endregion fetch users
+
+// #region user actions
+
 export const followUser = (data: {
   user_id: number;
   token: string;
@@ -194,6 +216,78 @@ export const unfollowUser = (data: {
     });
   };
 };
+
+export const userUpdateProfileDetails = (data: {
+  user_id: number;
+  name: string;
+  email: string;
+  callback: Function;
+  errorCallback: Function;
+  finallyCallback: Function;
+}) => {
+  return async (dispatch: Dispatch) => {
+    backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      let { user_id, name, email, callback, errorCallback, finallyCallback } =
+        data;
+
+      await backend
+        .put<UserData>(`/api/users/${user_id}`, {
+          name,
+          email,
+        })
+        .then((response: AxiosResponse) => {
+          callback(response);
+
+          dispatch<UserUpdateProfileAction>({
+            type: ActionTypes.userUpdateProfile,
+            payload: response.data,
+          });
+        })
+        .catch((err: AxiosError) => {
+          errorCallback(err);
+        })
+        .finally(() => finallyCallback());
+    });
+  };
+};
+
+export const userUpdateProfileAvatar = (data: {
+  user_id: number;
+  formdata: FormData;
+  callback: Function;
+  errorCallback: Function;
+  finallyCallback: Function;
+}) => {
+  return async (dispatch: Dispatch) => {
+    backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      let { user_id, formdata, callback, errorCallback, finallyCallback } =
+        data;
+
+      await backend
+        .post<UserData>(`/api/users/${user_id}`, formdata, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((response: AxiosResponse) => {
+          callback(response);
+
+          dispatch<UserUpdateProfileAction>({
+            type: ActionTypes.userUpdateProfile,
+            payload: response.data,
+          });
+        })
+        .catch((err: AxiosError) => {
+          errorCallback(err);
+        })
+        .finally(() => finallyCallback());
+    });
+  };
+};
+
+// #endregion user actions
+
+// #region user auth
 
 export const userSignIn = (data: {
   email: number;
@@ -295,70 +389,28 @@ export const userSignOut = (data: {
   };
 };
 
-export const userUpdateProfileDetails = (data: {
-  user_id: number;
-  name: string;
-  email: string;
-  callback: Function;
-  errorCallback: Function;
-  finallyCallback: Function;
-}) => {
+// #endregion user auth
+
+// #region cleanup
+
+export const userDataCleanup = () => {
   return async (dispatch: Dispatch) => {
-    backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
-      let { user_id, name, email, callback, errorCallback, finallyCallback } =
-        data;
-
-      await backend
-        .put<UserData>(`/api/users/${user_id}`, {
-          name,
-          email,
-        })
-        .then((response: AxiosResponse) => {
-          callback(response);
-
-          dispatch<UserUpdateProfileAction>({
-            type: ActionTypes.userUpdateProfile,
-            payload: response.data,
-          });
-        })
-        .catch((err: AxiosError) => {
-          errorCallback(err);
-        })
-        .finally(() => finallyCallback());
+    dispatch<CleanUpUserDataAction>({
+      type: ActionTypes.cleanUpUserData,
+      payload: { data: null },
     });
   };
-};
+}
 
-export const userUpdateProfileAvatar = (data: {
-  user_id: number;
-  formdata: FormData;
-  callback: Function;
-  errorCallback: Function;
-  finallyCallback: Function;
-}) => {
+export const usersDataCleanup = () => {
   return async (dispatch: Dispatch) => {
-    backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
-      let { user_id, formdata, callback, errorCallback, finallyCallback } =
-        data;
-
-      await backend
-        .post<UserData>(`/api/users/${user_id}`, formdata, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then((response: AxiosResponse) => {
-          callback(response);
-
-          dispatch<UserUpdateProfileAction>({
-            type: ActionTypes.userUpdateProfile,
-            payload: response.data,
-          });
-        })
-        .catch((err: AxiosError) => {
-          errorCallback(err);
-        })
-        .finally(() => finallyCallback());
+    dispatch<CleanUpUsersDataAction>({
+      type: ActionTypes.cleanUpUsersData,
+      payload: { data: [] },
     });
   };
-};
+}
+
+// #endregion cleanup
+
+// #endregion functions
