@@ -8,9 +8,16 @@ import { User } from '../AdminUser';
 import { useCookies } from 'react-cookie';
 import QuizCard from './QuizCard';
 import { Quiz } from '../AdminQuiz';
-import { CircularProgress, InputAdornment, TextField } from '@mui/material';
+import {
+  Backdrop,
+  CircularProgress,
+  InputAdornment,
+  Stack,
+  TextField,
+} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
+import { useNavigate } from 'react-router';
 
 interface Props {
   quizzes: Quiz[];
@@ -30,6 +37,9 @@ export const _UserQuizzes = ({
   const [cookies] = useCookies();
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loadingQuiz, setloadingQuiz] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -65,43 +75,56 @@ export const _UserQuizzes = ({
   }, [search, fetchQuizzes]);
 
   const handleTakeQuiz = (e: any, id: number) => {
+    setloadingQuiz(true);
     takeQuiz(id, cookies.token, () => {
-      fetchQuizLogs(cookies.token);
+      setloadingQuiz(false);
+      navigate(`/quizzes/${id}`);
     });
   };
 
   return (
-    <div className="container mx-auto px-24 py-8">
-      <h1 className="font-semibold text-2xl my-4">Quizzes</h1>
+    <>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loadingQuiz}
+      >
+        <Stack alignItems="center" spacing={2}>
+          <h1 className="text-4xl">{'Submitting Request'}</h1>
+          <CircularProgress color="inherit" />
+        </Stack>
+      </Backdrop>
+      <div className="container mx-auto px-24 py-8">
+        <h1 className="font-semibold text-2xl my-4">Quizzes</h1>
 
-      <div className="my-10">
-        <TextField
-          label="Search Quiz"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          variant="outlined"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-        />
+        <div className="my-10">
+          <TextField
+            label="Search Quiz"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </div>
+
+        {loading && <CircularProgress />}
+
+        <Grid container spacing={5}>
+          {quizzes?.map((quiz) => {
+            return (
+              <Grid key={quiz.id} item>
+                <QuizCard quiz={quiz} handleTakeQuiz={handleTakeQuiz} />
+              </Grid>
+            );
+          })}
+        </Grid>
       </div>
-
-      {loading && <CircularProgress />}
-
-      <Grid container spacing={5}>
-        {quizzes?.map((quiz) => {
-          return (
-            <Grid key={quiz.id} item>
-              <QuizCard quiz={quiz} handleTakeQuiz={handleTakeQuiz} />
-            </Grid>
-          );
-        })}
-      </Grid>
-    </div>
+    </>
   );
 };
 

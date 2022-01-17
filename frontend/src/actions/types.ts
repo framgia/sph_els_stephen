@@ -17,10 +17,16 @@ import {
   UserSignUpAction,
   UserUpdateProfileAction,
 } from '.';
-import { AddQuizItemAction } from './quizItems';
+import {
+  AddQuizItemAction,
+  FetchQuizItemsAction,
+  SelectChoiceAction,
+} from './quizItems';
 
 export enum ActionTypes {
   fetchQuizzes,
+  fetchQuizItems,
+  selectChoice,
   addQuiz,
   getQuiz,
   updateQuiz,
@@ -43,6 +49,8 @@ export enum ActionTypes {
 
 export type Action =
   | FetchQuizzesAction
+  | FetchQuizItemsAction
+  | SelectChoiceAction
   | AddQuizAction
   | GetQuizAction
   | UpdateQuizAction

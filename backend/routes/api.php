@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('follows', FollowController::class)->only('index', 'store', 'show');
     Route::delete('follows', [FollowController::class, 'destroy']);
     Route::apiResource('quiz_logs', QuizLogController::class)->only('index', 'store', 'show');
+    Route::post('quiz_logs/{quiz}/submit', [QuizLogController::class, 'submit']);
     Route::apiResource('activity_logs', ActivityLogController::class)->only('index', 'show');
     Route::apiResource('quizzes.quiz_items', QuizQuizItemController::class)->only('index');
 });

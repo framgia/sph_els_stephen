@@ -158,3 +158,45 @@ export const takeQuiz = (
     });
   };
 };
+
+export const submitQuiz = (data: {
+  quiz_id: string | undefined;
+  choices_id: number[];
+  token: string;
+  callback?: Function;
+  errorcallback?: Function;
+  finallyCallback?: Function;
+}) => {
+  backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+    let {
+      quiz_id,
+      choices_id,
+      token,
+      callback,
+      errorcallback,
+      finallyCallback,
+    } = data;
+
+    await backend
+      .post<UserData>(
+        `/api/quiz_logs/${quiz_id}/submit`,
+        {
+          choices_id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        if (callback) callback(response);
+      })
+      .catch((error) => {
+        if (errorcallback) errorcallback(error);
+      })
+      .finally(() => {
+        if (finallyCallback) finallyCallback();
+      });
+  });
+};

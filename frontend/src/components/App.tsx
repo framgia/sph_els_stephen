@@ -1,4 +1,8 @@
 import '../index.css';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Header from './Header';
 import AdminQuiz, { AdminQuizForm, AdminQuizEditForm } from './AdminQuiz';
@@ -12,6 +16,7 @@ import GuestRoute from './GuestRoute';
 import UserProfileEdit from './UserProfile/UserProfileEdit';
 import UserList from './UserList';
 import UserDashboard from './UserDashboard';
+import UserQuizAnswer from './UserQuizAnswer';
 
 function Home() {
   return <h1 className="text-3xl font-bold underline">Home!</h1>;
@@ -84,6 +89,10 @@ function App() {
             <Route
               path="/quizzes"
               element={<AuthRoute element={<UserQuizzes />} />}
+            />
+            <Route
+              path="/quizzes/:id"
+              element={<AuthRoute element={<UserQuizAnswer />} />}
             />
             <Route
               path="/users"
