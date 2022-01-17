@@ -12,6 +12,7 @@ import {
   fetchUserWithLogs,
   followUser,
   unfollowUser,
+  userDataCleanup,
 } from '../../actions';
 import { StoreState } from '../../reducers';
 import { Avatar, CircularProgress, Skeleton, Stack } from '@mui/material';
@@ -19,25 +20,27 @@ import { useCookies } from 'react-cookie';
 import { Activity } from '.';
 
 interface Props {
-  user?: User;
+  user: User | null;
   numFollowing: number;
   numFollowers: number;
+  activities: Activity[] | null;
   fetchUserWithFollows: Function;
   fetchUserWithLogs: Function;
-  activities: Activity[] | null;
   followUser: Function;
   unfollowUser: Function;
+  userDataCleanup: Function;
 }
 
 export const _UserProfile = ({
   user,
   numFollowing,
   numFollowers,
+  activities,
   fetchUserWithFollows,
   fetchUserWithLogs,
-  activities,
   followUser,
   unfollowUser,
+  userDataCleanup,
 }: Props) => {
   let { id } = useParams();
 
@@ -72,7 +75,10 @@ export const _UserProfile = ({
       },
     });
     fetchUserWithLogs({ id: id, token: cookies.token });
-  }, [cookies, fetchUserWithFollows, fetchUserWithLogs, id]);
+    return () => {
+      userDataCleanup();
+    };
+  }, [cookies, fetchUserWithFollows, fetchUserWithLogs, userDataCleanup, id]);
 
   useEffect(() => {
     const checkFollowing = () => {
@@ -150,12 +156,12 @@ export const _UserProfile = ({
 const mapStateToProps = ({
   userData,
 }: StoreState): {
-  user?: User;
+  user: User | null;
   numFollowing: number;
   numFollowers: number;
   activities: Activity[] | null;
 } => {
-  let user = userData.data;
+  let user = userData.data || null;
   let numFollowing = user?.following?.length || 0;
   let numFollowers = user?.followers?.length || 0;
 
@@ -171,6 +177,7 @@ export const UserProfile = connect(mapStateToProps, {
   unfollowUser,
   fetchUserWithLogs,
   getActivities,
+  userDataCleanup,
 })(_UserProfile);
 
 export default UserProfile;

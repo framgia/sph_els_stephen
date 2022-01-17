@@ -1,5 +1,7 @@
 import {
   AddQuizAction,
+  CleanUpUserDataAction,
+  CleanUpUsersDataAction,
   DeleteQuizAction,
   FetchQuizLogsAction,
   FetchQuizzesAction,
@@ -35,6 +37,8 @@ export enum ActionTypes {
   userSignUp,
   userSignOut,
   userUpdateProfile,
+  cleanUpUserData,
+  cleanUpUsersData,
 }
 
 export type Action =
@@ -53,4 +57,6 @@ export type Action =
   | FetchQuizLogsAction
   | UserSignInAction
   | UserSignUpAction
-  | UserUpdateProfileAction;
+  | UserUpdateProfileAction
+  | CleanUpUserDataAction
+  | CleanUpUsersDataAction;

@@ -28,6 +28,8 @@ export const userDataReducer = (state: UserData = {}, action: Action) => {
       return action.payload;
     case ActionTypes.takeQuiz:
       return takeQuizFunc(state, action);
+    case ActionTypes.cleanUpUserData:
+      return action.payload;
     default:
       return state;
   }
@@ -44,6 +46,8 @@ export const usersDataReducer = (
       return followUserFunc(state, action);
     case ActionTypes.unfollowUser:
       return followUserFunc(state, action);
+    case ActionTypes.cleanUpUsersData:
+      return action.payload;
     default:
       return state;
   }

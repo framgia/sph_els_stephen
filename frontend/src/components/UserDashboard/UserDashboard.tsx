@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchUserWithLogs } from '../../actions';
+import { fetchUserWithLogs, userDataCleanup } from '../../actions';
 
 import { connect } from 'react-redux';
 import { useCookies } from 'react-cookie';
@@ -18,12 +18,14 @@ interface Props {
   user: User | null;
   activities: Activity[] | null;
   fetchUserWithLogs: Function;
+  userDataCleanup: Function;
 }
 
 export const _UserDashboard = ({
   user,
   activities,
   fetchUserWithLogs,
+  userDataCleanup,
 }: Props) => {
   const [cookies] = useCookies();
   const [loadingUserData, setLoadingUserData] = useState(false);
@@ -37,7 +39,10 @@ export const _UserDashboard = ({
         setLoadingUserData(false);
       },
     });
-  }, [cookies, fetchUserWithLogs]);
+    return () => {
+      userDataCleanup();
+    };
+  }, [cookies, fetchUserWithLogs, userDataCleanup]);
 
   return (
     <div className="container mx-auto px-24 py-8">
@@ -100,8 +105,9 @@ const mapStateToProps = ({
   return { user, activities };
 };
 
-export const UserDashboard = connect(mapStateToProps, { fetchUserWithLogs })(
-  _UserDashboard
-);
+export const UserDashboard = connect(mapStateToProps, {
+  fetchUserWithLogs,
+  userDataCleanup,
+})(_UserDashboard);
 
 export default UserDashboard;
