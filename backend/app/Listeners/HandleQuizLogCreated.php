@@ -13,8 +13,8 @@ class HandleQuizLogCreated {
 
     public function handle(QuizLogCreated $event) {
         $quiz_log = $event->quiz_log;
-        $user_name = $quiz_log->user()->first()->name;
-        $quiz_title = $quiz_log->quiz()->first()->title;
+        $user_name = $quiz_log->user->name;
+        $quiz_title = $quiz_log->quiz->title;
 
         ActivityLog::create([
             'loggable_type' => 'App\Models\QuizLog',

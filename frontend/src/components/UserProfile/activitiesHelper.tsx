@@ -13,7 +13,7 @@ export interface Activity {
   id: number;
   created_at: string;
   updated_at: string;
-  log: ActivityLog;
+  log: ActivityLog | ActivityLog[];
 
   quiz_id?: number;
   user_id?: number;
