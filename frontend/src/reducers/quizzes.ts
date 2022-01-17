@@ -1,4 +1,10 @@
-import { Action, ActionTypes, QuizData, QuizzesData } from '../actions';
+import {
+  Action,
+  ActionTypes,
+  QuizData,
+  QuizItemsData,
+  QuizzesData,
+} from '../actions';
 
 export const quizzesDataReducer = (
   state: QuizzesData = { data: [], links: {}, meta: {} },
@@ -19,6 +25,20 @@ export const quizDataReducer = (state: QuizData = {}, action: Action) => {
     case ActionTypes.getQuiz:
       return action.payload;
     case ActionTypes.updateQuiz:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const quizResultReducer = (
+  state: QuizItemsData = {},
+  action: Action
+) => {
+  switch (action.type) {
+    case ActionTypes.fetchQuizResult:
+      return action.payload;
+    case ActionTypes.clearQuizResult:
       return action.payload;
     default:
       return state;

@@ -22,12 +22,11 @@ export const _QuizCard = (props: Props) => {
         <CardActions>
           <Button
             variant={props.quiz.is_taken ? 'outlined' : 'contained'}
-            disabled={props.quiz.is_taken}
             onClick={(e) => {
-              props.handleTakeQuiz(e, props.quiz.id);
+              props.handleTakeQuiz(e, props.quiz.id, props.quiz.is_taken);
             }}
           >
-            Start
+            {props.quiz.is_taken ? 'View Result' : 'Start'}
           </Button>
         </CardActions>
       </div>

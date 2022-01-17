@@ -10,7 +10,11 @@ import {
   quizItemReducer,
   quizItemsReducer,
 } from './quizItems';
-import { quizDataReducer, quizzesDataReducer } from './quizzes';
+import {
+  quizDataReducer,
+  quizzesDataReducer,
+  quizResultReducer,
+} from './quizzes';
 import { userDataReducer, usersDataReducer } from './users';
 
 export interface StoreState {
@@ -21,6 +25,7 @@ export interface StoreState {
   quizItemData: QuizItemData;
   quizItemsData: QuizItemsData;
   quizAnswers: QuizAnswersData;
+  quizResult: QuizItemsData;
 }
 
 export const reducers = combineReducers<StoreState>({
@@ -31,4 +36,5 @@ export const reducers = combineReducers<StoreState>({
   quizItemData: quizItemReducer,
   quizItemsData: quizItemsReducer,
   quizAnswers: quizAnswersReducer,
+  quizResult: quizResultReducer,
 });

@@ -28,7 +28,10 @@ class QuizItemResource extends JsonResource {
         $jsonArr['choices'] = ChoiceResource::collection($this->choices);
         $jsonArr['quiz_title'] = $this->quiz->title;
         $jsonArr['answer'] = $this->when($filtered->count() > 0, $filtered->first());
-        $jsonArr['correct'] = $choices->firstWhere('is_correct', true)['id'];
+        $jsonArr['correct'] =  $this->when(
+            $answers->count() >= 1,
+            $choices->firstWhere('is_correct', true)['id']
+        );
 
         return $jsonArr;
     }
