@@ -16,8 +16,15 @@ class LearnedWordsController extends Controller {
         $choices = $quiz_items->pluck('choices')->collapse();
         $correct_choices = $choices->filter(fn ($choice) => $choice->is_correct);
 
+        $questions = $quiz_items->pluck('question');
+        $answers = $correct_choices->pluck('choice');
+        $array = [];
+        foreach ($questions as $k => $question) {
+            $array[] = ["question" => $question, "answer" => $answers[$k]];
+        }
+
         return response()->json([
-            "data" => $correct_choices->pluck('choice')
+            "data" => $array
         ]);
     }
 }
