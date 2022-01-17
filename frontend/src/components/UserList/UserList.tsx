@@ -72,10 +72,16 @@ export const UserList = ({
     let data = {
       user_id: rowId,
       token: cookies.token,
-      callback: callback,
+      callback: () => {
+        fetchUserWithFollows({
+          token: cookies.token,
+          callback: () => {
+            callback();
+          },
+        });
+      },
     };
     params.row.is_following ? unfollowUser(data) : followUser(data);
-    fetchUserWithFollows({ token: cookies.token });
   };
 
   return (
@@ -111,11 +117,7 @@ const mapStateToProps = ({
   const usersWithFollows = users.flatMap((user) => {
     if (logged_in_user?.id === user.id) return [];
 
-    if (typeof user['is_following'] === 'undefined') {
-      return { ...user, is_following: following_ids.includes(user['id']) };
-    }
-
-    return { ...user, is_following: user['is_following'] };
+    return { ...user, is_following: following_ids.includes(user['id']) };
   });
   return { usersWithFollows };
 };
