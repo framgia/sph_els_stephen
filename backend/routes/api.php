@@ -8,6 +8,7 @@ use App\Http\Controllers\QuizController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuizItemController;
 use App\Http\Controllers\QuizLogController;
+use App\Http\Controllers\QuizQuizItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,4 +36,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('follows', [FollowController::class, 'destroy']);
     Route::apiResource('quiz_logs', QuizLogController::class)->only('index', 'store', 'show');
     Route::apiResource('activity_logs', ActivityLogController::class)->only('index', 'show');
+    Route::apiResource('quizzes.quiz_items', QuizQuizItemController::class)->only('index');
 });

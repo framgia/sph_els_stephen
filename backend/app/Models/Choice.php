@@ -9,6 +9,13 @@ use Nette\NotImplementedException;
 class Choice extends Model {
     use HasFactory;
 
+    public $jsonKeyMap = [
+        'id' => 'id',
+
+        'quiz_item_id' => 'quiz_item_id',
+        'choice' => 'choice',
+    ];
+
     public function quizItem() {
         return $this->belongsTo(QuizItem::class);
     }
