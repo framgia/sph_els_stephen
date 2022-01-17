@@ -14,8 +14,9 @@ class QuizItemResource extends JsonResource {
             ['user_id', Auth::id()]
         ])->first();
         $answers = $quiz_log->answers()->get();
+        $choices = $this->choices()->get();
         $answers_ids = $answers->pluck('choice_id');
-        $choices_ids = $this->choices()->get()->pluck('id');
+        $choices_ids = $choices->pluck('id');
         $filtered = $answers_ids->filter(function ($answer_id) use ($choices_ids) {
             return $choices_ids->contains($answer_id);
         });
@@ -27,6 +28,7 @@ class QuizItemResource extends JsonResource {
         $jsonArr['choices'] = ChoiceResource::collection($this->choices);
         $jsonArr['quiz_title'] = $this->quiz->title;
         $jsonArr['answer'] = $this->when($filtered->count() > 0, $filtered->first());
+        $jsonArr['correct'] = $choices->firstWhere('is_correct', true)['id'];
 
         return $jsonArr;
     }
