@@ -17,10 +17,7 @@ import UserProfileEdit from './UserProfile/UserProfileEdit';
 import UserList from './UserList';
 import UserDashboard from './UserDashboard';
 import UserQuizAnswer from './UserQuizAnswer';
-<<<<<<< Updated upstream
-=======
 import UserQuizResult from './UserQuizResult';
->>>>>>> Stashed changes
 
 function Home() {
   return <h1 className="text-3xl font-bold underline">Home!</h1>;
