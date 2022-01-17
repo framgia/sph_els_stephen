@@ -21,6 +21,10 @@ class QuizLog extends Model {
         return $this->belongsTo(User::class);
     }
 
+    public function answers() {
+        return $this->hasMany(Answer::class);
+    }
+
     public function log() {
         return $this->morphOne(ActivityLog::class, 'loggable');
     }
