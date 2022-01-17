@@ -4,6 +4,7 @@ import {
   CleanUpUsersDataAction,
   DeleteQuizAction,
   FetchQuizLogsAction,
+  FetchQuizResultAction,
   FetchQuizzesAction,
   FetchUsersAction,
   FetchUserWithFollowsAction,
@@ -19,6 +20,7 @@ import {
 } from '.';
 import {
   AddQuizItemAction,
+  ClearQuizResultAction,
   FetchQuizItemsAction,
   SelectChoiceAction,
 } from './quizItems';
@@ -26,6 +28,7 @@ import {
 export enum ActionTypes {
   fetchQuizzes,
   fetchQuizItems,
+  fetchQuizResult,
   selectChoice,
   addQuiz,
   getQuiz,
@@ -45,11 +48,13 @@ export enum ActionTypes {
   userUpdateProfile,
   cleanUpUserData,
   cleanUpUsersData,
+  clearQuizResult,
 }
 
 export type Action =
   | FetchQuizzesAction
   | FetchQuizItemsAction
+  | FetchQuizResultAction
   | SelectChoiceAction
   | AddQuizAction
   | GetQuizAction
@@ -67,4 +72,5 @@ export type Action =
   | UserSignUpAction
   | UserUpdateProfileAction
   | CleanUpUserDataAction
-  | CleanUpUsersDataAction;
+  | CleanUpUsersDataAction
+  | ClearQuizResultAction;

@@ -74,12 +74,18 @@ export const _UserQuizzes = ({
     };
   }, [search, fetchQuizzes]);
 
-  const handleTakeQuiz = (e: any, id: number) => {
+  const handleTakeQuiz = (e: any, id: number, is_taken: boolean) => {
     setloadingQuiz(true);
-    takeQuiz(id, cookies.token, () => {
+
+    if (is_taken) {
       setloadingQuiz(false);
-      navigate(`/quizzes/${id}`);
-    });
+      navigate(`/quizzes/${id}/result`);
+    } else {
+      takeQuiz(id, cookies.token, () => {
+        setloadingQuiz(false);
+        navigate(`/quizzes/${id}`);
+      });
+    }
   };
 
   return (

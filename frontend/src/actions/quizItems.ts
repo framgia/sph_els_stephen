@@ -14,6 +14,8 @@ export interface QuizItem {
   question?: string;
   choices?: Choice[];
   quiz_title?: string;
+  answer?: number;
+  correct?: number;
 }
 
 // #region interfaces
@@ -52,6 +54,16 @@ export interface AddQuizItemAction {
   payload: QuizItemData;
 }
 
+export interface FetchQuizResultAction {
+  type: ActionTypes.fetchQuizResult;
+  payload: QuizItemsData;
+}
+
+export interface ClearQuizResultAction {
+  type: ActionTypes.clearQuizResult;
+  payload: QuizItemsData;
+}
+
 // #endregion interfaces
 
 // #region actions
@@ -59,9 +71,9 @@ export interface AddQuizItemAction {
 export const fetchQuizItems = (data: {
   token: string;
   quiz_id: number;
-  callback: Function;
-  errorCallback: Function;
-  finallyCallback: Function;
+  callback?: Function;
+  errorCallback?: Function;
+  finallyCallback?: Function;
 }) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
@@ -87,6 +99,52 @@ export const fetchQuizItems = (data: {
         .finally(() => {
           if (finallyCallback) finallyCallback();
         });
+    });
+  };
+};
+
+export const fetchQuizResults = (data: {
+  token: string;
+  quiz_id: string | undefined;
+  callback?: Function;
+  errorCallback?: Function;
+  finallyCallback?: Function;
+}) => {
+  return async (dispatch: Dispatch) => {
+    backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      let { token, quiz_id, callback, errorCallback, finallyCallback } = data;
+
+      await backend
+        .get<QuizItemsData>(`/api/quizzes/${quiz_id}/results`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          if (callback) callback();
+
+          dispatch<FetchQuizResultAction>({
+            type: ActionTypes.fetchQuizResult,
+            payload: response.data,
+          });
+        })
+        .catch((error) => {
+          if (errorCallback) errorCallback(error);
+        })
+        .finally(() => {
+          if (finallyCallback) finallyCallback();
+        });
+    });
+  };
+};
+
+export const clearQuizResult = () => {
+  return (dispatch: Dispatch) => {
+    let payloadData: QuizItemsData = {};
+
+    dispatch<ClearQuizResultAction>({
+      type: ActionTypes.clearQuizResult,
+      payload: payloadData,
     });
   };
 };
