@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuizItemController;
 use App\Http\Controllers\QuizLogController;
 use App\Http\Controllers\QuizQuizItemController;
+use App\Http\Controllers\QuizResultController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,4 +39,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('quiz_logs/{quiz}/submit', [QuizLogController::class, 'submit']);
     Route::apiResource('activity_logs', ActivityLogController::class)->only('index', 'show');
     Route::apiResource('quizzes.quiz_items', QuizQuizItemController::class)->only('index');
+    Route::apiResource('quizzes.results', QuizResultController::class)->only('index');
 });
