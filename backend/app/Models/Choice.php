@@ -11,7 +11,6 @@ class Choice extends Model {
 
     public $jsonKeyMap = [
         'id' => 'id',
-
         'quiz_item_id' => 'quiz_item_id',
         'choice' => 'choice',
     ];

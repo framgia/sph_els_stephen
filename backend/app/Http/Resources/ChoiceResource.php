@@ -10,6 +10,7 @@ class ChoiceResource extends JsonResource {
         foreach ($this->jsonKeyMap as $k => $v) {
             $jsonArr[$v] = $this->$k;
         }
+
         return $jsonArr;
     }
 }
