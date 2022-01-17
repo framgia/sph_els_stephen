@@ -26,6 +26,6 @@ class QuizLog extends Model {
     }
 
     public function log() {
-        return $this->morphOne(ActivityLog::class, 'loggable');
+        return $this->morphMany(ActivityLog::class, 'loggable');
     }
 }

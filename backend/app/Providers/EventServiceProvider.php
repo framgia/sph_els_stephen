@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\AnswerCreated;
 use App\Events\FollowLogCreated;
 use App\Events\QuizLogCreated;
+use App\Listeners\HandleAnswerCreated;
 use App\Listeners\HandleFollowLogCreated;
 use App\Listeners\HandleQuizLogCreated;
 use Illuminate\Auth\Events\Registered;
@@ -26,6 +28,9 @@ class EventServiceProvider extends ServiceProvider {
         ],
         QuizLogCreated::class => [
             HandleQuizLogCreated::class
+        ],
+        AnswerCreated::class => [
+            HandleAnswerCreated::class
         ]
     ];
 
