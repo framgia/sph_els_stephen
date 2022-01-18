@@ -1,4 +1,10 @@
-import { Action, ActionTypes, UserData, UsersData } from '../actions';
+import {
+  Action,
+  ActionTypes,
+  LearnedWordsData,
+  UserData,
+  UsersData,
+} from '../actions';
 
 const followUserFunc = (state: UsersData, action: Action) => {
   let users = state.data || [];
@@ -47,6 +53,18 @@ export const usersDataReducer = (
     case ActionTypes.unfollowUser:
       return followUserFunc(state, action);
     case ActionTypes.cleanUpUsersData:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const learnedWordsReducer = (
+  state: LearnedWordsData = {},
+  action: Action
+) => {
+  switch (action.type) {
+    case ActionTypes.fetchLearnedWords:
       return action.payload;
     default:
       return state;

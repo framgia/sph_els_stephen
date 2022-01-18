@@ -15,6 +15,15 @@ export interface UserData {
   token?: string;
 }
 
+export interface LearnedWord {
+  question: string;
+  answer: string;
+}
+
+export interface LearnedWordsData {
+  data?: LearnedWord[];
+}
+
 // #region interfaces
 
 export interface FetchUsersAction {
@@ -65,6 +74,11 @@ export interface CleanUpUserDataAction {
 export interface CleanUpUsersDataAction {
   type: ActionTypes.cleanUpUsersData;
   payload: UsersData;
+}
+
+export interface FetchLearnedWordsAction {
+  type: ActionTypes.fetchLearnedWords;
+  payload: LearnedWordsData;
 }
 
 // #endregion interfaces
@@ -281,6 +295,40 @@ export const userUpdateProfileAvatar = (data: {
           errorCallback(err);
         })
         .finally(() => finallyCallback());
+    });
+  };
+};
+
+export const fetchLearnedWords = (data: {
+  token: string;
+  callback?: Function;
+  errorCallback?: Function;
+  finallyCallback?: Function;
+}) => {
+  return async (dispatch: Dispatch) => {
+    backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      let { token, callback, errorCallback, finallyCallback } = data;
+
+      await backend
+        .get<LearnedWordsData>(`/api/learned_words`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response: AxiosResponse) => {
+          if (callback) callback(response);
+
+          dispatch<FetchLearnedWordsAction>({
+            type: ActionTypes.fetchLearnedWords,
+            payload: response.data,
+          });
+        })
+        .catch((err: AxiosError) => {
+          if (errorCallback) errorCallback(err);
+        })
+        .finally(() => {
+          if (finallyCallback) finallyCallback();
+        });
     });
   };
 };
