@@ -45,12 +45,12 @@ export const _UserProfile = ({
   let { id } = useParams();
 
   const [cookies] = useCookies();
-  const [loadingFollow, setLoadingFollow] = useState(false);
-  const [loadingUserData, setLoadingUserData] = useState(false);
+  const [isLoadingFollow, setIsLoadingFollow] = useState(false);
+  const [isLoadingUserData, setIsLoadingUserData] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
 
   const handleFollowClick = (e: any) => {
-    setLoadingFollow(true);
+    setIsLoadingFollow(true);
     let data = {
       user_id: user?.id,
       token: cookies.token,
@@ -59,7 +59,7 @@ export const _UserProfile = ({
           token: cookies.token,
           id: id,
           callback: () => {
-            setLoadingFollow(false);
+            setIsLoadingFollow(false);
             setIsFollowing(false);
             fetchUserWithLogs({ id: id, token: cookies.token });
           },
@@ -70,14 +70,14 @@ export const _UserProfile = ({
   };
 
   useEffect(() => {
-    setLoadingUserData(true);
-    setLoadingFollow(true);
+    setIsLoadingUserData(true);
+    setIsLoadingFollow(true);
     fetchUserWithFollows({
       token: cookies.token,
       id: id,
       callback: () => {
-        setLoadingUserData(false);
-        setLoadingFollow(false);
+        setIsLoadingUserData(false);
+        setIsLoadingFollow(false);
         fetchUserWithLogs({ id: id, token: cookies.token });
       },
     });
@@ -102,26 +102,24 @@ export const _UserProfile = ({
 
   const renderLatestActivity = (act: Activity | null) => {
     let act_logs = Array.isArray(act?.log) ? act?.log : [act?.log];
-
     let latest = act_logs?.at(0);
-    if (latest) {
-      const [doer, action, recipient] = JSON.parse(latest.message);
 
-      return (
-        <Stack>
-          {doer} {action} {recipient}
-        </Stack>
-      );
-    }
+    if (!latest) return;
 
-    return '';
+    const [doer, action, recipient] = JSON.parse(latest.message);
+
+    return (
+      <Stack>
+        {doer} {action} {recipient}
+      </Stack>
+    );
   };
 
   return (
     <div className="container mx-auto px-24 py-8">
       <div className="grid grid-cols-6">
         <div className="col-span-2 mr-4 px-10">
-          {loadingUserData ? (
+          {isLoadingUserData ? (
             <Stack alignItems="center" className="mb-5">
               <Skeleton variant="rectangular" width={200} height={200} />
               <Skeleton variant="text" width={150} height={50} />
@@ -153,7 +151,7 @@ export const _UserProfile = ({
           </div>
 
           <div className="my-4 text-center">
-            {loadingFollow ? (
+            {isLoadingFollow ? (
               <CircularProgress />
             ) : (
               <Chip
@@ -166,7 +164,7 @@ export const _UserProfile = ({
           </div>
 
           <Divider />
-          {loadingUserData ? (
+          {isLoadingUserData ? (
             <Skeleton
               className="mx-auto"
               variant="text"
