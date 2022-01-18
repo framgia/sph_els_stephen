@@ -10,14 +10,17 @@ import QuizCard from './QuizCard';
 import { Quiz } from '../AdminQuiz';
 import {
   Backdrop,
+  Box,
   CircularProgress,
   InputAdornment,
+  Skeleton,
   Stack,
   TextField,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
+import { sortQuizzes } from '.';
 
 interface Props {
   quizzes: Quiz[];
@@ -36,19 +39,19 @@ export const _UserQuizzes = ({
 }: Props) => {
   const [cookies] = useCookies();
   const [search, setSearch] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [loadingQuiz, setloadingQuiz] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingQuiz, setIsLoadingQuiz] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    setLoading(true);
+    setIsLoading(true);
     fetchQuizLogs({
       token: cookies.token,
       callback: () => {
         fetchQuizzes({
           callback: () => {
-            setLoading(false);
+            setIsLoading(false);
           },
         });
       },
@@ -58,11 +61,11 @@ export const _UserQuizzes = ({
   useEffect(() => {
     const { cancel } = axios.CancelToken.source();
     const timeoutId = setTimeout(() => {
-      setLoading(true);
+      setIsLoading(true);
       fetchQuizzes({
         search,
         callback: () => {
-          setLoading(false);
+          setIsLoading(false);
         },
       });
     }, 500);
@@ -70,19 +73,19 @@ export const _UserQuizzes = ({
     return () => {
       cancel('Search term changed');
       clearTimeout(timeoutId);
-      setLoading(false);
+      setIsLoading(false);
     };
   }, [search, fetchQuizzes]);
 
   const handleTakeQuiz = (e: any, id: number, is_taken: boolean) => {
-    setloadingQuiz(true);
+    setIsLoadingQuiz(true);
 
     if (is_taken) {
-      setloadingQuiz(false);
+      setIsLoadingQuiz(false);
       navigate(`/quizzes/${id}/result`);
     } else {
       takeQuiz(id, cookies.token, () => {
-        setloadingQuiz(false);
+        setIsLoadingQuiz(false);
         navigate(`/quizzes/${id}`);
       });
     }
@@ -92,7 +95,7 @@ export const _UserQuizzes = ({
     <>
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loadingQuiz}
+        open={isLoadingQuiz}
       >
         <Stack alignItems="center" spacing={2}>
           <h1 className="text-4xl">{'Submitting Request'}</h1>
@@ -118,16 +121,44 @@ export const _UserQuizzes = ({
           />
         </div>
 
-        {loading && <CircularProgress />}
-
         <Grid container spacing={5}>
-          {quizzes?.map((quiz) => {
-            return (
-              <Grid key={quiz.id} item>
-                <QuizCard quiz={quiz} handleTakeQuiz={handleTakeQuiz} />
-              </Grid>
-            );
-          })}
+          {isLoading
+            ? Array.from(Array(10).keys()).map((tempKey) => {
+                return (
+                  <Grid key={tempKey} item>
+                    <Box
+                      className=""
+                      sx={{ border: '1px solid gray', width: 530 }}
+                    >
+                      <Skeleton
+                        className="flex mt-4 ml-4"
+                        variant="text"
+                        width={120}
+                        height={64}
+                      />
+                      <Skeleton
+                        className="flex ml-2"
+                        variant="text"
+                        width={400}
+                        height={64}
+                      />
+                      <Skeleton
+                        className="mb-2 ml-96"
+                        variant="rectangular"
+                        width={76}
+                        height={36}
+                      />
+                    </Box>
+                  </Grid>
+                );
+              })
+            : quizzes?.map((quiz) => {
+                return (
+                  <Grid key={quiz.id} item>
+                    <QuizCard quiz={quiz} handleTakeQuiz={handleTakeQuiz} />
+                  </Grid>
+                );
+              })}
         </Grid>
       </div>
     </>
@@ -149,6 +180,7 @@ const mapStateToProps = ({
   quizzes = quizzes.map((quiz) => {
     return { ...quiz, is_taken: quiz_logs_ids.includes(quiz['id'] || 0) };
   });
+  sortQuizzes(quizzes);
 
   return { quizzes, user };
 };
