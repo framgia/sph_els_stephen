@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { StoreState } from '../../reducers';
 
-import { addQuizItem, QuizItemData } from '../../actions/quizItems';
+import { addQuizItem, QuizItem, QuizItemData } from '../../actions/quizItems';
 import Form, { FormLabel, FormInput, FormButton } from '../Forms';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 interface AdminQuizItemFormProps {
   quizItemData: QuizItemData;
@@ -18,6 +18,8 @@ const AdminQuizItemForm = ({
   let { quiz_id } = useParams();
   const [_question, setQuestion] = useState('');
 
+  const navigate = useNavigate();
+
   function onQuestionChange(e: any) {
     setQuestion(e.target.value);
   }
@@ -25,8 +27,14 @@ const AdminQuizItemForm = ({
   function onSubmit(e: any) {
     e.preventDefault();
 
-    addQuizItem({ quiz_id, question: _question });
-    setQuestion('');
+    let parsed = parseInt(quiz_id || '');
+    let quizItem: QuizItem = { quiz_id: parsed, question: _question };
+    addQuizItem({
+      quizItem,
+      callback: () => {
+        navigate('/admin/quizzes');
+      },
+    });
   }
 
   return (
@@ -51,6 +59,9 @@ const AdminQuizItemForm = ({
               <FormInput id="choice2" name="choices[]" />
               <FormInput id="choice3" name="choices[]" />
               <FormInput id="choice4" name="choices[]" />
+              <p className="italic">
+                note: the first choice is the correct choice
+              </p>
             </div>
           </div>
           <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">

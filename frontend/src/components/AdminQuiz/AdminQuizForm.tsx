@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { StoreState } from '../../reducers';
 import { QuizData, addQuiz } from '../../actions';
 import { Quiz } from '.';
+import { useNavigate } from 'react-router';
+import { CircularProgress } from '@mui/material';
 
 interface AdminQuizFormProps {
   children?: React.ReactNode;
@@ -50,6 +52,9 @@ export const _AdminQuizForm = ({
   const [_title, setTitle] = useState('');
   const [_description, setDescription] = useState('');
 
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
   function onTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setTitle(event.target.value);
   }
@@ -66,9 +71,14 @@ export const _AdminQuizForm = ({
       description: _description,
     };
 
-    addQuiz(_quiz);
-    setTitle('');
-    setDescription('');
+    setIsLoading(true);
+    addQuiz({
+      quiz: _quiz,
+      callback: () => {
+        setIsLoading(false);
+        navigate('/admin/quizzes');
+      },
+    });
   }
 
   return (
@@ -94,7 +104,11 @@ export const _AdminQuizForm = ({
             />
           </div>
           <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-            <FormButton type="submit" text="Save" onSubmit={onSubmit} />
+            {isLoading ? (
+              <CircularProgress />
+            ) : (
+              <FormButton type="submit" text="Save" onSubmit={onSubmit} />
+            )}
           </div>
         </div>
       </Form>

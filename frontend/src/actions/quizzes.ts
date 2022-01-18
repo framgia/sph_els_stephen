@@ -67,14 +67,17 @@ export const fetchQuizzes = (data: { search: string; callback: Function }) => {
   };
 };
 
-export const addQuiz = (quiz: Quiz) => {
+export const addQuiz = (data: { quiz: Quiz; callback: Function }) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
-      const response = await backend.post<QuizData>('/api/quizzes/', quiz);
+      let { quiz, callback } = data;
+      await backend.post<QuizData>('/api/quizzes/', quiz).then((response) => {
+        if (callback) callback();
 
-      dispatch<AddQuizAction>({
-        type: ActionTypes.addQuiz,
-        payload: response.data,
+        dispatch<AddQuizAction>({
+          type: ActionTypes.addQuiz,
+          payload: response.data,
+        });
       });
     });
   };
@@ -93,18 +96,25 @@ export const getQuiz = (quizId: number) => {
   };
 };
 
-export const updateQuiz = (quizId: string | undefined, quiz: Quiz) => {
+export const updateQuiz = (data: {
+  quizId: string | undefined;
+  quiz: Quiz;
+  callback: Function;
+}) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
-      const response = await backend.patch<QuizData>(
-        `/api/quizzes/${quizId}`,
-        quiz
-      );
+      let { quizId, quiz, callback } = data;
 
-      dispatch<UpdateQuizAction>({
-        type: ActionTypes.updateQuiz,
-        payload: response.data,
-      });
+      await backend
+        .patch<QuizData>(`/api/quizzes/${quizId}`, quiz)
+        .then((response) => {
+          if (callback) callback();
+
+          dispatch<UpdateQuizAction>({
+            type: ActionTypes.updateQuiz,
+            payload: response.data,
+          });
+        });
     });
   };
 };

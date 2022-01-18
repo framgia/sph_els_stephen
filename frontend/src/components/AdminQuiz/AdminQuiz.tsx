@@ -16,7 +16,7 @@ export const AdminQuiz = ({
   fetchQuizzes,
 }: AdminQuizProps): JSX.Element => {
   useEffect(() => {
-    fetchQuizzes();
+    fetchQuizzes({ search: '' });
   }, [fetchQuizzes]);
 
   return (

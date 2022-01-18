@@ -162,18 +162,24 @@ export const selectChoice = (data: { quiz_id: number; choice_id: number }) => {
   };
 };
 
-export const addQuizItem = (quizItem: QuizItem) => {
+export const addQuizItem = (data: {
+  quizItem: QuizItem;
+  callback: Function;
+}) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
-      const response = await backend.post<QuizItemData>(
-        '/api/quiz_items/',
-        quizItem
-      );
+      let { quizItem, callback } = data;
 
-      dispatch<AddQuizItemAction>({
-        type: ActionTypes.addQuizItem,
-        payload: response.data,
-      });
+      await backend
+        .post<QuizItemData>('/api/quiz_items/', quizItem)
+        .then((response) => {
+          if (callback) callback();
+
+          dispatch<AddQuizItemAction>({
+            type: ActionTypes.addQuizItem,
+            payload: response.data,
+          });
+        });
     });
   };
 };
