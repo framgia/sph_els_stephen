@@ -5,7 +5,7 @@ export const simple_to_plural = (
   word: string,
   suffix: string = 's'
 ) => {
-  return count > 1 ? `${word}${suffix}` : word;
+  return count > 1 ? `${count} ${word}${suffix}` : `${count} ${word}`;
 };
 
 export * from './UserDashboard';
