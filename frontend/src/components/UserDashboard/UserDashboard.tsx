@@ -4,7 +4,13 @@ import {
   userDataCleanup,
   fetchLearnedWords,
 } from '../../actions';
-import { TabPanel, a11yProps, UserLearnedWords, LearnedWordsRow } from '.';
+import {
+  TabPanel,
+  a11yProps,
+  UserLearnedWords,
+  LearnedWordsRow,
+  simple_to_plural,
+} from '.';
 
 import { connect } from 'react-redux';
 import { useCookies } from 'react-cookie';
@@ -108,8 +114,10 @@ export const _UserDashboard = ({
             </Stack>
           ) : (
             <div className="grid grid-cols-2 text-center my-4">
-              <div>Learned {learnedWordsNum} words</div>
-              <div>Learned {learnedQuizzesNum} quizzes</div>
+              <div>Learned {simple_to_plural(learnedWordsNum, 'word')}</div>
+              <div>
+                Learned {simple_to_plural(learnedQuizzesNum, 'quiz', 'zes')}
+              </div>
             </div>
           )}
 
