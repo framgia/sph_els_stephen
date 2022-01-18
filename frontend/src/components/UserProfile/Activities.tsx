@@ -6,7 +6,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 
 import { Skeleton, Stack } from '@mui/material';
-import { Activity } from '.';
+import { Activity, sortLogs } from '.';
 import { Link } from 'react-router-dom';
 
 import TimeAgo from 'react-timeago';
@@ -25,6 +25,7 @@ export const Activities = ({ activities = [] }: Props) => {
   const renderListItem = (act: Activity) => {
     const date = new Date(act.created_at);
     let act_logs = Array.isArray(act?.log) ? act?.log : [act?.log];
+    sortLogs(act_logs);
 
     return act_logs.map((act_log) => {
       const [doer, action, recipient] = JSON.parse(act_log.message);
