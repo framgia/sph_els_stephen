@@ -55,9 +55,15 @@ export const _UserProfile = ({
       user_id: user?.id,
       token: cookies.token,
       callback: () => {
-        setLoadingFollow(false);
-        setIsFollowing(false);
-        fetchUserWithFollows({ token: cookies.token, id: id });
+        fetchUserWithFollows({
+          token: cookies.token,
+          id: id,
+          callback: () => {
+            setLoadingFollow(false);
+            setIsFollowing(false);
+            fetchUserWithLogs({ id: id, token: cookies.token });
+          },
+        });
       },
     };
     isFollowing ? unfollowUser(data) : followUser(data);
@@ -72,9 +78,9 @@ export const _UserProfile = ({
       callback: () => {
         setLoadingUserData(false);
         setLoadingFollow(false);
+        fetchUserWithLogs({ id: id, token: cookies.token });
       },
     });
-    fetchUserWithLogs({ id: id, token: cookies.token });
     return () => {
       userDataCleanup();
     };
@@ -93,6 +99,23 @@ export const _UserProfile = ({
 
     checkFollowing();
   }, [user, cookies]);
+
+  const renderLatestActivity = (act: Activity | null) => {
+    let act_logs = Array.isArray(act?.log) ? act?.log : [act?.log];
+
+    let latest = act_logs?.at(0);
+    if (latest) {
+      const [doer, action, recipient] = JSON.parse(latest.message);
+
+      return (
+        <Stack>
+          {doer} {action} {recipient}
+        </Stack>
+      );
+    }
+
+    return '';
+  };
 
   return (
     <div className="container mx-auto px-24 py-8">
@@ -143,7 +166,18 @@ export const _UserProfile = ({
           </div>
 
           <Divider />
-          <div className="my-4 text-center">Latest Activity</div>
+          {loadingUserData ? (
+            <Skeleton
+              className="mx-auto"
+              variant="text"
+              width={150}
+              height={50}
+            />
+          ) : (
+            <div className="my-4 text-center">
+              {renderLatestActivity(activities?.at(1) || null)}
+            </div>
+          )}
         </div>
         <div className="col-span-4">
           <Activities activities={activities} />
@@ -155,6 +189,7 @@ export const _UserProfile = ({
 
 const mapStateToProps = ({
   userData,
+  userWithLogsData,
 }: StoreState): {
   user: User | null;
   numFollowing: number;
@@ -165,7 +200,8 @@ const mapStateToProps = ({
   let numFollowing = user?.following?.length || 0;
   let numFollowers = user?.followers?.length || 0;
 
-  let activities = getActivities(user);
+  let userWithLogs = userWithLogsData.data || null;
+  let activities = getActivities(userWithLogs);
   sortActivities(activities);
 
   return { user, numFollowing, numFollowers, activities };
