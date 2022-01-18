@@ -49,12 +49,6 @@ interface Props {
 export const _UserProfileEditDetails = ({
   userUpdateProfileDetails,
 }: Props) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ProfileEditInput>();
-
   const [cookies, setCookies] = useCookies();
 
   const [name, setName] = useState('');
@@ -66,11 +60,19 @@ export const _UserProfileEditDetails = ({
 
   const [loading, setLoading] = useState(false);
 
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ProfileEditInput>();
+
   useEffect(() => {
     let _name: string = cookies.user.name;
     let _email: string = cookies.user.email;
     setName(_name);
     setEmail(_email);
+    reset({ name: _name, email: _email });
     return () => {};
   }, [cookies]);
 
