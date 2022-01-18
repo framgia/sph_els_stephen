@@ -18,6 +18,7 @@ import UserList from './UserList';
 import UserDashboard from './UserDashboard';
 import UserQuizAnswer from './UserQuizAnswer';
 import UserQuizResult from './UserQuizResult';
+import UserLearnedWords from './UserDashboard/UserLearnedWords';
 
 function Home() {
   return <h1 className="text-3xl font-bold underline">Home!</h1>;
@@ -74,6 +75,10 @@ function App() {
             <Route
               path="/dashboard"
               element={<AuthRoute element={<UserDashboard />} />}
+            />
+            <Route
+              path="/learned_words"
+              element={<AuthRoute element={<UserLearnedWords />} />}
             />
             <Route
               path="/users"
