@@ -26,7 +26,7 @@ export const _UserProfileEditAvatar = ({ userUpdateProfileAvatar }: Props) => {
   const [success, setSuccess] = useState(false);
   const [msg, setMsg] = useState('');
 
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (cookies.user?.avatar) {
@@ -41,7 +41,7 @@ export const _UserProfileEditAvatar = ({ userUpdateProfileAvatar }: Props) => {
     formdata.append('_method', 'PUT');
     formdata.append('avatar', image);
 
-    setLoading(true);
+    setIsLoading(true);
     setError(false);
     setSuccess(false);
     let avatarData = {
@@ -60,7 +60,7 @@ export const _UserProfileEditAvatar = ({ userUpdateProfileAvatar }: Props) => {
         setMsg(errordata?.error?.message);
       },
       finallyCallback: () => {
-        setLoading(false);
+        setIsLoading(false);
       },
     };
 
@@ -83,22 +83,25 @@ export const _UserProfileEditAvatar = ({ userUpdateProfileAvatar }: Props) => {
               {msg}
             </Alert>
           ) : null}
-          {loading ? <CircularProgress /> : null}
-          <label htmlFor="avatar">
-            <Input
-              type="file"
-              accept="image/*"
-              id="avatar"
-              onChange={(e) => handleFileChange(e)}
-            />
-            <Button
-              variant="contained"
-              component="span"
-              endIcon={<PhotoCamera />}
-            >
-              Upload Photo
-            </Button>
-          </label>
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            <label htmlFor="avatar">
+              <Input
+                type="file"
+                accept="image/*"
+                id="avatar"
+                onChange={(e) => handleFileChange(e)}
+              />
+              <Button
+                variant="contained"
+                component="span"
+                endIcon={<PhotoCamera />}
+              >
+                Upload Photo
+              </Button>
+            </label>
+          )}
         </Stack>
       </div>
     </div>
