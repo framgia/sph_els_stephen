@@ -26,7 +26,7 @@ export const _UserProfileEditAvatar = ({ userUpdateProfileAvatar }: Props) => {
   const [success, setSuccess] = useState(false);
   const [msg, setMsg] = useState('');
 
-  const [loading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (cookies.user?.avatar) {
@@ -83,7 +83,7 @@ export const _UserProfileEditAvatar = ({ userUpdateProfileAvatar }: Props) => {
               {msg}
             </Alert>
           ) : null}
-          {loading ? (
+          {isLoading ? (
             <CircularProgress />
           ) : (
             <label htmlFor="avatar">
