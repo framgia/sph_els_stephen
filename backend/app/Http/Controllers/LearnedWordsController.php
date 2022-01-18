@@ -19,9 +19,11 @@ class LearnedWordsController extends Controller {
         $questions = $quiz_items->pluck('question');
         $answers = $correct_choices->pluck('choice');
         $array = [];
-        foreach ($questions as $k => $question) {
-            $array[] = ["question" => $question, "answer" => $answers[$k]];
-        }
+        $questions->map(
+            fn ($question, $key) =>
+            $array[] =
+                ["question" => $question, "answer" => $answers[$key]]
+        );
 
         return response()->json([
             "data" => $array
