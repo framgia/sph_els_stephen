@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\FollowController;
+use App\Http\Controllers\LearnedWordsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuizController;
@@ -40,4 +41,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('activity_logs', ActivityLogController::class)->only('index', 'show');
     Route::apiResource('quizzes.quiz_items', QuizQuizItemController::class)->only('index');
     Route::apiResource('quizzes.results', QuizResultController::class)->only('index');
+    Route::apiResource('learned_words', LearnedWordsController::class)->only('index');
 });
