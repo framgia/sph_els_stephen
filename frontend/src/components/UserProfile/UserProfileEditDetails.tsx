@@ -25,6 +25,10 @@ const formValidation = {
       value: true,
       message: 'This field is required.',
     },
+    minLength: {
+      value: 10,
+      message: 'Full Name has minimum length of 10',
+    },
     maxLength: {
       value: 255,
       message: 'Full Name field max character up to 255 only.',
@@ -58,7 +62,7 @@ export const _UserProfileEditDetails = ({
   const [success, setSuccess] = useState(false);
   const [msg, setMsg] = useState('');
 
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -77,7 +81,7 @@ export const _UserProfileEditDetails = ({
   }, [cookies]);
 
   const onSubmit = (data: ProfileEditInput) => {
-    setLoading(true);
+    setIsLoading(true);
     setError(false);
     setSuccess(false);
     let profileData = {
@@ -96,7 +100,7 @@ export const _UserProfileEditDetails = ({
         setMsg(errordata?.error?.message);
       },
       finallyCallback: () => {
-        setLoading(false);
+        setIsLoading(false);
       },
     };
 
@@ -142,10 +146,13 @@ export const _UserProfileEditDetails = ({
               {msg}
             </Alert>
           ) : null}
-          {loading ? <CircularProgress /> : null}
-          <Button type="submit" variant="contained">
-            Update
-          </Button>
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            <Button type="submit" variant="contained">
+              Update
+            </Button>
+          )}
         </Stack>
       </div>
     </Box>
