@@ -299,6 +299,52 @@ export const userUpdateProfileAvatar = (data: {
   };
 };
 
+export const userUpdatePassword = (data: {
+  token: string;
+  password: string;
+  new_password: string;
+  new_password_confirmation: string;
+  callback?: Function;
+  errorCallback?: Function;
+  finallyCallback?: Function;
+}) => {
+  backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+    let {
+      token,
+      password,
+      new_password,
+      new_password_confirmation,
+      callback,
+      errorCallback,
+      finallyCallback,
+    } = data;
+
+    await backend
+      .post<UserData>(
+        `/api/users/update_password`,
+        {
+          password,
+          new_password,
+          new_password_confirmation,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response: AxiosResponse) => {
+        if (callback) callback(response);
+      })
+      .catch((err: AxiosError) => {
+        if (errorCallback) errorCallback(err);
+      })
+      .finally(() => {
+        if (finallyCallback) finallyCallback();
+      });
+  });
+};
+
 export const fetchLearnedWords = (data: {
   token: string;
   callback?: Function;

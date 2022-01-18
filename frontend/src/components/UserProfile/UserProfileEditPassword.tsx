@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
-import { userUpdateProfileDetails } from '../../actions';
+import { userUpdateProfileDetails, userUpdatePassword } from '../../actions';
 import { StoreState } from '../../reducers';
 
 import {
@@ -10,15 +10,18 @@ import {
   Box,
   Button,
   CircularProgress,
+  IconButton,
+  InputAdornment,
   Stack,
   TextField,
 } from '@mui/material';
 import { AxiosError } from 'axios';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export interface ProfileEditPasswordInput {
   password: string;
   new_password: string;
-  new_password_repeat: string;
+  new_password_confirmation: string;
 }
 
 const formValidation = {
@@ -50,7 +53,7 @@ const formValidation = {
       message: 'Email field max character up to 255 only.',
     },
   },
-  new_password_repeat: {
+  new_password_confirmation: {
     required: {
       value: true,
       message: 'This field is required.',
@@ -75,11 +78,14 @@ const _UserProfileEditPassword = (props: Props) => {
 
   const [password, setPassword] = useState('');
   const [new_password, setNew_password] = useState('');
-  const [new_password_repeat, setNew_password_repeat] = useState('');
+  const [new_password_confirmation, setNew_password_confirmation] =
+    useState('');
 
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [msg, setMsg] = useState('');
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -94,12 +100,14 @@ const _UserProfileEditPassword = (props: Props) => {
     setError(false);
     setSuccess(false);
     let profilePasswordData = {
+      token: cookies.token,
       user_id: cookies.user.id,
+      password: data.password,
       new_password: data.new_password,
-      new_password_repeat: data.new_password_repeat,
+      new_password_confirmation: data.new_password_confirmation,
       callback: () => {
         setSuccess(true);
-        setMsg('Profile Updated Successfully');
+        setMsg('Password Changed Successfully');
       },
       errorCallback: (err: AxiosError) => {
         setError(true);
@@ -111,7 +119,17 @@ const _UserProfileEditPassword = (props: Props) => {
       },
     };
 
-    // userUpdateProfileDetails(profileData);
+    userUpdatePassword(profilePasswordData);
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
   };
 
   return (
@@ -127,37 +145,83 @@ const _UserProfileEditPassword = (props: Props) => {
       <div>
         <TextField
           {...register('password', formValidation.password)}
+          type={showPassword ? 'text' : 'password'}
           error={Boolean(errors?.password)}
-          label="Full Name"
+          label="Current Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           variant="filled"
           helperText={errors?.password?.message}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
       </div>
       <div>
         <TextField
           {...register('new_password', formValidation.new_password)}
+          type={showPassword ? 'text' : 'password'}
           error={Boolean(errors?.new_password)}
-          label="Email"
+          label="New Password"
           value={new_password}
           onChange={(e) => setNew_password(e.target.value)}
           variant="filled"
           helperText={errors?.new_password?.message}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
       </div>
       <div>
         <TextField
-          {...register(
-            'new_password_repeat',
-            formValidation.new_password_repeat
-          )}
-          error={Boolean(errors?.new_password_repeat)}
-          label="Email"
-          value={new_password_repeat}
-          onChange={(e) => setNew_password_repeat(e.target.value)}
+          {...register('new_password_confirmation', {
+            ...formValidation.new_password_confirmation,
+            validate: (value) =>
+              value === new_password || 'New Password does not match',
+          })}
+          type={showPassword ? 'text' : 'password'}
+          error={Boolean(errors?.new_password_confirmation)}
+          label="New Password Repeat"
+          value={new_password_confirmation}
+          onChange={(e) => setNew_password_confirmation(e.target.value)}
           variant="filled"
-          helperText={errors?.new_password_repeat?.message}
+          helperText={errors?.new_password_confirmation?.message}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
       </div>
       <div>
@@ -167,10 +231,13 @@ const _UserProfileEditPassword = (props: Props) => {
               {msg}
             </Alert>
           ) : null}
-          {isLoading ? <CircularProgress /> : null}
-          <Button type="submit" variant="contained" color="warning">
-            Update Password
-          </Button>
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            <Button type="submit" variant="contained" color="warning">
+              Update Password
+            </Button>
+          )}
         </Stack>
       </div>
     </Box>
