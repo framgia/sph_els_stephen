@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { userUpdateProfileDetails, userUpdatePassword } from '../../actions';
 import { StoreState } from '../../reducers';
 
+import { PasswordEditFormValidation as formValidation } from '.';
+
 import {
   Alert,
   Box,
@@ -23,51 +25,6 @@ export interface ProfileEditPasswordInput {
   new_password: string;
   new_password_confirmation: string;
 }
-
-const formValidation = {
-  password: {
-    required: {
-      value: true,
-      message: 'This field is required.',
-    },
-    minLength: {
-      value: 6,
-      message: 'Password minimum length is 6',
-    },
-    maxLength: {
-      value: 255,
-      message: 'Full Name field max character up to 255 only.',
-    },
-  },
-  new_password: {
-    required: {
-      value: true,
-      message: 'This field is required.',
-    },
-    minLength: {
-      value: 6,
-      message: 'Password minimum length is 6',
-    },
-    maxLength: {
-      value: 255,
-      message: 'Email field max character up to 255 only.',
-    },
-  },
-  new_password_confirmation: {
-    required: {
-      value: true,
-      message: 'This field is required.',
-    },
-    minLength: {
-      value: 6,
-      message: 'Password minimum length is 6',
-    },
-    maxLength: {
-      value: 255,
-      message: 'Email field max character up to 255 only.',
-    },
-  },
-};
 
 interface Props {
   userUpdateProfileDetails: Function;
@@ -108,6 +65,9 @@ const _UserProfileEditPassword = (props: Props) => {
       callback: () => {
         setSuccess(true);
         setMsg('Password Changed Successfully');
+        setPassword('');
+        setNew_password('');
+        setNew_password_confirmation('');
       },
       errorCallback: (err: AxiosError) => {
         setError(true);
@@ -132,6 +92,19 @@ const _UserProfileEditPassword = (props: Props) => {
     event.preventDefault();
   };
 
+  const showHidePasswordComponent = (
+    <InputAdornment position="end">
+      <IconButton
+        aria-label="toggle password visibility"
+        onClick={handleClickShowPassword}
+        onMouseDown={handleMouseDownPassword}
+        edge="end"
+      >
+        {showPassword ? <VisibilityOff /> : <Visibility />}
+      </IconButton>
+    </InputAdornment>
+  );
+
   return (
     <Box
       component="form"
@@ -153,18 +126,7 @@ const _UserProfileEditPassword = (props: Props) => {
           variant="filled"
           helperText={errors?.password?.message}
           InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
+            endAdornment: showHidePasswordComponent,
           }}
         />
       </div>
@@ -179,18 +141,7 @@ const _UserProfileEditPassword = (props: Props) => {
           variant="filled"
           helperText={errors?.new_password?.message}
           InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
+            endAdornment: showHidePasswordComponent,
           }}
         />
       </div>
@@ -209,18 +160,7 @@ const _UserProfileEditPassword = (props: Props) => {
           variant="filled"
           helperText={errors?.new_password_confirmation?.message}
           InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
+            endAdornment: showHidePasswordComponent,
           }}
         />
       </div>
