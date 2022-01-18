@@ -15,7 +15,7 @@ export const AdminUser = ({
   fetchUsers,
 }: AdminUserProps): JSX.Element => {
   useEffect(() => {
-    fetchUsers();
+    fetchUsers({});
   }, [fetchUsers]);
 
   return (

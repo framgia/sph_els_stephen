@@ -5,6 +5,7 @@ import { StoreState } from '../../reducers';
 import { addQuizItem, QuizItem, QuizItemData } from '../../actions/quizItems';
 import Form, { FormLabel, FormInput, FormButton } from '../Forms';
 import { useNavigate, useParams } from 'react-router';
+import { CircularProgress } from '@mui/material';
 
 interface AdminQuizItemFormProps {
   quizItemData: QuizItemData;
@@ -17,6 +18,7 @@ const AdminQuizItemForm = ({
 }: AdminQuizItemFormProps): JSX.Element => {
   let { quiz_id } = useParams();
   const [_question, setQuestion] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -29,9 +31,11 @@ const AdminQuizItemForm = ({
 
     let parsed = parseInt(quiz_id || '');
     let quizItem: QuizItem = { quiz_id: parsed, question: _question };
+    setIsLoading(true);
     addQuizItem({
       quizItem,
       callback: () => {
+        setIsLoading(false);
         navigate('/admin/quizzes');
       },
     });
@@ -65,7 +69,11 @@ const AdminQuizItemForm = ({
             </div>
           </div>
           <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-            <FormButton type="submit" text="Save" onSubmit={onSubmit} />
+            {isLoading ? (
+              <CircularProgress />
+            ) : (
+              <FormButton type="submit" text="Save" onSubmit={onSubmit} />
+            )}
           </div>
         </div>
       </Form>

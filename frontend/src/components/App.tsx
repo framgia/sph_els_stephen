@@ -13,6 +13,7 @@ import UserProfile, { UserProfileEdit } from './UserProfile';
 import UserQuizzes from './UserQuizzes';
 import AuthRoute from './AuthRoute';
 import GuestRoute from './GuestRoute';
+import AdminRoute from './AdminRoute';
 import UserList from './UserList';
 import UserDashboard from './UserDashboard';
 import UserQuizAnswer from './UserQuizAnswer';
@@ -33,17 +34,26 @@ function App() {
             {
               // #region Admin
             }
-            <Route path="/admin/quizzes" element={<AdminQuiz />} />
-            <Route path="/admin/quizzes/create" element={<AdminQuizForm />} />
+            <Route
+              path="/admin/quizzes"
+              element={<AdminRoute element={<AdminQuiz />} />}
+            />
+            <Route
+              path="/admin/quizzes/create"
+              element={<AdminRoute element={<AdminQuizForm />} />}
+            />
             <Route
               path="/admin/quizzes/:quiz_id/quiz_items/create"
-              element={<AdminQuizItemForm />}
+              element={<AdminRoute element={<AdminQuizItemForm />} />}
             />
             <Route
               path="/admin/quizzes/:id/edit"
-              element={<AdminQuizEditForm />}
+              element={<AdminRoute element={<AdminQuizEditForm />} />}
             />
-            <Route path="/admin/users" element={<AdminUser />} />
+            <Route
+              path="/admin/users"
+              element={<AdminRoute element={<AdminUser />} />}
+            />
             {
               // #endregion
             }

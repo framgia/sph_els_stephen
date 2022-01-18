@@ -87,7 +87,7 @@ export interface FetchLearnedWordsAction {
 
 // #region fetch users
 
-export const fetchUsers = (data: { callback: Function }) => {
+export const fetchUsers = (data: { callback?: Function }) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
       let { callback } = data;
