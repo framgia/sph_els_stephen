@@ -114,9 +114,13 @@ export const _UserDashboard = ({
             </Stack>
           ) : (
             <div className="grid grid-cols-2 text-center my-4">
-              <div>Learned {simple_to_plural(learnedWordsNum, 'word')}</div>
               <div>
-                Learned {simple_to_plural(learnedQuizzesNum, 'quiz', 'zes')}
+                Learned {learnedWordsNum}{' '}
+                {simple_to_plural(learnedWordsNum, 'word')}
+              </div>
+              <div>
+                Learned {learnedQuizzesNum}{' '}
+                {simple_to_plural(learnedQuizzesNum, 'quiz', 'zes')}
               </div>
             </div>
           )}
