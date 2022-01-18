@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getActivities, sortActivities } from './activitiesHelper';
-import Activities from './Activities';
+import { Activity, getActivities, sortActivities, Activities } from '.';
 import Divider from '@mui/material/Divider';
 import Chip from '@mui/material/Chip';
 
@@ -17,7 +16,6 @@ import {
 import { StoreState } from '../../reducers';
 import { Avatar, CircularProgress, Skeleton, Stack } from '@mui/material';
 import { useCookies } from 'react-cookie';
-import { Activity } from '.';
 
 interface Props {
   user: User | null;
@@ -210,7 +208,6 @@ export const UserProfile = connect(mapStateToProps, {
   followUser,
   unfollowUser,
   fetchUserWithLogs,
-  getActivities,
   userDataCleanup,
 })(_UserProfile);
 

@@ -3,7 +3,7 @@ import { UserProfileEditDetails, UserProfileEditAvatar } from '.';
 
 interface Props {}
 
-const UserProfileEdit = (props: Props): JSX.Element => {
+export const UserProfileEdit = (props: Props): JSX.Element => {
   return (
     <div className="container mx-auto px-24 py-8">
       <Stack direction="row">
