@@ -25,12 +25,14 @@ import {
   learnedWordsReducer,
   userDataReducer,
   usersDataReducer,
+  userWithLogsReducer,
 } from './users';
 
 export interface StoreState {
   quizzesData: QuizzesData;
   quizData: QuizData;
   userData: UserData;
+  userWithLogsData: UserData;
   usersData: UsersData;
   quizItemData: QuizItemData;
   quizItemsData: QuizItemsData;
@@ -43,6 +45,7 @@ export const reducers = combineReducers<StoreState>({
   quizzesData: quizzesDataReducer,
   quizData: quizDataReducer,
   userData: userDataReducer,
+  userWithLogsData: userWithLogsReducer,
   usersData: usersDataReducer,
   quizItemData: quizItemReducer,
   quizItemsData: quizItemsReducer,

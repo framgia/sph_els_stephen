@@ -41,6 +41,15 @@ export const userDataReducer = (state: UserData = {}, action: Action) => {
   }
 };
 
+export const userWithLogsReducer = (state: UserData = {}, action: Action) => {
+  switch (action.type) {
+    case ActionTypes.fetchUserWithLogs:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 export const usersDataReducer = (
   state: UsersData = { data: [], links: {}, meta: {} },
   action: Action

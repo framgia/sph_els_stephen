@@ -45,36 +45,42 @@ export const _UserProfile = ({
   let { id } = useParams();
 
   const [cookies] = useCookies();
-  const [loadingFollow, setLoadingFollow] = useState(false);
-  const [loadingUserData, setLoadingUserData] = useState(false);
+  const [isLoadingFollow, setIsLoadingFollow] = useState(false);
+  const [isLoadingUserData, setIsLoadingUserData] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
 
   const handleFollowClick = (e: any) => {
-    setLoadingFollow(true);
+    setIsLoadingFollow(true);
     let data = {
       user_id: user?.id,
       token: cookies.token,
       callback: () => {
-        setLoadingFollow(false);
-        setIsFollowing(false);
-        fetchUserWithFollows({ token: cookies.token, id: id });
+        fetchUserWithFollows({
+          token: cookies.token,
+          id: id,
+          callback: () => {
+            setIsLoadingFollow(false);
+            setIsFollowing(false);
+            fetchUserWithLogs({ id: id, token: cookies.token });
+          },
+        });
       },
     };
     isFollowing ? unfollowUser(data) : followUser(data);
   };
 
   useEffect(() => {
-    setLoadingUserData(true);
-    setLoadingFollow(true);
+    setIsLoadingUserData(true);
+    setIsLoadingFollow(true);
     fetchUserWithFollows({
       token: cookies.token,
       id: id,
       callback: () => {
-        setLoadingUserData(false);
-        setLoadingFollow(false);
+        setIsLoadingUserData(false);
+        setIsLoadingFollow(false);
+        fetchUserWithLogs({ id: id, token: cookies.token });
       },
     });
-    fetchUserWithLogs({ id: id, token: cookies.token });
     return () => {
       userDataCleanup();
     };
@@ -94,11 +100,26 @@ export const _UserProfile = ({
     checkFollowing();
   }, [user, cookies]);
 
+  const renderLatestActivity = (act: Activity | null) => {
+    let act_logs = Array.isArray(act?.log) ? act?.log : [act?.log];
+    let latest = act_logs?.at(0);
+
+    if (!latest) return;
+
+    const [doer, action, recipient] = JSON.parse(latest.message);
+
+    return (
+      <Stack>
+        {doer} {action} {recipient}
+      </Stack>
+    );
+  };
+
   return (
     <div className="container mx-auto px-24 py-8">
       <div className="grid grid-cols-6">
         <div className="col-span-2 mr-4 px-10">
-          {loadingUserData ? (
+          {isLoadingUserData ? (
             <Stack alignItems="center" className="mb-5">
               <Skeleton variant="rectangular" width={200} height={200} />
               <Skeleton variant="text" width={150} height={50} />
@@ -130,7 +151,7 @@ export const _UserProfile = ({
           </div>
 
           <div className="my-4 text-center">
-            {loadingFollow ? (
+            {isLoadingFollow ? (
               <CircularProgress />
             ) : (
               <Chip
@@ -143,7 +164,18 @@ export const _UserProfile = ({
           </div>
 
           <Divider />
-          <div className="my-4 text-center">Latest Activity</div>
+          {isLoadingUserData ? (
+            <Skeleton
+              className="mx-auto"
+              variant="text"
+              width={150}
+              height={50}
+            />
+          ) : (
+            <div className="my-4 text-center">
+              {renderLatestActivity(activities?.at(1) || null)}
+            </div>
+          )}
         </div>
         <div className="col-span-4">
           <Activities activities={activities} />
@@ -155,6 +187,7 @@ export const _UserProfile = ({
 
 const mapStateToProps = ({
   userData,
+  userWithLogsData,
 }: StoreState): {
   user: User | null;
   numFollowing: number;
@@ -165,7 +198,8 @@ const mapStateToProps = ({
   let numFollowing = user?.following?.length || 0;
   let numFollowers = user?.followers?.length || 0;
 
-  let activities = getActivities(user);
+  let userWithLogs = userWithLogsData.data || null;
+  let activities = getActivities(userWithLogs);
   sortActivities(activities);
 
   return { user, numFollowing, numFollowers, activities };
