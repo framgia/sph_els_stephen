@@ -3,6 +3,7 @@ import {
   CleanUpUserDataAction,
   CleanUpUsersDataAction,
   DeleteQuizAction,
+  FetchLearnedWordsAction,
   FetchQuizLogsAction,
   FetchQuizResultAction,
   FetchQuizzesAction,
@@ -29,6 +30,7 @@ export enum ActionTypes {
   fetchQuizzes,
   fetchQuizItems,
   fetchQuizResult,
+  fetchLearnedWords,
   selectChoice,
   addQuiz,
   getQuiz,
@@ -55,6 +57,7 @@ export type Action =
   | FetchQuizzesAction
   | FetchQuizItemsAction
   | FetchQuizResultAction
+  | FetchLearnedWordsAction
   | SelectChoiceAction
   | AddQuizAction
   | GetQuizAction

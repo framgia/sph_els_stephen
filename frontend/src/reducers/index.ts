@@ -1,5 +1,11 @@
 import { combineReducers } from 'redux';
-import { QuizData, QuizzesData, UserData, UsersData } from '../actions';
+import {
+  LearnedWordsData,
+  QuizData,
+  QuizzesData,
+  UserData,
+  UsersData,
+} from '../actions';
 import {
   QuizAnswersData,
   QuizItemData,
@@ -15,7 +21,11 @@ import {
   quizzesDataReducer,
   quizResultReducer,
 } from './quizzes';
-import { userDataReducer, usersDataReducer } from './users';
+import {
+  learnedWordsReducer,
+  userDataReducer,
+  usersDataReducer,
+} from './users';
 
 export interface StoreState {
   quizzesData: QuizzesData;
@@ -26,6 +36,7 @@ export interface StoreState {
   quizItemsData: QuizItemsData;
   quizAnswers: QuizAnswersData;
   quizResult: QuizItemsData;
+  learnedWordsData: LearnedWordsData;
 }
 
 export const reducers = combineReducers<StoreState>({
@@ -37,4 +48,5 @@ export const reducers = combineReducers<StoreState>({
   quizItemsData: quizItemsReducer,
   quizAnswers: quizAnswersReducer,
   quizResult: quizResultReducer,
+  learnedWordsData: learnedWordsReducer,
 });
