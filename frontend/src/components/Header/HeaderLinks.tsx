@@ -17,6 +17,7 @@ const HeaderLinks = () => {
       {cookies?.user?.is_admin ? (
         <>
           <HeaderItem label="Quizzes" href="/admin/quizzes" />
+          <HeaderItem label="Create Quiz" href="/admin/quizzes/create" />
           <HeaderItem label="Users" href="/admin/users" />
         </>
       ) : (

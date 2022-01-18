@@ -96,6 +96,23 @@ export const getQuiz = (quizId: number) => {
   };
 };
 
+export const deleteQuiz = (data: { quizId: number; callback?: Function }) => {
+  return async (dispatch: Dispatch) => {
+    backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
+      let { quizId, callback } = data;
+
+      await backend.delete(`/api/quizzes/${quizId}`).then((response) => {
+        if (callback) callback();
+
+        dispatch<DeleteQuizAction>({
+          type: ActionTypes.deleteQuiz,
+          payload: quizId,
+        });
+      });
+    });
+  };
+};
+
 export const updateQuiz = (data: {
   quizId: string | undefined;
   quiz: Quiz;

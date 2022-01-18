@@ -4,10 +4,12 @@ import { Quiz } from './types';
 
 interface AdminQuizActionProps {
   quiz: Quiz;
+  handleQuizDelete: Function;
 }
 
 export const AdminQuizAction = ({
   quiz,
+  handleQuizDelete,
 }: AdminQuizActionProps): JSX.Element => {
   return (
     <td>
@@ -23,12 +25,15 @@ export const AdminQuizAction = ({
       >
         Edit
       </Link>
-      <a
-        href={`quizzes/${quiz.id}/delete`}
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          handleQuizDelete(e, quiz.id);
+        }}
         className="text-indigo-600 hover:text-indigo-900 px-2 py-4"
       >
         Delete
-      </a>
+      </button>
     </td>
   );
 };
