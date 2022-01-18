@@ -44,6 +44,15 @@ export const sortActivities = (acitvities: Activity[] | null) => {
     let aDate = new Date(a.created_at);
     let bDate = new Date(b.created_at);
 
-    return aDate.getTime() - bDate.getTime();
+    return bDate.getTime() - aDate.getTime();
+  });
+};
+
+export const sortLogs = (logs: ActivityLog[] | null) => {
+  logs?.sort((a, b) => {
+    let aDate = new Date(a.created_at);
+    let bDate = new Date(b.created_at);
+
+    return bDate.getTime() - aDate.getTime();
   });
 };
