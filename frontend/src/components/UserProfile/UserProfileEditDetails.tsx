@@ -78,7 +78,7 @@ export const _UserProfileEditDetails = ({
     setEmail(_email);
     reset({ name: _name, email: _email });
     return () => {};
-  }, [cookies]);
+  }, [cookies, reset]);
 
   const onSubmit = (data: ProfileEditInput) => {
     setIsLoading(true);

@@ -34,6 +34,7 @@ Route::post('login', [UserController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [UserController::class, 'logout']);
+    Route::post('users/update_password', [UserController::class, 'update_password']);
     Route::apiResource('follows', FollowController::class)->only('index', 'store', 'show');
     Route::delete('follows', [FollowController::class, 'destroy']);
     Route::apiResource('quiz_logs', QuizLogController::class)->only('index', 'store', 'show');

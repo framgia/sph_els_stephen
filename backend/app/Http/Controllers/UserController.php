@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Nette\NotImplementedException;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use Nette\NotImplementedException;
 
 class UserController extends Controller {
     public function index() {
@@ -91,6 +92,23 @@ class UserController extends Controller {
             ['data' => ["message" => "User '{$u->name}' deleted successfully."], "code" => 200],
             200
         );
+    }
+
+    public function update_password(Request $request) {
+        $user = User::find(Auth::id());
+
+        $attrs = $this->validate($request, [
+            'password' => ['required', 'string', 'min:6'],
+            'new_password' => ['required', 'string', 'min:6', 'confirmed']
+        ]);
+
+        if (!Hash::check($attrs['password'], $user->password)) {
+            throw ValidationException::withMessages(['Incorrect credentials.']);
+        }
+
+        $user->update(['password' => $attrs['new_password']]);
+
+        return new UserResource($user);
     }
 
     protected function validateUser(Request $request, ?User $user = null) {

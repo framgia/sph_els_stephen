@@ -79,12 +79,12 @@ export const _UserSignUp = ({ userSignUp }: Props) => {
 
   const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [_, setCookies] = useCookies(); // eslint-disable-line -- need to destructure this way
 
   const onSubmit = (data: FormInput) => {
     setIsError(false);
-    setLoading(true);
+    setIsLoading(true);
     let signUpData = {
       name: data.name,
       email: data.email,
@@ -93,11 +93,12 @@ export const _UserSignUp = ({ userSignUp }: Props) => {
       callback: (response: AxiosResponse) => {
         setCookies('user', response.data.data, { path: '/' });
         setCookies('token', response.data.token, { path: '/' });
-        setLoading(false);
+        setIsLoading(false);
         navigate('/');
       },
       errorCallback: () => {
         setIsError(true);
+        setIsLoading(false);
       },
     };
 
@@ -149,7 +150,7 @@ export const _UserSignUp = ({ userSignUp }: Props) => {
           </div>
 
           <div>{isError ? 'Invalid Input' : ''}</div>
-          {loading ? (
+          {isLoading ? (
             <Stack alignItems="center">
               <CircularProgress />
             </Stack>
