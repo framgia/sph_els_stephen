@@ -4,7 +4,13 @@ import {
   userDataCleanup,
   fetchLearnedWords,
 } from '../../actions';
-import { TabPanel, a11yProps, UserLearnedWords, LearnedWordsRow } from '.';
+import {
+  TabPanel,
+  a11yProps,
+  UserLearnedWords,
+  LearnedWordsRow,
+  simple_to_plural,
+} from '.';
 
 import { connect } from 'react-redux';
 import { useCookies } from 'react-cookie';
@@ -31,6 +37,8 @@ interface Props {
   user: User | null;
   activities: Activity[] | null;
   learnedWordsRows: LearnedWordsRow[] | null;
+  learnedWordsNum: number;
+  learnedQuizzesNum: number;
   fetchUserWithLogs: Function;
   userDataCleanup: Function;
   fetchLearnedWords: Function;
@@ -41,6 +49,8 @@ export const _UserDashboard = ({
   activities,
   fetchUserWithLogs,
   learnedWordsRows,
+  learnedWordsNum,
+  learnedQuizzesNum,
   userDataCleanup,
   fetchLearnedWords,
 }: Props) => {
@@ -104,8 +114,10 @@ export const _UserDashboard = ({
             </Stack>
           ) : (
             <div className="grid grid-cols-2 text-center my-4">
-              <div>Learned 20 words</div>
-              <div>Learned 5 lessons</div>
+              <div>Learned {simple_to_plural(learnedWordsNum, 'word')}</div>
+              <div>
+                Learned {simple_to_plural(learnedQuizzesNum, 'quiz', 'zes')}
+              </div>
             </div>
           )}
 
@@ -143,9 +155,13 @@ const mapStateToProps = ({
   user: User | null;
   activities: Activity[] | null;
   learnedWordsRows: LearnedWordsRow[] | null;
+  learnedWordsNum: number;
+  learnedQuizzesNum: number;
 } => {
   let user = userData.data || null;
   let learnedWords = learnedWordsData.data || null;
+  let learnedWordsNum = 0;
+  let learnedQuizzesNum = user?.quiz_logs?.length || 0;
 
   let activities = getActivities(user);
   sortActivities(activities);
@@ -157,6 +173,7 @@ const mapStateToProps = ({
 
   if (learnedWords) {
     for (let row of learnedWords) {
+      learnedWordsNum++;
       if (isQuestion1) {
         tempRow.id = currentIndex;
         tempRow.question1 = row['question'];
@@ -177,7 +194,13 @@ const mapStateToProps = ({
     }
   }
 
-  return { user, activities, learnedWordsRows };
+  return {
+    user,
+    activities,
+    learnedWordsRows,
+    learnedWordsNum,
+    learnedQuizzesNum,
+  };
 };
 
 export const UserDashboard = connect(mapStateToProps, {
