@@ -55,7 +55,7 @@ export const Activities = ({ activities = [] }: Props) => {
                   : `/users/${act?.follower?.id}`
               }
             >
-              {isCurrentUser || isCurrentQuizTaker ? doer : 'You'}
+              {isCurrentUser || isCurrentQuizTaker ? 'You' : doer}
             </Link>
             {action}
             <Link
