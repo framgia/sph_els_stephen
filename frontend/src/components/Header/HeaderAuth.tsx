@@ -91,7 +91,9 @@ const HeaderAuth = () => {
   ) : (
     <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
       <HeaderDropDown
-        label={`${cookies?.user?.is_admin && '(ADMIN) '}${cookies.user?.name}`}
+        label={`${cookies?.user?.is_admin ? '(ADMIN) ' : ''}${
+          cookies.user?.name
+        }`}
         dropDownItems={cookies?.user?.is_admin ? adminOptions : userOptions}
       >
         <div>
