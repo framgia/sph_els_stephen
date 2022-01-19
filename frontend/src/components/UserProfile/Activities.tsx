@@ -38,7 +38,7 @@ export const Activities = ({ activities = [] }: Props) => {
 
       if (act?.user_id) {
         avatarSrc = act?.user?.avatar ?? defaultAvatar;
-        leftSrc = isCurrentUser ? '/dashboard' : `/users/${act?.user_id}`;
+        leftSrc = isCurrentQuizTaker ? '/dashboard' : `/users/${act?.user_id}`;
         rightSrc = '/quizzes';
       } else if (isCurrentUser) {
         avatarSrc = act?.following?.avatar ?? defaultAvatar;
