@@ -5,9 +5,11 @@ namespace App\Providers;
 use App\Events\AnswerCreated;
 use App\Events\FollowLogCreated;
 use App\Events\QuizLogCreated;
+use App\Events\QuizLogRetrieved;
 use App\Listeners\HandleAnswerCreated;
 use App\Listeners\HandleFollowLogCreated;
 use App\Listeners\HandleQuizLogCreated;
+use App\Listeners\HandleQuizLogRetrieved;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -31,6 +33,9 @@ class EventServiceProvider extends ServiceProvider {
         ],
         AnswerCreated::class => [
             HandleAnswerCreated::class
+        ],
+        QuizLogRetrieved::class => [
+            HandleQuizLogRetrieved::class,
         ]
     ];
 
