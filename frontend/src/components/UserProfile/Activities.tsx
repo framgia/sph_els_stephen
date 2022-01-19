@@ -32,12 +32,17 @@ export const Activities = ({ activities = [] }: Props) => {
       const [doer, action, recipient] = JSON.parse(act_log.message);
       const isCurrentUser = act?.from_id === user_id;
       const isCurrentQuizTaker = act?.user_id === user_id;
-      const avatarSrc =
-        isCurrentUser || isCurrentQuizTaker || act?.follower
-          ? user_avatar ?? defaultAvatar
-          : act?.following
-          ? act?.following?.avatar ?? defaultAvatar
-          : act?.user?.avatar ?? defaultAvatar;
+      let avatarSrc = '';
+
+      if (act?.user_id) avatarSrc = act?.user?.avatar ?? defaultAvatar;
+      else if (isCurrentUser)
+        avatarSrc = act?.following?.avatar ?? defaultAvatar;
+      else if (act?.to_id === user_id)
+        avatarSrc = act?.follower?.avatar ?? defaultAvatar;
+      else
+        avatarSrc =
+          act?.follower?.avatar ?? act?.following?.avatar ?? defaultAvatar;
+      
 
       return (
         <ListItem alignItems="flex-start" key={act_log.message}>
