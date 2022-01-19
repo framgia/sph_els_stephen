@@ -36,7 +36,7 @@ class HandleAnswerCreated {
             ActivityLog::create([
                 'loggable_type' => 'App\Models\QuizLog',
                 'loggable_id' => $quiz_log->id,
-                'message' => "[\"${user_name}\", \"scored ${score} of ${total}\", \"${quiz_title}\"]"
+                'message' => "[\"${user_name}\", \"scored ${score} of ${total} in\", \"${quiz_title}\"]"
             ]);
         }
     }

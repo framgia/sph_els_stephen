@@ -18,10 +18,14 @@ class ActivityLogController extends Controller {
         return response()->json([
             "data" => User::where('id', $id)->with([
                 'quiz_logs.log',
+                'quiz_logs.user',
                 'following.log',
                 'following.following',
                 'followers.log',
-                'followers.follower'
+                'followers.follower',
+                'following.following.quiz_logs.log',
+                'following.following.following.log',
+                'following.following.followers.log',
             ])->first()
         ]);
     }

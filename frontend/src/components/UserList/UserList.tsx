@@ -110,8 +110,10 @@ const mapStateToProps = ({
   const logged_in_user = userData.data;
   const users = usersData.data || [];
 
-  let following = userData.data?.following || [];
-  let following_ids: number[] = following?.map((f) => f['to_id']);
+  let followings = userData.data?.following || [];
+  let following_ids: (number | undefined)[] = followings?.map(
+    (following) => following.to_id
+  );
 
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap#for_adding_and_removing_items_during_a_map
   const usersWithFollows = users.flatMap((user) => {

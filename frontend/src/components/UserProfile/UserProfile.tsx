@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Activity, getActivities, sortActivities, Activities } from '.';
+import {
+  Activity,
+  getActivities,
+  sortActivities,
+  Activities,
+  sortLogs,
+  removeDuplicateLogs,
+} from '.';
 import Divider from '@mui/material/Divider';
 import Chip from '@mui/material/Chip';
 
@@ -43,8 +50,8 @@ export const _UserProfile = ({
   let { id } = useParams();
 
   const [cookies] = useCookies();
-  const [isLoadingFollow, setIsLoadingFollow] = useState(false);
-  const [isLoadingUserData, setIsLoadingUserData] = useState(false);
+  const [isLoadingFollow, setIsLoadingFollow] = useState(true);
+  const [isLoadingUserData, setIsLoadingUserData] = useState(true);
   const [isFollowing, setIsFollowing] = useState(false);
 
   const handleFollowClick = (e: any) => {
@@ -74,9 +81,14 @@ export const _UserProfile = ({
       token: cookies.token,
       id: id,
       callback: () => {
-        setIsLoadingUserData(false);
         setIsLoadingFollow(false);
-        fetchUserWithLogs({ id: id, token: cookies.token });
+        fetchUserWithLogs({
+          id: id,
+          token: cookies.token,
+          callback: () => {
+            setIsLoadingUserData(false);
+          },
+        });
       },
     });
     return () => {
@@ -89,8 +101,8 @@ export const _UserProfile = ({
       let logged_in_user_id = cookies.user.id;
 
       let followers = user?.followers || [];
-      let followers_id: number[] = followers?.map(
-        (follower) => follower['from_id']
+      let followers_id: (number | undefined)[] = followers?.map(
+        (follower) => follower.from_id
       );
       setIsFollowing(followers_id.includes(logged_in_user_id));
     };
@@ -99,7 +111,10 @@ export const _UserProfile = ({
   }, [user, cookies]);
 
   const renderLatestActivity = (act: Activity | null) => {
+    if (!act) return;
+
     let act_logs = Array.isArray(act?.log) ? act?.log : [act?.log];
+    sortLogs(act_logs);
     let latest = act_logs?.at(0);
 
     if (!latest) return;
@@ -171,11 +186,12 @@ export const _UserProfile = ({
             />
           ) : (
             <div className="my-4 text-center">
-              {renderLatestActivity(activities?.at(1) || null)}
+              {renderLatestActivity(activities?.at(0) || null)}
             </div>
           )}
         </div>
         <div className="col-span-4">
+          <h1 className="text-2xl font-bold">Activities</h1>
           <Activities activities={activities} />
         </div>
       </div>
@@ -197,7 +213,16 @@ const mapStateToProps = ({
   let numFollowers = user?.followers?.length || 0;
 
   let userWithLogs = userWithLogsData.data || null;
-  let activities = getActivities(userWithLogs);
+  let activities = getActivities(userWithLogs) || [];
+  for (let following of userWithLogs?.following || []) {
+    let followed_user = following.following;
+
+    if (!followed_user) continue;
+
+    let newActivities = getActivities(followed_user) || [];
+    activities = activities.concat(newActivities);
+  }
+  activities = removeDuplicateLogs(activities) || [];
   sortActivities(activities);
 
   return { user, numFollowing, numFollowers, activities };
