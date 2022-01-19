@@ -173,8 +173,8 @@ const mapStateToProps = ({
   let quizzes = quizzesData.data || [];
 
   let quiz_logs = user?.quiz_logs || [];
-  let quiz_logs_ids: number[] = quiz_logs?.map(
-    (quiz_log) => quiz_log['quiz_id']
+  let quiz_logs_ids: (number | undefined)[] = quiz_logs?.map(
+    (quiz_log) => quiz_log.quiz_id
   );
 
   quizzes = quizzes.map((quiz) => {

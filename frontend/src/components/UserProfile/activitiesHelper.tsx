@@ -1,4 +1,4 @@
-import { User } from '../AdminUser';
+import { FollowLog, QuizLog, User } from '../AdminUser';
 
 export interface ActivityLog {
   id: number;
@@ -9,7 +9,7 @@ export interface ActivityLog {
   updated_at: string;
 }
 
-export interface Activity {
+export interface Activity extends FollowLog, QuizLog {
   id: number;
   created_at: string;
   updated_at: string;
@@ -23,6 +23,7 @@ export interface Activity {
 
   following?: User;
   follower?: User;
+  user?: User;
 }
 
 export const getActivities = (
@@ -55,4 +56,13 @@ export const sortLogs = (logs: ActivityLog[] | null) => {
 
     return bDate.getTime() - aDate.getTime();
   });
+};
+
+export const removeDuplicateLogs = (
+  logs: Activity[] | null
+): Activity[] | null => {
+  if (!logs) return null;
+
+  let check = new Set();
+  return logs?.filter((log) => !check.has(log['id']) && check.add(log['id']));
 };

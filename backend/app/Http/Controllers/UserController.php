@@ -106,6 +106,10 @@ class UserController extends Controller {
             throw ValidationException::withMessages(['Incorrect credentials.']);
         }
 
+        if ($attrs['password'] == $attrs['new_password']) {
+            throw ValidationException::withMessages(['Same Password Detected.']);
+        }
+
         $user->update(['password' => $attrs['new_password']]);
 
         return new UserResource($user);

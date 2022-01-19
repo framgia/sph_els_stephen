@@ -18,7 +18,8 @@ interface Props {
 
 export const Activities = ({ activities = [] }: Props) => {
   const [cookies] = useCookies();
-  const user_id = cookies.user.id;
+  const user_id = cookies.user?.id;
+  const user_avatar = cookies.user?.avatar;
 
   const defaultAvatar = `${process.env.REACT_APP_BACKEND_URL}/storage/avatars/default.jpg`;
 
@@ -29,37 +30,42 @@ export const Activities = ({ activities = [] }: Props) => {
 
     return act_logs.map((act_log) => {
       const [doer, action, recipient] = JSON.parse(act_log.message);
+      const isCurrentUser = act?.from_id === user_id;
+      const isCurrentQuizTaker = act?.user_id === user_id;
+      let avatarSrc = '',
+        leftSrc = '',
+        rightSrc = '';
+
+      if (act?.user_id) {
+        avatarSrc = act?.user?.avatar ?? defaultAvatar;
+        leftSrc = isCurrentQuizTaker ? '/dashboard' : `/users/${act?.user_id}`;
+        rightSrc = '/quizzes';
+      } else if (isCurrentUser) {
+        avatarSrc = act?.following?.avatar ?? defaultAvatar;
+        leftSrc = '/dashboard';
+        rightSrc = `/users/${act?.following?.id}`;
+      } else if (act?.to_id === user_id) {
+        avatarSrc = act?.follower?.avatar ?? defaultAvatar;
+        leftSrc = `/users/${act?.follower?.id}`;
+        rightSrc = '/dashboard';
+      } else {
+        avatarSrc =
+          act?.follower?.avatar ?? act?.following?.avatar ?? defaultAvatar;
+        leftSrc = `/users/${act?.follower?.id}`;
+        rightSrc = act?.quiz_id ? `/quizzes` : `/users/${act?.following?.id}`;
+      }
 
       return (
         <ListItem alignItems="flex-start" key={act_log.message}>
           <ListItemAvatar>
-            <Avatar
-              alt={act.following ? act.following?.name : act.follower?.name}
-              src={
-                act.following
-                  ? act.following?.avatar ?? defaultAvatar
-                  : act.follower?.avatar ?? defaultAvatar
-              }
-            />
+            <Avatar alt={recipient} src={avatarSrc} />
           </ListItemAvatar>
           <ListItemText secondary={<TimeAgo className="ml-2" date={date} />}>
-            <Link
-              className="mr-1"
-              to={
-                act?.from_id || act?.quiz_id
-                  ? act?.from_id === user_id
-                    ? '/dashboard'
-                    : '#'
-                  : `/users/${act?.follower?.id}`
-              }
-            >
-              {act?.from_id === user_id || act?.quiz_id ? 'You' : doer}
+            <Link className="mr-1" to={leftSrc}>
+              {isCurrentUser || isCurrentQuizTaker ? 'You' : doer}
             </Link>
             {action}
-            <Link
-              className="ml-1"
-              to={act?.quiz_id ? '/quizzes' : `/users/${act?.following?.id}`}
-            >
+            <Link className="ml-1" to={rightSrc}>
               {recipient}
             </Link>
           </ListItemText>

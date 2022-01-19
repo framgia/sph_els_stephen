@@ -95,9 +95,11 @@ export const _UserProfileEditDetails = ({
         setCookies('user', data, { path: '/' });
       },
       errorCallback: (err: AxiosError) => {
-        setError(true);
-        let errordata = err.response?.data;
-        setMsg(errordata?.error?.message);
+        try {
+          setError(true);
+          let errordata = err.response?.data;
+          setMsg(errordata?.error?.message?.email || errordata?.error?.message);
+        } catch {}
       },
       finallyCallback: () => {
         setIsLoading(false);

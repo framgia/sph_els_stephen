@@ -30,6 +30,7 @@ import {
   Activities,
   Activity,
   getActivities,
+  removeDuplicateLogs,
   sortActivities,
 } from '../UserProfile';
 
@@ -163,7 +164,16 @@ const mapStateToProps = ({
   let learnedWordsNum = 0;
   let learnedQuizzesNum = user?.quiz_logs?.length || 0;
 
-  let activities = getActivities(user);
+  let activities = getActivities(user) || [];
+  for (let following of user?.following || []) {
+    let followed_user = following.following;
+
+    if (!followed_user) continue;
+
+    let newActivities = getActivities(followed_user) || [];
+    activities = activities.concat(newActivities);
+  }
+  activities = removeDuplicateLogs(activities) || [];
   sortActivities(activities);
 
   let learnedWordsRows: LearnedWordsRow[] = [];

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
+import { shuffleChoices } from '.';
 import {
   QuizAnswersData,
   QuizItem,
@@ -135,18 +136,20 @@ export const _UserQuizAnswer = ({
                       />
                     );
                   })
-                : currentQuizItem?.choices?.map((choice) => {
-                    return (
-                      <Button
-                        key={choice.id}
-                        variant="contained"
-                        size="large"
-                        onClick={(e) => handleChoiceClick(e, choice.id || 0)}
-                      >
-                        {choice.choice || 'Choice'}
-                      </Button>
-                    );
-                  })}
+                : shuffleChoices(currentQuizItem?.choices || null)?.map(
+                    (choice) => {
+                      return (
+                        <Button
+                          key={choice.id}
+                          variant="contained"
+                          size="large"
+                          onClick={(e) => handleChoiceClick(e, choice.id || 0)}
+                        >
+                          {choice.choice || 'Choice'}
+                        </Button>
+                      );
+                    }
+                  )}
             </Stack>
           </Stack>
         </Stack>

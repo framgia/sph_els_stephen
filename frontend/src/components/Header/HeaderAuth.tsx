@@ -4,6 +4,9 @@ import HeaderDropDown from './HeaderDropDown';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import QuizIcon from '@mui/icons-material/Quiz';
+import CreateIcon from '@mui/icons-material/Create';
+import GroupIcon from '@mui/icons-material/Group';
 
 const HeaderAuth = () => {
   const [cookies] = useCookies();
@@ -11,6 +14,45 @@ const HeaderAuth = () => {
   const createDropDownIcon = (Icon: any) => (props: any) => <Icon {...props} />;
 
   const userOptions = [
+    {
+      name: 'Dashboard',
+      description: 'View your Dashboard',
+      href: '/dashboard',
+      icon: createDropDownIcon(DashboardIcon),
+    },
+    {
+      name: 'Account',
+      description: 'View and Edit Account',
+      href: '/account/profile/edit',
+      icon: createDropDownIcon(AccountBoxIcon),
+    },
+    {
+      name: 'Sign Out',
+      description: 'Are you really going?',
+      href: '/signout',
+      icon: createDropDownIcon(LogoutIcon),
+    },
+  ];
+
+  const adminOptions = [
+    {
+      name: 'Manage Quizzes',
+      description: 'View and Manage Quizzes',
+      href: '/admin/quizzes',
+      icon: createDropDownIcon(QuizIcon),
+    },
+    {
+      name: 'Create Quiz',
+      description: 'Create Quiz',
+      href: '/admin/quizzes/create',
+      icon: createDropDownIcon(CreateIcon),
+    },
+    {
+      name: 'Manage Users',
+      description: 'View and Manage Users',
+      href: '/admin/users',
+      icon: createDropDownIcon(GroupIcon),
+    },
     {
       name: 'Dashboard',
       description: 'View your Dashboard',
@@ -48,7 +90,12 @@ const HeaderAuth = () => {
     </div>
   ) : (
     <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-      <HeaderDropDown label={cookies.user?.name} dropDownItems={userOptions}>
+      <HeaderDropDown
+        label={`${cookies?.user?.is_admin ? '(ADMIN) ' : ''}${
+          cookies.user?.name
+        }`}
+        dropDownItems={cookies?.user?.is_admin ? adminOptions : userOptions}
+      >
         <div>
           <h3 className="text-sm tracking-wide font-medium text-gray-500 uppercase">
             Welcome Back!

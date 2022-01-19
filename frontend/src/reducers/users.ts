@@ -45,6 +45,8 @@ export const userWithLogsReducer = (state: UserData = {}, action: Action) => {
   switch (action.type) {
     case ActionTypes.fetchUserWithLogs:
       return action.payload;
+    case ActionTypes.cleanUpUserData:
+      return action.payload;
     default:
       return state;
   }
