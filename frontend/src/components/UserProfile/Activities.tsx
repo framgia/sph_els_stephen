@@ -32,17 +32,28 @@ export const Activities = ({ activities = [] }: Props) => {
       const [doer, action, recipient] = JSON.parse(act_log.message);
       const isCurrentUser = act?.from_id === user_id;
       const isCurrentQuizTaker = act?.user_id === user_id;
-      let avatarSrc = '';
+      let avatarSrc = '',
+        leftSrc = '',
+        rightSrc = '';
 
-      if (act?.user_id) avatarSrc = act?.user?.avatar ?? defaultAvatar;
-      else if (isCurrentUser)
+      if (act?.user_id) {
+        avatarSrc = act?.user?.avatar ?? defaultAvatar;
+        leftSrc = isCurrentUser ? '/dashboard' : `/users/${act?.user_id}`;
+        rightSrc = '/quizzes';
+      } else if (isCurrentUser) {
         avatarSrc = act?.following?.avatar ?? defaultAvatar;
-      else if (act?.to_id === user_id)
+        leftSrc = '/dashboard';
+        rightSrc = `/users/${act?.following?.id}`;
+      } else if (act?.to_id === user_id) {
         avatarSrc = act?.follower?.avatar ?? defaultAvatar;
-      else
+        leftSrc = `/users/${act?.follower?.id}`;
+        rightSrc = '/dashboard';
+      } else {
         avatarSrc =
           act?.follower?.avatar ?? act?.following?.avatar ?? defaultAvatar;
-      
+        leftSrc = `/users/${act?.follower?.id}`;
+        rightSrc = act?.quiz_id ? `/quizzes` : `/users/${act?.following?.id}`;
+      }
 
       return (
         <ListItem alignItems="flex-start" key={act_log.message}>
@@ -50,29 +61,11 @@ export const Activities = ({ activities = [] }: Props) => {
             <Avatar alt={recipient} src={avatarSrc} />
           </ListItemAvatar>
           <ListItemText secondary={<TimeAgo className="ml-2" date={date} />}>
-            <Link
-              className="mr-1"
-              to={
-                act?.from_id || act?.quiz_id
-                  ? act?.from_id === user_id
-                    ? '/dashboard'
-                    : '#'
-                  : `/users/${act?.follower?.id}`
-              }
-            >
+            <Link className="mr-1" to={leftSrc}>
               {isCurrentUser || isCurrentQuizTaker ? 'You' : doer}
             </Link>
             {action}
-            <Link
-              className="ml-1"
-              to={
-                act?.quiz_id
-                  ? '/quizzes'
-                  : isCurrentUser
-                  ? '/users'
-                  : `/users/${act?.to_id}`
-              }
-            >
+            <Link className="ml-1" to={rightSrc}>
               {recipient}
             </Link>
           </ListItemText>
