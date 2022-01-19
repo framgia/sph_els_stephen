@@ -13,6 +13,12 @@ export const quizzesDataReducer = (
   switch (action.type) {
     case ActionTypes.fetchQuizzes:
       return action.payload;
+    case ActionTypes.deleteQuiz:
+      let quizzes = state.data || [];
+      return {
+        ...state,
+        data: quizzes.filter((quiz) => quiz.id !== action.payload),
+      };
     default:
       return state;
   }

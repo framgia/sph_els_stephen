@@ -14,11 +14,19 @@ const HeaderLinks = () => {
         callToActions={callsToAction}
       /> */}
 
-      {cookies.user && (
+      {cookies?.user?.is_admin ? (
         <>
-          <HeaderItem label="Quizzes" href="/quizzes" />
-          <HeaderItem label="Users" href="/users" />
+          <HeaderItem label="Quizzes" href="/admin/quizzes" />
+          <HeaderItem label="Create Quiz" href="/admin/quizzes/create" />
+          <HeaderItem label="Users" href="/admin/users" />
         </>
+      ) : (
+        cookies?.user && (
+          <>
+            <HeaderItem label="Quizzes" href="/quizzes" />
+            <HeaderItem label="Users" href="/users" />
+          </>
+        )
       )}
 
       {/* <HeaderDropDown label="Quizzes" dropDownItems={solutions}>

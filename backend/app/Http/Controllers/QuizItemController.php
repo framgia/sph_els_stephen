@@ -15,8 +15,26 @@ class QuizItemController extends Controller {
     public function store(Request $request) {
         $attrs = $this->validateQuizItem($request);
 
-        $qi = QuizItem::create($attrs);
-        return new QuizItemResource($qi);
+        $quizItem = QuizItem::create($attrs);
+
+        if ($request->choices ?? false) {
+            $requestChoices = $request->choices;
+            $choices = is_array($requestChoices)
+                ? $requestChoices
+                : json_decode($requestChoices);
+            $newRecords = [];
+            foreach ($choices as $key => $choice) {
+                $newRecords[] = [
+                    'quiz_item_id' => $quizItem->id,
+                    'choice' => $choice,
+                    'is_correct' => $key == 0
+                ];
+            }
+
+            $quizItem->choices()->createMany($newRecords);
+        }
+
+        return response()->json(["data" => $quizItem]);
     }
 
     public function show($id) {

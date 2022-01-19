@@ -3,7 +3,8 @@ import Form, { FormButton, FormInput, FormLabel, FormTextArea } from '../Forms';
 import { connect } from 'react-redux';
 import { QuizData, getQuiz, updateQuiz } from '../../actions';
 import { StoreState } from '../../reducers';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
+import { CircularProgress } from '@mui/material';
 
 interface AdminQuizEditFormProps {
   children?: React.ReactNode;
@@ -20,8 +21,12 @@ export const _AdminQuizEditForm = ({
 }: AdminQuizEditFormProps): JSX.Element => {
   let { id } = useParams();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [_title, setTitle] = useState('');
   const [_description, setDescription] = useState('');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getQuiz(id);
@@ -30,7 +35,6 @@ export const _AdminQuizEditForm = ({
   useEffect(() => {
     setTitle(quizData?.data?.title || '');
     setDescription(quizData?.data?.description || '');
-    return () => {};
   }, [quizData]);
 
   function onTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -44,7 +48,15 @@ export const _AdminQuizEditForm = ({
   function onSubmit(event: React.FormEvent<SubmitEvent>) {
     event.preventDefault();
 
-    updateQuiz(id, { title: _title, description: _description });
+    setIsLoading(true);
+    updateQuiz({
+      quizId: id,
+      quiz: { title: _title, description: _description },
+      callback: () => {
+        setIsLoading(false);
+        navigate('/admin/quizzes');
+      },
+    });
   }
 
   return (
@@ -70,7 +82,11 @@ export const _AdminQuizEditForm = ({
             />
           </div>
           <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-            <FormButton type="submit" text="Save" onSubmit={onSubmit} />
+            {isLoading ? (
+              <CircularProgress />
+            ) : (
+              <FormButton type="submit" text="Save" onSubmit={onSubmit} />
+            )}
           </div>
         </div>
       </Form>
