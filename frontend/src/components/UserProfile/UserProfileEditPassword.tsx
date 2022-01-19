@@ -132,7 +132,11 @@ const _UserProfileEditPassword = (props: Props) => {
       </div>
       <div>
         <TextField
-          {...register('new_password', formValidation.new_password)}
+          {...register('new_password', {
+            ...formValidation.new_password,
+            validate: (value) =>
+              value === password || 'New Password Must be Different.',
+          })}
           type={showPassword ? 'text' : 'password'}
           error={Boolean(errors?.new_password)}
           label="New Password"
@@ -150,7 +154,7 @@ const _UserProfileEditPassword = (props: Props) => {
           {...register('new_password_confirmation', {
             ...formValidation.new_password_confirmation,
             validate: (value) =>
-              value === new_password || 'New Password does not match',
+              value === new_password || 'New Password does not match.',
           })}
           type={showPassword ? 'text' : 'password'}
           error={Boolean(errors?.new_password_confirmation)}

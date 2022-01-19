@@ -98,7 +98,6 @@ export const _UserProfileEditDetails = ({
         try {
           setError(true);
           let errordata = err.response?.data;
-          console.log(errordata?.error?.message);
           setMsg(errordata?.error?.message?.email || errordata?.error?.message);
         } catch {}
       },
