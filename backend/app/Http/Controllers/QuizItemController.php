@@ -19,11 +19,11 @@ class QuizItemController extends Controller {
 
         if ($request->choices ?? false) {
             $requestChoices = $request->choices;
-            $choices = is_array($requestChoices) // becomes a php array, not laravel collection
+            $choices = is_array($requestChoices)
                 ? $requestChoices
                 : json_decode($requestChoices);
             $newRecords = [];
-            foreach ($choices as $key => $choice) { // need to foreach this because i am transforming the data into php array
+            foreach ($choices as $key => $choice) {
                 $newRecords[] = [
                     'quiz_item_id' => $quizItem->id,
                     'choice' => $choice,
