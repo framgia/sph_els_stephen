@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Events\QuizLogCreated;
+use App\Events\QuizLogRetrieved;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +12,7 @@ class QuizLog extends Model {
 
     protected $dispatchesEvents = [
         'created' => QuizLogCreated::class,
+        'retrieved' => QuizLogRetrieved::class,
     ];
 
     public function quiz() {
