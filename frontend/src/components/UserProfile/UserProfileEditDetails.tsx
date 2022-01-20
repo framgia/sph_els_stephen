@@ -1,7 +1,7 @@
-import { AxiosResponse, AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { useForm } from 'react-hook-form';
+import { userUpdateProfileDetails } from '../../actions';
+import { handleWhiteSpace } from '../UserAuth';
 
 import {
   Box,
@@ -11,8 +11,9 @@ import {
   CircularProgress,
   Button,
 } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import { AxiosResponse, AxiosError } from 'axios';
 import { connect } from 'react-redux';
-import { userUpdateProfileDetails } from '../../actions';
 
 export interface ProfileEditInput {
   name: string;
@@ -98,7 +99,12 @@ export const _UserProfileEditDetails = ({
         try {
           setError(true);
           let errordata = err.response?.data;
-          setMsg(errordata?.error?.message?.email || errordata?.error?.message);
+          setMsg(
+            errordata?.error?.message?.email ||
+              errordata?.error?.message?.name ||
+              errordata?.error?.message ||
+              'Something went wrong.'
+          );
         } catch {}
       },
       finallyCallback: () => {
@@ -125,7 +131,7 @@ export const _UserProfileEditDetails = ({
           error={Boolean(errors?.name)}
           label="Full Name"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => setName(handleWhiteSpace(e.target.value))}
           variant="filled"
           helperText={errors?.name?.message}
         />
@@ -136,7 +142,7 @@ export const _UserProfileEditDetails = ({
           error={Boolean(errors?.email)}
           label="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => setEmail(handleWhiteSpace(e.target.value))}
           variant="filled"
           helperText={errors?.email?.message}
         />

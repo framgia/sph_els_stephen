@@ -135,7 +135,7 @@ const _UserProfileEditPassword = (props: Props) => {
           {...register('new_password', {
             ...formValidation.new_password,
             validate: (value) =>
-              value === password || 'New Password Must be Different.',
+              value !== password || 'New Password Must be Different.',
           })}
           type={showPassword ? 'text' : 'password'}
           error={Boolean(errors?.new_password)}

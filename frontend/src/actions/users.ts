@@ -386,8 +386,8 @@ export const fetchLearnedWords = (data: {
 export const userSignIn = (data: {
   email: number;
   password: string;
-  callback: Function;
-  errorCallback: Function;
+  callback?: Function;
+  errorCallback?: Function;
 }) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
@@ -399,15 +399,15 @@ export const userSignIn = (data: {
           password,
         })
         .then((response) => {
-          callback(response);
+          if (callback) callback(response);
 
           dispatch<UserSignInAction>({
             type: ActionTypes.userSignIn,
             payload: response.data,
           });
         })
-        .catch(() => {
-          errorCallback();
+        .catch((error) => {
+          if (errorCallback) errorCallback(error);
         });
     });
   };
@@ -418,8 +418,8 @@ export const userSignUp = (data: {
   email: string;
   password: string;
   password_confirmation: string;
-  callback: Function;
-  errorCallback: Function;
+  callback?: Function;
+  errorCallback?: Function;
 }) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
@@ -440,15 +440,15 @@ export const userSignUp = (data: {
           password_confirmation,
         })
         .then((response) => {
-          callback(response);
+          if (callback) callback(response);
 
           dispatch<UserSignUpAction>({
             type: ActionTypes.userSignUp,
             payload: response.data,
           });
         })
-        .catch(() => {
-          errorCallback();
+        .catch((error) => {
+          if (errorCallback) errorCallback(error);
         });
     });
   };
@@ -456,12 +456,13 @@ export const userSignUp = (data: {
 
 export const userSignOut = (data: {
   token: string;
-  callback: Function;
-  errorCallback: Function;
+  callback?: Function;
+  errorCallback?: Function;
+  finallyCallback?: Function;
 }) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
-      let { token, callback, errorCallback } = data;
+      let { token, callback, errorCallback, finallyCallback } = data;
 
       await backend
         .post(
@@ -474,10 +475,13 @@ export const userSignOut = (data: {
           }
         )
         .then((response) => {
-          callback(response);
+          if (callback) callback(response);
         })
-        .catch(() => {
-          errorCallback();
+        .catch((error) => {
+          if (errorCallback) errorCallback(error);
+        })
+        .finally(() => {
+          if (finallyCallback) finallyCallback();
         });
     });
   };

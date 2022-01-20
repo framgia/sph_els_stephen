@@ -119,7 +119,7 @@ class UserController extends Controller {
         $user ??= new User();
 
         return $this->validate($request, [
-            'name' => [!$user->exists ? 'required' : ''],
+            'name' => [!$user->exists ? 'required' : '', 'min:10'],
             'email' => [!$user->exists ? 'required' : '', 'email', Rule::unique('users', 'email')->ignore($user)],
             'password' => !$user->exists ? ['required', 'min:6', 'confirmed']
                 : ['confirmed'],

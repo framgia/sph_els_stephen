@@ -1,12 +1,15 @@
-import { CircularProgress, Stack } from '@mui/material';
-import { AxiosResponse } from 'axios';
 import React, { useState } from 'react';
+import { UserAuthButton, UserAuthField, UserAuthForm, UserAuthHeader } from '.';
+import { userSignUp } from '../../actions';
+import { handleWhiteSpace } from './';
+
+import { AxiosError, AxiosResponse } from 'axios';
 import { useCookies } from 'react-cookie';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-import { UserAuthButton, UserAuthField, UserAuthForm, UserAuthHeader } from '.';
-import { userSignUp } from '../../actions';
 import { connect } from 'react-redux';
+
+import { Alert, CircularProgress, Stack } from '@mui/material';
 
 interface FormInput {
   name: string;
@@ -20,6 +23,10 @@ const formValidation = {
     required: {
       value: true,
       message: 'This field is required.',
+    },
+    minLength: {
+      value: 10,
+      message: 'Name field must at least be 10 characters.',
     },
     maxLength: {
       value: 255,
@@ -77,8 +84,15 @@ export const _UserSignUp = ({ userSignUp }: Props) => {
     formState: { errors },
   } = useForm<FormInput>();
 
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [password_confirmation, setPassword_confirmation] = useState('');
+
   const navigate = useNavigate();
+
   const [isError, setIsError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [_, setCookies] = useCookies(); // eslint-disable-line -- need to destructure this way
 
@@ -96,8 +110,15 @@ export const _UserSignUp = ({ userSignUp }: Props) => {
         setIsLoading(false);
         navigate('/');
       },
-      errorCallback: () => {
+      errorCallback: (error: AxiosError) => {
         setIsError(true);
+        setErrorMsg(
+          error?.response?.data?.error?.message?.name ||
+            error?.response?.data?.error?.message?.email ||
+            error?.response?.data?.error?.message?.password ||
+            error?.response?.data?.error?.message ||
+            'Something went wrong.'
+        );
         setIsLoading(false);
       },
     };
@@ -115,6 +136,8 @@ export const _UserSignUp = ({ userSignUp }: Props) => {
             <UserAuthField
               label="Full Name"
               register={{ ...register('name', formValidation.name) }}
+              value={name}
+              onChange={(e: any) => setName(handleWhiteSpace(e.target.value))}
               rounded="t-md rounded-b-md"
               errormsg={errors.name?.message}
             />
@@ -125,12 +148,18 @@ export const _UserSignUp = ({ userSignUp }: Props) => {
               label="Email Address"
               register={{ ...register('email', formValidation.email) }}
               type="email"
+              value={email}
+              onChange={(e: any) => setEmail(handleWhiteSpace(e.target.value))}
               rounded="t-md"
               errormsg={errors.email?.message}
             />
             <UserAuthField
               label="Password"
               register={{ ...register('password', formValidation.password) }}
+              value={password}
+              onChange={(e: any) =>
+                setPassword(handleWhiteSpace(e.target.value))
+              }
               type="password"
               rounded="none"
               errormsg={errors.password?.message}
@@ -138,18 +167,24 @@ export const _UserSignUp = ({ userSignUp }: Props) => {
             <UserAuthField
               label="Password Confirmation"
               register={{
-                ...register(
-                  'password_confirmation',
-                  formValidation.password_confirmation
-                ),
+                ...register('password_confirmation', {
+                  ...formValidation.password_confirmation,
+                  validate: (value) =>
+                    value === password ||
+                    'Password confirmation does not match',
+                }),
               }}
+              value={password_confirmation}
+              onChange={(e: any) =>
+                setPassword_confirmation(handleWhiteSpace(e.target.value))
+              }
               type="password"
               rounded="b-md"
               errormsg={errors.password_confirmation?.message}
             />
           </div>
 
-          <div>{isError ? 'Invalid Input' : ''}</div>
+          {isError ? <Alert severity={'error'}>{errorMsg}</Alert> : null}
           {isLoading ? (
             <Stack alignItems="center">
               <CircularProgress />
