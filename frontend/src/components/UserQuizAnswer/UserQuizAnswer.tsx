@@ -82,7 +82,7 @@ export const _UserQuizAnswer = ({
           token: cookies.token,
           callback: () => {
             setLoading(false);
-            navigate('/quizzes');
+            navigate('result');
           },
         });
       }
