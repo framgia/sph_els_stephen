@@ -4,14 +4,14 @@ import {
   UserAuthField,
   UserAuthForm,
   UserAuthHeader,
-  UserAuthLoginExtra,
+  handleWhiteSpace,
 } from '.';
 
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
-import { AxiosResponse } from 'axios';
-import { CircularProgress, Stack } from '@mui/material';
+import { AxiosError, AxiosResponse } from 'axios';
+import { Alert, CircularProgress, Stack } from '@mui/material';
 import { connect } from 'react-redux';
 import { userSignIn } from '../../actions';
 
@@ -58,8 +58,12 @@ export const _UserSignIn = ({ userSignIn }: Props) => {
     formState: { errors },
   } = useForm<FormInput>();
 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [_, setCookies] = useCookies(); // eslint-disable-line -- need to destructure this way
 
@@ -75,8 +79,14 @@ export const _UserSignIn = ({ userSignIn }: Props) => {
         setIsLoading(false);
         navigate('/');
       },
-      errorCallback: () => {
+      errorCallback: (error: AxiosError) => {
         setIsError(true);
+        setErrorMsg(
+          error?.response?.data?.error?.message?.email ||
+            error?.response?.data?.error?.message?.password ||
+            error?.response?.data?.error?.message ||
+            'Something went wrong.'
+        );
         setIsLoading(false);
       },
     };
@@ -96,6 +106,8 @@ export const _UserSignIn = ({ userSignIn }: Props) => {
               label="Email Address"
               register={{ ...register('email', formValidation.email) }}
               type="email"
+              value={email}
+              onChange={(e: any) => setEmail(handleWhiteSpace(e.target.value))}
               rounded="t-md"
               errormsg={errors.email?.message}
             />
@@ -103,15 +115,17 @@ export const _UserSignIn = ({ userSignIn }: Props) => {
               label="Password"
               register={{ ...register('password', formValidation.password) }}
               autocomplete="current-password"
+              value={password}
+              onChange={(e: any) =>
+                setPassword(handleWhiteSpace(e.target.value))
+              }
               type="password"
               rounded="b-md"
               errormsg={errors.password?.message}
             />
           </div>
 
-          <UserAuthLoginExtra />
-
-          <div>{isError ? 'Invalid Input' : ''}</div>
+          {isError ? <Alert severity={'error'}>{errorMsg}</Alert> : null}
           {isLoading ? (
             <Stack alignItems="center">
               <CircularProgress />

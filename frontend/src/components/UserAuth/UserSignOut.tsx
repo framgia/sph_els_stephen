@@ -18,7 +18,7 @@ export const _UserSignOut = ({ userSignOut }: Props) => {
     setOpen(true);
     let signOutData = {
       token: cookies.token,
-      callback: () => {
+      finallyCallback: () => {
         removeCookies('user', { path: '/' });
         removeCookies('token', { path: '/' });
         setOpen(false);
