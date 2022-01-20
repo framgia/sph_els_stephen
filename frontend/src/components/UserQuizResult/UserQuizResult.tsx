@@ -4,12 +4,14 @@ import { connect } from 'react-redux';
 import { StoreState } from '../../reducers';
 import { QuizItem, fetchQuizResults, clearQuizResult } from '../../actions';
 import { useCookies } from 'react-cookie';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { getAnswer, getCorrectAnswer, getScore, isCorrectAnswer } from '.';
 
-import { Skeleton, Stack } from '@mui/material';
+import { Button, Skeleton, Stack } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { pink } from '@mui/material/colors';
 
 interface Props {
@@ -22,6 +24,8 @@ export const _UserQuizResult = ({
   fetchQuizResults,
 }: Props) => {
   let { id } = useParams();
+
+  const navigate = useNavigate();
 
   const [quizTitle, setquizTitle] = useState('Quiz Title');
   const [score, setScore] = useState(0);
@@ -105,6 +109,29 @@ export const _UserQuizResult = ({
                 </Stack>
               );
             })}
+      </Stack>
+
+      <Stack
+        className="mt-10"
+        justifyContent={'space-around'}
+        direction={'row'}
+      >
+        <Button
+          className=""
+          variant="contained"
+          startIcon={<ArrowBackIcon />}
+          onClick={(e) => navigate('/quizzes')}
+        >
+          Back to Quizzes
+        </Button>
+        <Button
+          className=""
+          variant="contained"
+          endIcon={<ArrowForwardIcon />}
+          onClick={(e) => navigate('/dashboard')}
+        >
+          Go to Dashboard
+        </Button>
       </Stack>
     </div>
   );

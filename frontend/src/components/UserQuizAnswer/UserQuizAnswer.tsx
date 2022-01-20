@@ -57,6 +57,12 @@ export const _UserQuizAnswer = ({
         setCurrentItemId(1);
       },
     });
+
+    window.onbeforeunload = (e: any) => false;
+
+    return () => {
+      window.onbeforeunload = (e: any) => {};
+    };
   }, [cookies, fetchQuizItems, id]);
 
   useEffect(() => {
@@ -74,7 +80,7 @@ export const _UserQuizAnswer = ({
     if (currentQuiz) {
       if (currentQuiz.choices_id?.length === quizItems?.length) {
         setLoading(true);
-        setloadingMessage('Submitting Quiz');
+        setloadingMessage('Calculating Results');
 
         submitQuiz({
           quiz_id: id,
