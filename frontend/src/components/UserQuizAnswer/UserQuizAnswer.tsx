@@ -109,7 +109,9 @@ export const _UserQuizAnswer = ({
       <div className="container mx-auto pt-10 px-4">
         <Stack direction="row" justifyContent="space-evenly">
           <Stack>
-            <h1 className="text-4xl font-light mb-20">{quizTitle}</h1>
+            <h1 className="text-4xl font-light mb-20">
+              {loading ? 'Quiz Title' : quizTitle}
+            </h1>
 
             {loading ? (
               <Skeleton variant="text" width={200} height={100} />
@@ -121,7 +123,9 @@ export const _UserQuizAnswer = ({
           </Stack>
           <Stack>
             <h1 className="text-4xl font-light mb-20">
-              {currentItemId} of {quizItems?.length || 0}
+              {loading
+                ? '0 of 0'
+                : `${currentItemId} of ${quizItems?.length || 0}`}
             </h1>
 
             <Stack className="" direction="column" spacing={2}>

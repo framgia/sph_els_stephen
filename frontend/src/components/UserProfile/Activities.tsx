@@ -19,7 +19,6 @@ interface Props {
 export const Activities = ({ activities = [] }: Props) => {
   const [cookies] = useCookies();
   const user_id = cookies.user?.id;
-  const user_avatar = cookies.user?.avatar;
 
   const defaultAvatar = `${process.env.REACT_APP_BACKEND_URL}/storage/avatars/default.jpg`;
 
