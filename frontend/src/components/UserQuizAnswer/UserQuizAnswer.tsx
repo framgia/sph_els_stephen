@@ -116,7 +116,7 @@ export const _UserQuizAnswer = ({
         <Stack direction="row" justifyContent="space-evenly">
           <Stack>
             <h1 className="text-4xl font-light mb-20">
-              {loading ? 'Quiz Title' : quizTitle}
+              {loading ? 'Loading quiz title' : quizTitle}
             </h1>
 
             {loading ? (
@@ -130,7 +130,7 @@ export const _UserQuizAnswer = ({
           <Stack>
             <h1 className="text-4xl font-light mb-20">
               {loading
-                ? '0 of 0'
+                ? 'Loading quiz set'
                 : `${currentItemId} of ${quizItems?.length || 0}`}
             </h1>
 
