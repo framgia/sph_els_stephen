@@ -57,6 +57,12 @@ export const _UserQuizAnswer = ({
         setCurrentItemId(1);
       },
     });
+
+    window.onbeforeunload = (e: any) => false;
+
+    return () => {
+      window.onbeforeunload = (e: any) => {};
+    };
   }, [cookies, fetchQuizItems, id]);
 
   useEffect(() => {
@@ -74,7 +80,7 @@ export const _UserQuizAnswer = ({
     if (currentQuiz) {
       if (currentQuiz.choices_id?.length === quizItems?.length) {
         setLoading(true);
-        setloadingMessage('Submitting Quiz');
+        setloadingMessage('Calculating Results');
 
         submitQuiz({
           quiz_id: id,
@@ -82,7 +88,7 @@ export const _UserQuizAnswer = ({
           token: cookies.token,
           callback: () => {
             setLoading(false);
-            navigate('/quizzes');
+            navigate('result');
           },
         });
       }
@@ -109,7 +115,9 @@ export const _UserQuizAnswer = ({
       <div className="container mx-auto pt-10 px-4">
         <Stack direction="row" justifyContent="space-evenly">
           <Stack>
-            <h1 className="text-4xl font-light mb-20">{quizTitle}</h1>
+            <h1 className="text-4xl font-light mb-20">
+              {loading ? 'Loading quiz title' : quizTitle}
+            </h1>
 
             {loading ? (
               <Skeleton variant="text" width={200} height={100} />
@@ -121,7 +129,9 @@ export const _UserQuizAnswer = ({
           </Stack>
           <Stack>
             <h1 className="text-4xl font-light mb-20">
-              {currentItemId} of {quizItems?.length || 0}
+              {loading
+                ? 'Loading quiz set'
+                : `${currentItemId} of ${quizItems?.length || 0}`}
             </h1>
 
             <Stack className="" direction="column" spacing={2}>

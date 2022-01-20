@@ -98,7 +98,7 @@ export const _UserQuizzes = ({
         open={isLoadingQuiz}
       >
         <Stack alignItems="center" spacing={2}>
-          <h1 className="text-4xl">{'Submitting Request'}</h1>
+          <h1 className="text-4xl">Preparing Quiz</h1>
           <CircularProgress color="inherit" />
         </Stack>
       </Backdrop>
