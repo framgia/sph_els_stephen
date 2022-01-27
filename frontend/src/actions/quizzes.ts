@@ -54,7 +54,7 @@ export const fetchQuizzes = (data: { search: string; callback: Function }) => {
       let { search, callback } = data;
 
       const response = await backend.get<QuizzesData>(
-        search !== '' ? `/api/quizzes?search=${search ?? ''}` : `/api/quizzes/`
+        search !== '' ? `/api/quizzes?search=${search ?? ''}` : `/api/quizzes`
       );
 
       if (callback) callback();
@@ -71,7 +71,7 @@ export const addQuiz = (data: { quiz: Quiz; callback: Function }) => {
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
       let { quiz, callback } = data;
-      await backend.post<QuizData>('/api/quizzes/', quiz).then((response) => {
+      await backend.post<QuizData>('/api/quizzes', quiz).then((response) => {
         if (callback) callback();
 
         dispatch<AddQuizAction>({
@@ -141,7 +141,7 @@ export const fetchQuizLogs = (data: { token: string; callback: Function }) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
       let { token, callback } = data;
 
-      const response = await backend.get<UserData>(`/api/quiz_logs/`, {
+      const response = await backend.get<UserData>(`/api/quiz_logs`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -165,7 +165,7 @@ export const takeQuiz = (
   return async (dispatch: Dispatch) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
       await backend.post<UserData>(
-        `/api/quiz_logs/`,
+        `/api/quiz_logs`,
         {
           quiz_id,
         },

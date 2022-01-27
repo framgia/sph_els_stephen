@@ -171,7 +171,7 @@ export const addQuizItem = (data: {
       let { quizItem, callback } = data;
 
       await backend
-        .post<QuizItemData>('/api/quiz_items/', quizItem)
+        .post<QuizItemData>('/api/quiz_items', quizItem)
         .then((response) => {
           if (callback) callback();
 

@@ -92,7 +92,7 @@ export const fetchUsers = (data: { callback?: Function }) => {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
       let { callback } = data;
 
-      const response = await backend.get<UsersData>('/api/users/');
+      const response = await backend.get<UsersData>('/api/users');
 
       if (callback) callback();
 
@@ -113,11 +113,14 @@ export const fetchUserWithFollows = (data: {
     backend.get('/sanctum/csrf-cookie').then(async (csrf_response) => {
       let { token, id, callback } = data;
 
-      const response = await backend.get<UserData>(`/api/follows/${id ?? ''}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await backend.get<UserData>(
+        `/api/follows${id ? `/${id}` : ''}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (callback) callback();
 
@@ -141,7 +144,7 @@ export const fetchUserWithLogs = (data: {
       let { id, token, callback, errorCallback, finallyCallback } = data;
 
       await backend
-        .get<UserData>(`/api/activity_logs/${id ?? ''}`, {
+        .get<UserData>(`/api/activity_logs${id ? `/${id}` : ''}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -178,7 +181,7 @@ export const followUser = (data: {
       let { user_id, token, callback } = data;
 
       await backend.post<UserData>(
-        '/api/follows/',
+        '/api/follows',
         {
           to_id: user_id,
         },
@@ -209,7 +212,7 @@ export const unfollowUser = (data: {
       let { user_id, token, callback } = data;
 
       await backend.post<UserData>(
-        '/api/follows/',
+        '/api/follows',
         {
           _method: 'DELETE',
           to_id: user_id,
