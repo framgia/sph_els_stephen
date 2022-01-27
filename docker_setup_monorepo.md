@@ -29,17 +29,19 @@
 ## Frontend Setup
 
 - [x] create `Dockerfile` in /frontend, below is my dockerfile, feel free to change if you do know a better setup, but for my case it works
-> FROM node:17
->
-> WORKDIR /app
-> 
-> COPY package*.json ./
->
-> RUN npm i
-> 
-> COPY . .
-> 
-> CMD [ "npm", "start" ]
+```
+FROM node:17
+
+WORKDIR /app
+ 
+COPY package*.json ./
+
+RUN npm i
+ 
+COPY . .
+
+CMD [ "npm", "start" ]
+```
 
 - [x] create `.dockerignore` in /frontend
     - [ ] for this one, i just copied my gitignore
